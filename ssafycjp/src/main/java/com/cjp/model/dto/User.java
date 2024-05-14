@@ -1,22 +1,46 @@
 package com.cjp.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "유저 DTO")
 public class User {
+	private String name;
 	private String id;
 	private String password;
-	private String name;
-	private int curriculumCode;
-	private String curriculumName;
-
+	private int age;
+	private String img;
+	private String sex;
+	private double goalWeight;
+	private double nowWeight;
+	
 	public User() {
 	}
-	
 
-	public User(String id, String password) {
+	public User(String name, String id, String password) {
+		this.name = name;
 		this.id = id;
 		this.password = password;
 	}
+	
+	public User(String name, String id, String password, int age, String img, String sex, double goalWeight,
+			double nowWeight) {
+		this.name = name;
+		this.id = id;
+		this.password = password;
+		this.age = age;
+		this.img = img;
+		this.sex = sex;
+		this.goalWeight = goalWeight;
+		this.nowWeight = nowWeight;
+	}
 
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getId() {
 		return id;
@@ -34,34 +58,53 @@ public class User {
 		this.password = password;
 	}
 
-	public String getName() {
-		return name;
+	public int getAge() {
+		return age;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAge(int age) {
+		this.age = age;
 	}
 
-	public int getCurriculumCode() {
-		return curriculumCode;
+	public String getImg() {
+		return img;
 	}
 
-	public void setCurriculumCode(int curriculumCode) {
-		this.curriculumCode = curriculumCode;
+	public void setImg(String img) {
+		this.img = img;
 	}
 
-	public String getCurriculumName() {
-		return curriculumName;
+	public String getSex() {
+		return sex;
 	}
 
-	public void setCurriculumName(String curriculumName) {
-		this.curriculumName = curriculumName;
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public double getGoalWeight() {
+		return goalWeight;
+	}
+
+	public void setGoalWeight(double goalWeight) {
+		this.goalWeight = goalWeight;
+	}
+
+	public double getNowWeight() {
+		return nowWeight;
+	}
+
+	public void setNowWeight(double nowWeight) {
+		this.nowWeight = nowWeight;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", password=" + password + ", name=" + name + ", curriculumCode=" + curriculumCode
-				+ ", curriculumName=" + curriculumName + "]";
+		return "User [name=" + name + ", id=" + id + ", password=" + password + ", age=" + age + ", img=" + img
+				+ ", sex=" + sex + ", goalWeight=" + goalWeight + ", nowWeight=" + nowWeight + "]";
 	}
 
+	
+	
+	
 }

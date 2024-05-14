@@ -6,7 +6,18 @@ import java.util.Map;
 import com.cjp.model.dto.User;
 
 public interface UserDao {
+	// (admin) 유저 목록을 봐야 하나?
 	public List<User> selectAll();
+	// 회원 등록
 	public void insertUser(User user);
+	
+	// (admin or 정보 확인) 유저 선택
 	public User selectOne(Map<String, String> info);
+	
+	// 회원 탈퇴 -> 불가능
+//	public void DeleteUser(String id);
+	
+	// 회원 정보 수정
+	public void updateUserInfo(User user);
+	
 }

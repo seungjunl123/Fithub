@@ -23,7 +23,19 @@ public interface BoardDao {
 
 	// 조회수 증가
 	public void updateViewCnt(int id);
-	
+
+	// 추천수 증가
+	public void upLike(int id);
+
+	// 추천수 감소
+	public void downLike(int id);
+
+	// 비추천수 증가
+	public void upHate(int id);
+
+	// 비추천수 증가
+	public void downHate(int id);
+
 	// 검색 기능
 	public List<Board> search(SearchCondition searchCondition);
 

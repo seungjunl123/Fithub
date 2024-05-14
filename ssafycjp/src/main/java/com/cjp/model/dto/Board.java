@@ -1,34 +1,31 @@
 package com.cjp.model.dto;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "게시글 DTO")
 public class Board {
 	private int id;
+	private int boardNo;
 	private String title;
-	private String writer;
 	private String content;
+	private String writer;
+	private int like;
+	private int  hate;
 	private String regDate;
 	private int viewCnt;
-
-	public Board() {
-	}
-
-	public Board(String title, String writer, String content) {
-		super();
+	
+	public Board(int boardNo, String title, String content, String writer, String regDate) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		this.boardNo = boardNo;
 		this.title = title;
-		this.writer = writer;
 		this.content = content;
+		this.writer = writer;
+		this.regDate = dateFormat.format(new Date());
 	}
 
-	public Board(int id, String title, String writer, String content, String regDate, int viewCnt) {
-		this.id = id;
-		this.title = title;
-		this.writer = writer;
-		this.content = content;
-		this.regDate = regDate;
-		this.viewCnt = viewCnt;
-	}
 
 	public int getId() {
 		return id;
@@ -36,6 +33,14 @@ public class Board {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getBoardNo() {
+		return boardNo;
+	}
+
+	public void setBoardNo(int boardNo) {
+		this.boardNo = boardNo;
 	}
 
 	public String getTitle() {
@@ -46,6 +51,14 @@ public class Board {
 		this.title = title;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 	public String getWriter() {
 		return writer;
 	}
@@ -54,12 +67,20 @@ public class Board {
 		this.writer = writer;
 	}
 
-	public String getContent() {
-		return content;
+	public int getLike() {
+		return like;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setLike(int like) {
+		this.like = like;
+	}
+
+	public int getHate() {
+		return hate;
+	}
+
+	public void setHate(int hate) {
+		this.hate = hate;
 	}
 
 	public String getRegDate() {
@@ -77,11 +98,13 @@ public class Board {
 	public void setViewCnt(int viewCnt) {
 		this.viewCnt = viewCnt;
 	}
-
+	
+	
 	@Override
 	public String toString() {
-		return "Board [id=" + id + ", title=" + title + ", writer=" + writer + ", content=" + content + ", regDate="
-				+ regDate + ", viewCnt=" + viewCnt + "]";
+		return "Board [id=" + id + ", boardNo=" + boardNo + ", title=" + title + ", content=" + content + ", writer="
+				+ writer + ", like=" + like + ", hate=" + hate + ", RegDate=" + regDate + ", viewCnt=" + viewCnt + "]";
 	}
+
 
 }
