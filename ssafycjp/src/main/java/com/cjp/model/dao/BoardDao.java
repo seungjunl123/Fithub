@@ -33,7 +33,7 @@ public interface BoardDao {
 	// 비추천수 증가
 	public void upHate(int id);
 
-	// 비추천수 증가
+	// 비추천수 감소
 	public void downHate(int id);
 
 	// 검색 기능

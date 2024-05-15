@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class User {
 	private String name;
 	private String id;
+	private String email;
 	private String password;
 	private int age;
 	private String img;
@@ -22,10 +23,11 @@ public class User {
 		this.password = password;
 	}
 	
-	public User(String name, String id, String password, int age, String img, String sex, double goalWeight,
+	public User(String name, String id,String email, String password, int age, String img, String sex, double goalWeight,
 			double nowWeight) {
 		this.name = name;
 		this.id = id;
+		this.email = email;
 		this.password = password;
 		this.age = age;
 		this.img = img;
@@ -44,6 +46,14 @@ public class User {
 
 	public String getId() {
 		return id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public void setId(String id) {

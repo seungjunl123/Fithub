@@ -12,10 +12,10 @@ public interface UserDao {
 	public void insertUser(User user);
 	
 	// (admin or 정보 확인) 유저 선택
-	public User selectOne(Map<String, String> info);
+	public User selectOne(String id);
 	
 	// 회원 탈퇴 -> 불가능
-//	public void DeleteUser(String id);
+//	public void deleteUser(String id);
 	
 	// 회원 정보 수정
 	public void updateUserInfo(User user);

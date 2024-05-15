@@ -1,9 +1,9 @@
 package com.cjp.model.dto;
 
 public class SearchCondition {
-	private String key;
+	private String key = "none";
 	private String word;
-	private String orderBy;
+	private String orderBy = "none";
 	private String orderByDir;
 
 	public SearchCondition() {

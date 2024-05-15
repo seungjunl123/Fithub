@@ -15,7 +15,8 @@ public class Reply {
 		
 	}
 	
-	public Reply(String writer, String content, String regDate) {
+	public Reply(int boardNo,String writer, String content, String regDate) {
+		this.boardNo = boardNo;
 		this.writer = writer;
 		this.content = content;
 		this.regDate = regDate;

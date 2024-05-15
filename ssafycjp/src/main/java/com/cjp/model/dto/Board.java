@@ -8,18 +8,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "게시글 DTO")
 public class Board {
 	private int id;
-	private int boardNo;
+	private int boardType;
 	private String title;
 	private String content;
 	private String writer;
 	private int like;
-	private int  hate;
+	private int hate;
 	private String regDate;
 	private int viewCnt;
 	
-	public Board(int boardNo, String title, String content, String writer, String regDate) {
+	public Board() {
+		
+	}
+	
+	public Board(int boardType, String title, String content, String writer, String regDate) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		this.boardNo = boardNo;
+		this.boardType = boardType;
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
@@ -35,12 +39,12 @@ public class Board {
 		this.id = id;
 	}
 
-	public int getBoardNo() {
-		return boardNo;
+	public int getBoardType() {
+		return boardType;
 	}
 
-	public void setBoardNo(int boardNo) {
-		this.boardNo = boardNo;
+	public void setBoardType(int boardType) {
+		this.boardType = boardType;
 	}
 
 	public String getTitle() {
@@ -102,7 +106,7 @@ public class Board {
 	
 	@Override
 	public String toString() {
-		return "Board [id=" + id + ", boardNo=" + boardNo + ", title=" + title + ", content=" + content + ", writer="
+		return "Board [id=" + id + ", boardType=" + boardType + ", title=" + title + ", content=" + content + ", writer="
 				+ writer + ", like=" + like + ", hate=" + hate + ", RegDate=" + regDate + ", viewCnt=" + viewCnt + "]";
 	}
 
