@@ -60,4 +60,24 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.search(searchCondition);
 	}
 
+	@Override
+	public void updateLikeUp(int id) {
+		boardDao.upLike(id);
+	}
+
+	@Override
+	public void updateLikeDown(int id) {
+		boardDao.downLike(id);
+	}
+
+	@Override
+	public void updateHateUp(int id) {
+		boardDao.upHate(id);
+	}
+
+	@Override
+	public void updateHateDown(int id) {
+		boardDao.downHate(id);
+	}
+
 }

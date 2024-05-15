@@ -30,12 +30,30 @@ public class UserServiceImpl implements UserService {
 		userDao.insertUser(user);
 	}
 
+//	@Override
+//	public User login(String id, String password) {
+//		Map<String, String> info = new HashMap<>();
+//		info.put("id", id);
+//		info.put("password", password);
+//		return userDao.selectOne(info);
+//	}
+	
+	// selectOne으로 user 정보를 불러온 뒤 
+	// 로그인 시에는 비밀번호를 대조하고 search시에는 정보를 불러오면 안되나
 	@Override
-	public User login(String id, String password) {
-		Map<String, String> info = new HashMap<>();
-		info.put("id", id);
-		info.put("password", password);
-		return userDao.selectOne(info);
+	public User login(String id) {
+		return userDao.selectOne(id);
 	}
+
+	@Override
+	public User search(String id) {
+		return userDao.selectOne(id);
+	}
+
+	@Override
+	public void modifyUserInfo(User user) {
+		userDao.updateUserInfo(user);
+	}
+
 
 }

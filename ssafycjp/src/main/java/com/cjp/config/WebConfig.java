@@ -28,12 +28,13 @@ public class WebConfig implements WebMvcConfigurer {
 	private JwtInterceptor jwtInterceptor;
 	
 	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
-		.excludePathPatterns("/api-user/**","/swagger-ui/**","/v3/api-docs/**");
-	}
-	
+	// 인터셉터는 나중에 보는 걸로
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
+//		.excludePathPatterns("/api-user/**","/swagger-ui/**","/v3/api-docs/**");
+//	}
+//	
 	
 	
 }

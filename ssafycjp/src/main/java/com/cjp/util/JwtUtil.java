@@ -14,7 +14,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
-	private String key = "SSAFY_NonMajor_JavaTrack_SecretKey";
+	private String key = "SECRET_KEY_HOLDER_ADDRESS_IS_HERE";
 	private SecretKey secretkey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
 	
 	

@@ -17,7 +17,7 @@
 	</insert>
 	
 	<!-- 유저 선택 -->
-	<select id="selectOne" parameterType="String">
+	<select id="selectOne" parameterType="int">
 		SELECT * FROM user WHERE id = #{id}
 	</select>
 	
