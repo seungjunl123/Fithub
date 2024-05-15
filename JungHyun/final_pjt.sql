@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `board`(
 	board_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     board_boardType TINYINT NOT NULL,
     board_title VARCHAR(255) NOT NULL,
-    board_content MEDIUMTEXT DEFAULT ' ' NOT NULL,
+    board_content MEDIUMTEXT NOT NULL,
     board_writer VARCHAR(60) NOT NULL,
     board_like INT DEFAULT 0 NOT NULL,
     board_hate INT DEFAULT 0 NOT NULL,
@@ -37,12 +37,14 @@ CREATE TABLE IF NOT EXISTS `board`(
 );
 
 CREATE TABLE IF NOT EXISTS `reply`(
-	reply_id INT PRIMARY KEY NOT NULL,
-    reply_boardNo INT AUTO_INCREMENT NOT NULL,
+	reply_id INT NOT NULL,
+    reply_boardNo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     reply_writer VARCHAR(60) NOT NULL,
-    reply_content MEDIUMTEXT DEFAULT ' ' NOT NULL,
+    reply_content MEDIUMTEXT NOT NULL,
     reply_like INT DEFAULT 0 NOT NULL,
     reply_regDate DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (reply_id) REFERENCES `board`(board_id),
     FOREIGN KEY (reply_writer) REFERENCES `user`(user_id)
 );
+
+SELECT * FROM reply;
