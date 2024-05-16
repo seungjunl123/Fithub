@@ -3,6 +3,7 @@
 
 CREATE DATABASE IF NOT EXISTS `final_pjt` CHAR SET utf8mb4;
 USE `final_pjt`;
+
 CREATE TABLE IF NOT EXISTS `user`(
 	-- 회원 가입 시 필수 요소만 NOT NULL 조건
 	-- UNIQUE로 중복 방지
@@ -16,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `user`(
     user_img VARCHAR(255),
     -- M or F
     user_sex CHAR(1) NOT NULL,
-    -- 최대 5글자, 소수점 아래 2자리까지
+    -- 최대 5글자, 소수점 아래 2자리까지 (프론트에서 제한 걸어야 함. 오류 방지)
     user_goalWeight DOUBLE(5, 2),
     user_nowWeight DOUBLE(5, 2)
 );
@@ -47,4 +48,11 @@ CREATE TABLE IF NOT EXISTS `reply`(
     FOREIGN KEY (reply_writer) REFERENCES `user`(user_id)
 );
 
-SELECT * FROM reply;
+
+-- 테스트용 데이터 입력
+
+
+
+SELECT * FROM `user`;
+SELECT * FROM `board`;
+SELECT * FROM `reply`;
