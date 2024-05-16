@@ -3,7 +3,12 @@
         <header>
             <nav>
                 <RouterLink to="/">Home</RouterLink> |
-                <RouterLink to="/video">Video</RouterLink>
+                <RouterLink to="/youtube">Youtube</RouterLink> |
+                <RouterLink :to="{ name: 'boardList' }">BoardList</RouterLink> |
+                <RouterLink :to="{ name: 'boardCreate' }">BoardCreate</RouterLink> |
+                <RouterLink :to="{ name: 'kakao' }">Kakao</RouterLink> |
+                <RouterLink :to="{ name: 'tmdb' }">Tmdb</RouterLink> |
+                <RouterLink :to="{ name: 'login' }">Login</RouterLink>
             </nav>
         </header>
     </div>
@@ -15,19 +20,13 @@
 
 <style scoped>
 #container {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #000000;
-    font-size: 25px;
-    height: 50px
+    text-align: center;
 }
 
 nav a {
     font-weight: bold;
     text-decoration: none;
-    color: rgb(255, 255, 255);
+    color: black;
 }
 
 nav a.router-link-exact-active {
