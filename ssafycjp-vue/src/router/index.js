@@ -1,13 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import VideoList from '@/components/video/VideoList.vue'
-import VideoSearch from '@/components/video/VideoSearch.vue';
+import YoutubeView from '@/views/YoutubeView.vue'
+import BoardView from '@/views/BoardView.vue'
 
-import VideoDetail from '@/components/video/VideoDetail.vue'
-import ReviewCreate from '@/components/review/ReviewCreate.vue'
-import ReviewDetail from '@/components/review/ReviewDetail.vue'
-import ReviewList from '@/components/review/ReviewList.vue'
-import ReviewUpdate from '@/components/review/ReviewUpdate.vue'
+import BoardCreate from '@/components/board/BoardCreate.vue'
+import BoardList from '@/components/board/BoardList.vue'
+import BoardUpdate from '@/components/board/BoardUpdate.vue'
+import BoardDetail from '@/components/board/BoardDetail.vue'
+
+import KakaoView from '@/views/KakaoView.vue'
+
+import TmdbView from '@/views/TmdbView.vue'
+import TmdbPopular from '@/components/tmdb/TmdbPopular.vue'
+import TmdbTopRated from '@/components/tmdb/TmdbTopRated.vue'
+import UserLogin from '@/components/user/UserLogin.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,48 +25,64 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/video',
-      name: 'video',
+      path: '/youtube',
+      name: 'youtube',
+      component: YoutubeView
+    },
+    {
+      path: '/board',
+      name: 'board',
+      component: BoardView,
       children: [
         {
           path: '',
-          name: 'videoList',
-          component: VideoList,
+          name: 'boardList',
+          component: BoardList
         },
         {
-          path: 'search',
-          name: 'videoSearch',
-          component: VideoSearch,
+          path: 'create',
+          name: 'boardCreate',
+          component: BoardCreate
+        },
+        {
+          path: 'update',
+          name: 'boardUpdate',
+          component: BoardUpdate
         },
         {
           path: ':id',
-          name: 'videoDetail',
-          component: VideoDetail,
-          children: [
-            {
-              path: 'create',
-              name: 'reviewCreate',
-              component: ReviewCreate,
-            },
-            {
-              path: ':reviewNo',
-              name: 'reviewDetail',
-              component: ReviewDetail,
-            },
-            {
-              path: 'list',
-              name: 'reviewList',
-              component: ReviewList,
-            },
-            {
-              path: ':reviewNo/update',
-              name: 'reviewUpdate',
-              component: ReviewUpdate,
-            },
-          ]
+          name: 'boardDetail',
+          component: BoardDetail
         },
       ]
     },
+    {
+      path: "/kakao",
+      name: "kakao",
+      component: KakaoView
+    },
+    {
+      path: "/tmdb",
+      name: "tmdb",
+      component: TmdbView,
+      children: [
+        {
+          path: "popular",
+          name: "tmdbPopular",
+          component: TmdbPopular
+        },
+        {
+          path: "toprated",
+          name: "tmdbTopRated",
+          component: TmdbTopRated
+        }
+      ]
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: UserLogin
+    }
   ]
 })
 
