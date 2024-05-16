@@ -32,21 +32,55 @@ CREATE TABLE IF NOT EXISTS `board`(
     board_hate INT DEFAULT 0 NOT NULL,
     board_regDate DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     board_viewCnt INT DEFAULT 0 NOT NULL,
-    -- 일단은 작성자가 아이디를 참조하도록 함
-    -- writer가 무엇을 참조할 지 결정 후 수정
     FOREIGN KEY (board_writer) REFERENCES `user`(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS `reply`(
-	reply_id INT NOT NULL,
-    reply_boardNo INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	reply_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    reply_boardNo INT NOT NULL,
     reply_writer VARCHAR(60) NOT NULL,
     reply_content MEDIUMTEXT NOT NULL,
     reply_like INT DEFAULT 0 NOT NULL,
     reply_regDate DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (reply_id) REFERENCES `board`(board_id),
+    FOREIGN KEY (reply_boardNo) REFERENCES `board`(board_id),
     FOREIGN KEY (reply_writer) REFERENCES `user`(user_id)
 );
+
+-- 게시글 카테고리
+CREATE TABLE IF NOT EXISTS `board_tag`(
+	-- 게시판 넘버
+    category_id INT PRIMARY KEY NOT NULL,
+    -- 말머리
+    category_name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES `board`(board_boardType)
+);
+
+-- 대댓글 테이블 구현
+-- CREATE TABLE IF NOT EXISTS `rereply`(
+-- 	reply_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+--     reply_boardNo INT NOT NULL,
+--     reply_writer VARCHAR(60) NOT NULL,
+--     reply_content MEDIUMTEXT NOT NULL,
+--     reply_like INT DEFAULT 0 NOT NULL,
+--     reply_regDate DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+--     FOREIGN KEY (reply_boardNo) REFERENCES `board`(board_id),
+--     FOREIGN KEY (reply_writer) REFERENCES `user`(user_id)
+-- );
+
+-- 찜
+-- CREATE TABLE IF NOT EXISTS `bookmark`(
+-- 	reply_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+--     reply_boardNo INT NOT NULL,
+--     reply_writer VARCHAR(60) NOT NULL,
+--     reply_content MEDIUMTEXT NOT NULL,
+--     reply_like INT DEFAULT 0 NOT NULL,
+--     reply_regDate DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+--     FOREIGN KEY (reply_boardNo) REFERENCES `board`(board_id),
+--     FOREIGN KEY (reply_writer) REFERENCES `user`(user_id)
+-- );
+
+
+-- 추천 테이블
 
 
 -- 테스트용 데이터 입력
