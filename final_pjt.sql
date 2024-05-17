@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `board`(
 	board_id INT AUTO_INCREMENT PRIMARY KEY,
     -- 게시글 종류 (말머리) 기본값 0 (일반 게시글)
     board_category TINYINT DEFAULT 0 NOT NULL,
-    postboard_id TINYINT NOT NULL,
+    postboard_id INT NOT NULL,
     board_title VARCHAR(255) NOT NULL,
     board_content MEDIUMTEXT NOT NULL,
     board_writer VARCHAR(60) NOT NULL,
@@ -77,7 +77,6 @@ CREATE TABLE IF NOT EXISTS `board`(
     board_viewCnt INT DEFAULT 0 NOT NULL,
     FOREIGN KEY (board_writer) REFERENCES `user`(user_id),
     FOREIGN KEY (postboard_id) REFERENCES `postboard`(postboard_id)
-    
 );
 
 -- 댓글
@@ -136,12 +135,18 @@ CREATE TABLE IF NOT EXISTS `exercise` (
 
 
 -- 테스트용 데이터 입력
-INSERT INTO SSAFIT_video (id, title, part, channelName, url)
-VALUES
-()
+INSERT INTO `postboard` (postboard_title) VALUES ('게시판1'), ('게시판2');
 
+INSERT INTO `category` (postboard_id, category_name) VALUES
+(1, '일반'), (1, '공지'), (1, '질문'), (2, '일반'), (2, '공지');
 
 
 SELECT * FROM `user`;
+SELECT * FROM `postboard`;
+SELECT * FROM `category`;
 SELECT * FROM `board`;
 SELECT * FROM `reply`;
+SELECT * FROM `rereply`;
+SELECT * FROM `board_likes`;
+SELECT * FROM `reply_likes`;
+SELECT * FROM `exercise`;
