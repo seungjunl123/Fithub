@@ -140,6 +140,8 @@ INSERT INTO `postboard` (postboard_title) VALUES ('게시판1'), ('게시판2');
 INSERT INTO `category` (postboard_id, category_name) VALUES
 (1, '일반'), (1, '공지'), (1, '질문'), (2, '일반'), (2, '공지');
 
+INSERT INTO `user` (user_name, user_id, user_password,user_email, user_age, user_sex) VALUES
+("김싸피", "ssafy123", "ssafy12345", "sfy@sfy", 10, 'M');
 
 SELECT * FROM `user`;
 SELECT * FROM `postboard`;

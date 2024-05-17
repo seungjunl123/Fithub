@@ -19,7 +19,7 @@ import com.cjp.util.JwtUtil;
 
 
 @Controller
-@RequestMapping("/api-user")
+@RequestMapping("/user")
 public class UserRestController {
 	private static final String SUCCESS ="success";
 	private static final String FAIL ="fail";
@@ -75,7 +75,9 @@ public class UserRestController {
 	// 유저 정보 조회
 	@GetMapping("/{id}")
 	public ResponseEntity<User> userInfo(@PathVariable("id") String id) {
+		System.out.println(id);
 	    User user = userService.search(id);
+	    System.out.println(user);
 	    return new ResponseEntity<User>(user,HttpStatus.OK);
 	    
 	}
