@@ -1,4 +1,5 @@
 <template>
+
     <div id="container">
         <header>
             <nav>
@@ -8,7 +9,6 @@
                 <RouterLink :to="{ name: 'boardCreate' }">BoardCreate</RouterLink> |
                 <RouterLink :to="{ name: 'kakao' }">Kakao</RouterLink> |
                 <RouterLink :to="{ name: 'tmdb' }">Tmdb</RouterLink> |
-                <RouterLink :to="{ name: 'login' }">Login</RouterLink>
             </nav>
         </header>
     </div>

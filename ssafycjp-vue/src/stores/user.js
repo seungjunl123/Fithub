@@ -3,12 +3,12 @@ import { defineStore } from 'pinia'
 import router from '@/router'
 import axios from 'axios'
 
-const REST_BOARD_API = `http://localhost:8080/api-user`
+const REST_USER_API = `http://localhost:8080/user`
 
 export const useUserStore = defineStore('user', () => {
   const loginUserId = ref(null)
   const userLogin = function (id, password) {
-    axios.post(`${REST_BOARD_API}/login`, {
+    axios.post(`${REST_USER_API}/login`, {
       id: id,
       password: password
     })
@@ -24,9 +24,23 @@ export const useUserStore = defineStore('user', () => {
 
       })
       .catch(() => {
-      
     })
   }
 
-  return { userLogin , loginUserId}
+  
+  const userRegist = function(user) {
+    axios.post(`${REST_USER_API}/signup`,{
+      id:id,
+      pw:pw,
+      name:name,
+      age:age,
+      gender: gender,
+      goalweight:goalweight,
+      nowweight:nowweight,
+      profileimg:profileimg
+    })
+    
+  }
+
+  return { userLogin , loginUserId, userRegist ,user}
 })

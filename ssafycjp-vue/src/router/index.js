@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
 import YoutubeView from '@/views/YoutubeView.vue'
 import BoardView from '@/views/BoardView.vue'
+import SignupView from '@/views/SignupView.vue'
 
 import BoardCreate from '@/components/board/BoardCreate.vue'
 import BoardList from '@/components/board/BoardList.vue'
@@ -13,8 +14,6 @@ import KakaoView from '@/views/KakaoView.vue'
 import TmdbView from '@/views/TmdbView.vue'
 import TmdbPopular from '@/components/tmdb/TmdbPopular.vue'
 import TmdbTopRated from '@/components/tmdb/TmdbTopRated.vue'
-import UserLogin from '@/components/user/UserLogin.vue'
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +22,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: SignupView
     },
     {
       path: '/youtube',
@@ -78,11 +82,7 @@ const router = createRouter({
         }
       ]
     },
-    {
-      path: "/login",
-      name: "login",
-      component: UserLogin
-    }
+
   ]
 })
 
