@@ -29,15 +29,21 @@ export const useBoardStore = defineStore('board', () => {
   const boardList = ref([])
   const getBoardList = function () {
 <<<<<<< HEAD
+<<<<<<< HEAD
     axios.get(REST_BOARD_API,{
       headers:{
         'access-token' : sessionStorage.getItem('access-token')
 =======
+=======
+>>>>>>> ce71704c0e0dd955a5dd5ceecf6bd313e9b9f9bc
     axios.get(REST_BOARD_API, {
       headers: {
         // 토큰 있는지 확인
         'access-token': sessionStorage.getItem('access-token')
+<<<<<<< HEAD
 >>>>>>> 9f282e43039138db52995dc034adcad49a0b6804
+=======
+>>>>>>> ce71704c0e0dd955a5dd5ceecf6bd313e9b9f9bc
       }
     })
       .then((response) => {

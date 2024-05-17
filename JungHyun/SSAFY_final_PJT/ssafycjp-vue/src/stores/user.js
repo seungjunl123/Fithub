@@ -1,43 +1,32 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
 import router from '@/router'
+import axios from 'axios'
 
-const REST_USER_API = `http://localhost:8080/ssafit/user`
+const REST_BOARD_API = `http://localhost:8080/api-user`
 
 export const useUserStore = defineStore('user', () => {
-
-  const user = ref({})
-  const loginedUser = ref({})
-
-  const createUser = function (user) {
-    axios({
-      url: `${REST_USER_API}`,
-      method: 'POST',
-      data: user
+  const loginUserId = ref(null)
+  const userLogin = function (id, password) {
+    axios.post(`${REST_BOARD_API}/login`, {
+      id: id,
+      password: password
     })
-      .then(() => {
-        router.push({name: 'home'})
+      .then((res) => {
+        sessionStorage.setItem('access-token', res.data["access-token"])
+
+        const token = res.data['access-token'].split('.')
+        let id = JSON.parse(atob(token[1]))['id']
+        
+        loginUserId.value = id;
+
+        router.push({name: 'boardList'})
+
       })
-      .catch((err) => {
-      console.log(err)
+      .catch(() => {
+      
     })
   }
 
-  const loginUser = function (user) {
-    axios.post(`${REST_USER_API}/login`, user, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((response) => {
-        loginedUser.value = response.data
-      router.push({name: 'home'})
-    })
-    .catch(error => {
-      console.error(error);
-    })
-  }
-
-  return { createUser, loginUser, user, loginedUser }
+  return { userLogin , loginUserId}
 })
