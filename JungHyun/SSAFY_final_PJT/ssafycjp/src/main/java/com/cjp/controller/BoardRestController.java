@@ -37,16 +37,16 @@ public class BoardRestController {
 	}
 	
 	//게시글 전체 조회
-//	@GetMapping("/board")
-//	public ResponseEntity<?> list(){
-//		List<Board> list = boardService.getBoardList(); //전체조회
-//		return new ResponseEntity<List<Board>>(list, HttpStatus.OK);
-//	}
+	@GetMapping("/board")
+	public ResponseEntity<?> list(){
+		List<Board> list = boardService.getBoardList(); //전체조회
+		return new ResponseEntity<List<Board>>(list, HttpStatus.OK);
+	}
 	
 	//게시글 (검색) 조회
-	@GetMapping("/board")
+	@GetMapping("/board/search")
 	@Operation(summary = "게시글 조회", description = "게시글 조건에 따른 조회 가넝")
-	public ResponseEntity<?> list(@Parameter(description = "검색 조건") @ModelAttribute SearchCondition condition){
+	public ResponseEntity<?> list(@Parameter(description = "검색 조건") @RequestBody SearchCondition condition){
 		List<Board> list = boardService.search(condition); //검색 조회
 		
 		if(list == null || list.size() == 0) {
@@ -65,7 +65,7 @@ public class BoardRestController {
 	
 	//게시글 등록 (Form 형식으로 넘어왔을 때)
 	@PostMapping("/board")
-	public ResponseEntity<?> write(@ModelAttribute Board board){
+	public ResponseEntity<?> write(@RequestBody Board board){
 		//등록한 게시글을 보냈는데
 		boardService.writeBoard(board);
 		//등록이 되어있는지 눈으로 Talend API 보려고 이렇게 보낸거지

@@ -3,6 +3,7 @@ package com.cjp.model.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class UserServiceImpl implements UserService {
 	private final UserDao userDao;
 	
 	@Autowired
-//	private BCryptPasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public UserServiceImpl(UserDao userDao) {
 		this.userDao = userDao;
@@ -34,14 +35,18 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User login(String id, String password) {
+		System.out.println("입력받은 id야!: "+id);
+		
 		// DB에서 입력받은 id 에 해당하는 유저 정보를 가져와 user 변수에 저장.
 		User user = userDao.selectOne(id);
 		
+		System.out.println("이 id로 가져온 user 객체야."+user);
+		
 		// 입력받은 비밀번호와 user 의 비밀번호가 일치하는지 확인
-//		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-//            // 일치하면 user 데이터 반환
-//			return user;
-//        }
+		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            // 일치하면 user 데이터 반환
+			return user;
+        }
 		
 		// 일지하지 않으면 null 반환
 		return null;

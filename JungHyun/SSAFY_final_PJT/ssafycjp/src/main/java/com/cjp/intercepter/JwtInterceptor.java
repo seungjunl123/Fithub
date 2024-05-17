@@ -27,12 +27,20 @@ public class JwtInterceptor implements HandlerInterceptor {
 		}
 		
 		String token = request.getHeader(HEADER_AUTH);
-		if(token != null) {
-			jwtUtil.validate(token);
-			return true;
-		}
-		
-		throw new Exception("유효하지 않은 접근입니다.");
+		if (token != null) {
+            try {
+                jwtUtil.validate(token);
+                return true;
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("유효하지 않은 토큰입니다.");
+                return false;
+            }
+        }
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("토큰이 없습니다.");
+        return false;
 	}
 	
 }

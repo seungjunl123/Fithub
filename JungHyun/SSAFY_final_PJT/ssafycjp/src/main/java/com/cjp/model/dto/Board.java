@@ -21,8 +21,6 @@ public class Board {
 		
 	}
 	
-	
-	
 	public Board(int postBoardId, int category, String title, String content, String writer, LocalDateTime regDate) {
 		this.postBoardId = postBoardId;
 		this.category = category;

@@ -23,7 +23,6 @@ END;
 //
 DELIMITER ;
 
-
 CREATE TABLE IF NOT EXISTS `user`(
 	-- 회원 가입 시 필수 요소만 NOT NULL 조건
 	-- UNIQUE로 중복 방지
@@ -135,6 +134,10 @@ CREATE TABLE IF NOT EXISTS `exercise` (
 
 
 -- 테스트용 데이터 입력
+INSERT INTO `user` (user_name, user_id, user_email, user_password, user_age, user_sex) VALUES 
+('김싸피', 'ssafy1', 'ssafy1@sfy.com', 'q1w2e3r4!', 20, 'M'),
+('박싸피', 'ssafy2', 'ssafy2@sfy.com', 'ssafy2', 25, 'F');
+
 INSERT INTO `postboard` (postboard_title) VALUES ('게시판1'), ('게시판2');
 
 INSERT INTO `category` (postboard_id, category_name) VALUES
