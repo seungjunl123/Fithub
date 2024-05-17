@@ -9,63 +9,63 @@
 	</select>
 	
 	<!-- 게시글 선택 -->
-	<select id="selectOne" parameterType="id" resultType="Board">
-		SELECT * FROM board WHERE board_id = #{id};
+	<select id="selectOne" parameterType="int" resultType="Board">
+		SELECT * FROM board WHERE id = #{id};
 	</select>
 	
 	<!-- 게시글 등록 -->
 	<insert id="insertBoard" parameterType="Board">
-		INSERT INTO board (board_boardType,board_title,board_content,board_writer,board_regDate)
+		INSERT INTO board (board_type,title,content,writer,reg_date)
 		VALUES (#{boardType},#{title},#{content},#{writer},#{regDate});
 	</insert>
 	
 	<!-- 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="int">
-		DELETE FROM board WHERE board_id = #{id};
+		DELETE FROM board WHERE id = #{id};
 	</delete>
 	
 	<!-- 게시글 수정 -->
 	<update id="updateBoard" parameterType="Board">
 		UPDATE board SET 
-		board_title = #{title},
-		board_content = #{content},
-		board_regDate = #{regDate}
-		WHERE board_id=#{id}
+		title = #{title},
+		content = #{content},
+		reg_date = #{regDate}
+		WHERE id=#{id}
 	</update>
 	
 	<!-- 조회수 증가 -->
 	<update id="updateViewCnt" parameterType="int">
 		UPDATE board SET 
-		board_viewCnt = board_viewCnt+1
-		WHERE board_id=#{id}
+		SET view_cnt = view_cnt+1
+		WHERE id=#{id}
 	</update>
 	
 	<!-- 추천수 증가 -->
 	<update id="upLike" parameterType="int">
 		UPDATE board SET 
-		board_like = board_like+1
-		WHERE board_id=#{id}
+		SET like = like+1
+		WHERE id=#{id}
 	</update>
 	
 	<!-- 추천수 감소 -->
 	<update id="downLike" parameterType="int">
 		UPDATE board SET 
-		SET board_like = board_like-1
-		WHERE board_id=#{id}
+		SET like = like-1
+		WHERE id=#{id}
 	</update>
 	
 	<!-- 비추천수 증가 -->
 	<update id="upHate" parameterType="int">
 		UPDATE board SET 
-		SET board_hate = board_hate+1
-		WHERE board_id=#{id}
+		SET hate = hate+1
+		WHERE id=#{id}
 	</update>
 	
 	<!-- 비추천수 감소 -->
 	<update id="downHate" parameterType="int">
 		UPDATE board SET 
-		SET board_hate = board_hate-1
-		WHERE board_id=#{id}
+		SET hate = hate-1
+		WHERE id=#{id}
 	</update>
 	
 	<!-- 게시글 검색 -->
