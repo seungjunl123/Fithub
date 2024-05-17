@@ -12,9 +12,7 @@ public interface UserService {
 	public void signup(User user);
 	
 	// 로그인 하기
-	public User login(String id);
-	
-
+	public User login(String id, String password);
 	
 	// 회원탈퇴 -> 불가능
 //	public void signout(String id);

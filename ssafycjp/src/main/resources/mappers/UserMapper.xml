@@ -11,28 +11,29 @@
 	<!-- 회원 등록 -->
 	<insert id="insertUser" parameterType="User">
 		INSERT INTO user 
-		(id,name,password,email,age,img,sex,goal_weight,now_weight)
+		(user_id,user_name,user_password,user_email,user_age,user_img,user_sex,user_goalWeight,user_nowWeight)
 		VALUES
 		(#{id},#{name},#{password},#{email},#{age},#{img},#{sex},#{goalWeight},#{nowWeight})
 	</insert>
 	
 	<!-- 유저 선택 -->
-	<select id="selectOne" parameterType="int">
-		SELECT * FROM user WHERE id = #{id}
+	<select id="selectOne" parameterType="String">
+		SELECT * FROM user WHERE user_id = #{id}
 	</select>
 	
 	<!-- 회원탈퇴(작성만) -->
 	<delete id="deleteUser" parameterType="String">
-		DELETE FROM user WHERE id = #{id}
+		DELETE FROM user WHERE user_id = #{id}
 	</delete>
 	
 	<!-- 정보 수정 -->
 	<update id="updateUserInfo" parameterType="User">
 		UPDATE user SET
-		img = #{img},
-		email = #{email},
-		goal_weight = #{goalWeight},
-		now_weight = #{nowWeight}
+		user_img = #{img},
+		user_email = #{email},
+		user_goalWeight = #{goalWeight},
+		user_nowWeight = #{nowWeight} 
+		WHERE user_id LIKE #{id}
 	</update>
 
 </mapper>
