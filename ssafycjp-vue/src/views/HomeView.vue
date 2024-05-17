@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h2>HomeView</h2>
-    <hr>
-    <WeatherForecast/>
+
   </div>
 </template>
 
