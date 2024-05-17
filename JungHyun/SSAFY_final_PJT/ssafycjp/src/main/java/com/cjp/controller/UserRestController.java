@@ -7,16 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cjp.model.dto.User;
+import com.cjp.model.service.UserService;
 import com.cjp.util.JwtUtil;
 
 
 @Controller
-@RequestMapping("/api-user")
+@RequestMapping("/user")
 public class UserRestController {
 	private static final String SUCCESS ="success";
 	private static final String FAIL ="fail";
@@ -24,36 +27,60 @@ public class UserRestController {
 	@Autowired
 	private JwtUtil jwtUtil;
 	
-	// 서비스 없다 치고 핡세요
+	@Autowired
+	private final UserService userService;
 	
+	public UserRestController(UserService userService) {
+		this.userService = userService;
+	}
+	
+	// 로그인
 	@PostMapping("/login")
 	public ResponseEntity<Map<String,Object>> login(@RequestBody User user){
-		
 		HttpStatus status = null;
 		Map<String,Object> result = new HashMap<>();
 		
-		System.out.println(user);
-		//서비스 갔다가 다오 호출하다가 디비 찍고~~
-		// 엄청난 검증을 끝내고 온거다
-		if(user.getId() != null) {
-			// 토큰 만들어서 줘야되는데?
-			result.put("massage",SUCCESS);
-			result.put("access-token",jwtUtil.CreateToken(user.getId()));
-			status = HttpStatus.ACCEPTED;
+		// 사용자 인증
+		User checkUser = userService.login(user.getId(), user.getPassword());
+		
+		// login은 id, pw 일치 시 해당 유저 정보 반환, 일치하지 않을 시 null 반환
+		// 사용자 인증에 성공했을 경우
+		if(checkUser != null) {
+			// 토큰 생성
+			String token = jwtUtil.createToken(checkUser.getId());
+			result.put("인증 성공", SUCCESS);
+			result.put("access-token", token);
+			status = HttpStatus.OK;
 		} else {
-			result.put("massage",FAIL);
-			 status = HttpStatus.NO_CONTENT;
+			result.put("인증 실패", FAIL);
+			status = HttpStatus.UNAUTHORIZED;
 		}
 		
-		return new ResponseEntity<>(result,status);
+		return new ResponseEntity<>(result, status);
 	}
 	
 	
+	// 회원가입
+	@PostMapping("/signup")
+	public ResponseEntity<?> signup(@RequestBody User user) {
+	    User tmp = userService.search(user.getId());
+	    if(tmp == null) {
+	        userService.signup(user);
+	        return new ResponseEntity<>("Signup successful", HttpStatus.OK);
+	    } else {
+	        return new ResponseEntity<>("이미 있는 아이디입니다", HttpStatus.CONFLICT);
+	    }
+	}
 	
-	
-	
-	
-	
+	// 유저 정보 조회
+	@GetMapping("/{id}")
+	public ResponseEntity<User> userInfo(@PathVariable("id") String id) {
+		System.out.println(id);
+	    User user = userService.search(id);
+	    System.out.println(user);
+	    return new ResponseEntity<User>(user,HttpStatus.OK);
+	    
+	}
 	
 	
 	

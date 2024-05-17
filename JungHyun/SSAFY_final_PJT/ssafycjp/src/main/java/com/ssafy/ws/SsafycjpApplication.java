@@ -1,9 +1,10 @@
-package com.cjp.hello;
+package com.ssafy.ws;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class SsafycjpApplication {
 
 	public static void main(String[] args) {

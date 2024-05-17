@@ -12,7 +12,8 @@ import com.cjp.model.dto.SearchCondition;
 
 @Service
 public class BoardServiceImpl implements BoardService {
-
+	
+	@Autowired
 	private final BoardDao boardDao;
 
 	@Autowired
@@ -62,22 +63,26 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void updateLikeUp(int id) {
-		boardDao.upLike(id);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void updateLikeDown(int id) {
-		boardDao.downLike(id);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void updateHateUp(int id) {
-		boardDao.upHate(id);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void updateHateDown(int id) {
-		boardDao.downHate(id);
+		// TODO Auto-generated method stub
+		
 	}
 
 }

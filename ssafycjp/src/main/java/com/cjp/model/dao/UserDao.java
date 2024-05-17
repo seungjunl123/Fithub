@@ -8,7 +8,6 @@ import com.cjp.model.dto.User;
 public interface UserDao {
 	// (admin) 유저 목록을 봐야 하나?
 	public List<User> selectAll();
-	
 	// 회원 등록
 	public void insertUser(User user);
 	

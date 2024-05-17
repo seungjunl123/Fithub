@@ -6,51 +6,82 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cjp.model.dao.ReplyDao;
-import com.cjp.model.dto.Reply;
+import com.cjp.model.dao.BoardDao;
+import com.cjp.model.dto.Board;
 import com.cjp.model.dto.SearchCondition;
 
 @Service
-public class ReplyServiceImpl implements ReplyService {
+public class ReplyServiceImpl implements BoardService {
 
-	private final ReplyDao replyDao;
+	private final BoardDao boardDao;
 
 	@Autowired
-	public ReplyServiceImpl(ReplyDao replyDao) {
-		this.replyDao = replyDao;
+	public ReplyServiceImpl(BoardDao boardDao) {
+		this.boardDao = boardDao;
 	}
 
 	@Override
-	public List<Reply> getReplyList(int boardNo) {
-		return replyDao.selectAll(boardNo);
+	public List<Board> getBoardList() {
+		return boardDao.selectAll();
 	}
 
-	@Transactional
 	@Override
-	public void writeReply(Reply reply) {
-		replyDao.insertReply(reply);
-	}
-
-	@Transactional
-	@Override
-	public void removeReply(int id) {
-		replyDao.deleteReply(id);
+	public Board readBoard(int id) {
+		System.out.println(id + "번 게시글을 읽어옵니다.");
+		boardDao.updateViewCnt(id);
+		return boardDao.selectOne(id);
 	}
 
 	@Transactional
 	@Override
-	public void modifyReply(Reply reply) {
-		replyDao.updateReply(reply);
+	public void writeBoard(Board board) {
+//		board.setId(1000);
+		System.out.println("게시글 작성합니다.");
+		boardDao.insertBoard(board);
+//		boardDao.insertBoard(board);
+	}
+
+	@Transactional
+	@Override
+	public void removeBoard(int id) {
+		System.out.println(id+"번 게시글을 삭제하겠습니다.");
+		boardDao.deleteBoard(id);
+	}
+
+	@Transactional
+	@Override
+	public void modifyBoard(Board board) {
+		System.out.println("게시글 수정");
+		boardDao.updateBoard(board);
+	}
+
+	@Override
+	public List<Board> search(SearchCondition searchCondition) {
+		return boardDao.search(searchCondition);
 	}
 
 	@Override
 	public void updateLikeUp(int id) {
-		replyDao.likeUp(id);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void updateLikeDown(int id) {
-		replyDao.LikeDown(id);
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateHateUp(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateHateDown(int id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

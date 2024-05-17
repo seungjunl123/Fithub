@@ -9,7 +9,7 @@
 	</select>
 	
 	<!-- 게시글 선택 -->
-	<select id="selectOne" parameterType="id" resultType="Board">
+	<select id="selectOne" parameterType="int" resultType="Board">
 		SELECT * FROM board WHERE board_id = #{id};
 	</select>
 	

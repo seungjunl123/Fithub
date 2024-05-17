@@ -2,7 +2,7 @@ package com.cjp.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "게시글 DTO")
+@Schema(description = "댓글 DTO")
 public class Reply {
 	private int id;
 	private int boardNo;
