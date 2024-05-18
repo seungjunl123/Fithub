@@ -30,7 +30,7 @@ public interface BoardService {
 	// 비추천수 증가
 	public void updateHateUp(int id);
 
-	// 비추천수 감소
+	// 비추천수 증가
 	public void updateHateDown(int id);
 	
 	//게시글 검색
