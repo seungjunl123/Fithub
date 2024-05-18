@@ -1,5 +1,7 @@
 package com.cjp.model.dto;
 
+import java.time.LocalDateTime;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "댓글 DTO")
@@ -9,17 +11,17 @@ public class Reply {
 	private String writer;
 	private String content;
 	private int like;
-	private String regDate;
+	private LocalDateTime regDate;
 	
 	public Reply() {
 		
 	}
 	
-	public Reply(int boardNo,String writer, String content, String regDate) {
+	public Reply(int boardNo,String writer, String content, LocalDateTime regDate) {
 		this.boardNo = boardNo;
 		this.writer = writer;
 		this.content = content;
-		this.regDate = regDate;
+		this.regDate = LocalDateTime.now();
 	}
 
 	public int getId() {
@@ -62,11 +64,11 @@ public class Reply {
 		this.like = like;
 	}
 
-	public String getRegDate() {
+	public LocalDateTime getRegDate() {
 		return regDate;
 	}
 
-	public void setRegDate(String regDate) {
+	public void setRegDate(LocalDateTime regDate) {
 		this.regDate = regDate;
 	}
 

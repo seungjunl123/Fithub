@@ -1,5 +1,8 @@
 package com.cjp.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "검색 조건 DTO")
 public class SearchCondition {
 	private String key = "none";
 	private String word;

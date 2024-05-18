@@ -4,15 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.cjp.model.dao.ReplyDao;
 import com.cjp.model.dto.Reply;
-import com.cjp.model.dto.SearchCondition;
 
 @Service
 public class ReplyServiceImpl implements ReplyService {
-
+	
+	@Autowired
 	private final ReplyDao replyDao;
 
 	@Autowired
@@ -22,35 +21,38 @@ public class ReplyServiceImpl implements ReplyService {
 
 	@Override
 	public List<Reply> getReplyList(int boardNo) {
-		return replyDao.selectAll(boardNo);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	@Transactional
 	@Override
 	public void writeReply(Reply reply) {
-		replyDao.insertReply(reply);
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Transactional
 	@Override
 	public void removeReply(int id) {
-		replyDao.deleteReply(id);
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Transactional
 	@Override
 	public void modifyReply(Reply reply) {
-		replyDao.updateReply(reply);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void updateLikeUp(int id) {
-		replyDao.likeUp(id);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void updateLikeDown(int id) {
-		replyDao.LikeDown(id);
+		// TODO Auto-generated method stub
+		
 	}
 
 }

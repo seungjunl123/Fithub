@@ -11,6 +11,9 @@ import com.cjp.intercepter.JwtInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+	@Autowired
+	private JwtInterceptor jwtInterceptor;
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -24,16 +27,11 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
 	
-	@Autowired
-	private JwtInterceptor jwtInterceptor;
-	
-	
 	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
-		.excludePathPatterns("/api-user/**","/swagger-ui/**","/v3/api-docs/**");
-	}
-	
-	
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jwtInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/user/{id}","/user/login", "/user/register", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**");
+    }
 	
 }

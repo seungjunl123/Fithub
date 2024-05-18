@@ -15,7 +15,7 @@
 	
 	<!-- 게시글 등록 -->
 	<insert id="insertBoard" parameterType="Board">
-		INSERT INTO board (board_type,title,content,writer,reg_date)
+		INSERT INTO board (boardType,title,content,writer,regDate)
 		VALUES (#{boardType},#{title},#{content},#{writer},#{regDate});
 	</insert>
 	
@@ -29,21 +29,21 @@
 		UPDATE board SET 
 		title = #{title},
 		content = #{content},
-		reg_date = #{regDate}
+		regDate = #{regDate}
 		WHERE id=#{id}
 	</update>
 	
 	<!-- 조회수 증가 -->
 	<update id="updateViewCnt" parameterType="int">
 		UPDATE board SET 
-		SET view_cnt = view_cnt+1
+		viewCnt = viewCnt+1
 		WHERE id=#{id}
 	</update>
 	
 	<!-- 추천수 증가 -->
 	<update id="upLike" parameterType="int">
 		UPDATE board SET 
-		SET like = like+1
+		like = like+1
 		WHERE id=#{id}
 	</update>
 	
@@ -51,20 +51,6 @@
 	<update id="downLike" parameterType="int">
 		UPDATE board SET 
 		SET like = like-1
-		WHERE id=#{id}
-	</update>
-	
-	<!-- 비추천수 증가 -->
-	<update id="upHate" parameterType="int">
-		UPDATE board SET 
-		SET hate = hate+1
-		WHERE id=#{id}
-	</update>
-	
-	<!-- 비추천수 감소 -->
-	<update id="downHate" parameterType="int">
-		UPDATE board SET 
-		SET hate = hate-1
 		WHERE id=#{id}
 	</update>
 	

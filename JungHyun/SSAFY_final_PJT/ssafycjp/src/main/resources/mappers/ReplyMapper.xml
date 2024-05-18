@@ -5,38 +5,38 @@
 <mapper namespace="com.cjp.model.dao.ReplyDao">
 	<!-- 게시글에 대한 댓글 불러오기 -->
 	<select id="selectAll" parameterType="int" resultType="Reply">
-		SELECT * FROM reply WHERE reply_boardNo = #{boardNo}
+		SELECT * FROM reply WHERE boardNo = #{boardNo}
 	</select>
 	
 	<!-- 댓글 작성 -->
 	<insert id="insertReply" parameterType="Reply">
-		INSERT INTO reply (reply_boardNo,reply_writer,reply_content,reply_regDate)
+		INSERT INTO reply (boardNo,writer,content,regDate)
 		VALUES (#{boardNo},#{writer},#{content},#{regDate})
 	</insert>
 		
 	<!-- 댓글 수정 -->
 	<update id="updateReply" parameterType="Reply">
 		UPDATE reply SET
-		reply_content = #{content} 
-		WHERER reply_id = #{id}
+		content = #{content} 
+		WHERE id = #{id}
 	</update>
 	
 	<!-- 댓글 삭제 -->
 	<delete id="deleteReply" parameterType="int">
-		DELETE FROM reply WHERE reply_id=#{id}
+		DELETE FROM reply WHERE id=#{id}
 	</delete>
 		
 	<!-- 댓글 추천수 증가 -->
 	<update id="likeUp" parameterType="int">
 		UPDATE reply SET
-		reply_like = reply_like+1
-		WHERE reply_id=#{id}
+		like = like+1
+		WHERE id=#{id}
 	</update>
 	
 	<!-- 댓글 추천수 감소 -->
 	<update id="likeDown" parameterType="int">
 		UPDATE reply SET
-		reply_like = reply_like-1
-		WHERE reply_id=#{id}
+		like = like-1
+		WHERE id=#{id}
 	</update>
 </mapper>
