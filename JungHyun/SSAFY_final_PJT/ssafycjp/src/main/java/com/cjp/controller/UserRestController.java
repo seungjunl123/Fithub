@@ -1,6 +1,7 @@
 package com.cjp.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class UserRestController {
 	// 로그인
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
+		System.out.println("로그인 시도: " + user.getId());
 		HttpStatus status = null;
 		Map<String, Object> result = new HashMap<>();
 
@@ -48,11 +50,11 @@ public class UserRestController {
 		if (checkUser != null) {
 			// 토큰 생성
 			String token = jwtUtil.createToken(checkUser.getId());
-			result.put("success!", SUCCESS);
+			result.put("성공!", SUCCESS);
 			result.put("access-token", token);
 			status = HttpStatus.OK;
 		} else {
-			result.put("fail!", FAIL);
+			result.put("실패!", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
 
@@ -78,6 +80,14 @@ public class UserRestController {
 		User user = userService.search(id);
 		System.out.println(user);
 		return new ResponseEntity<User>(user, HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/getList")
+	public ResponseEntity<?> getList() {
+		List<User> list = userService.getUserList();
+		System.out.println(list);
+		return new ResponseEntity<>(list, HttpStatus.OK);
 
 	}
 

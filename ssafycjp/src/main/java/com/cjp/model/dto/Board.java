@@ -1,35 +1,34 @@
 package com.cjp.model.dto;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "게시글 DTO")
 public class Board {
 	private int id;
-	private int boardType;
+	// 게시판 타입
+	private int postBoardId;
+	private int category;
 	private String title;
 	private String content;
 	private String writer;
 	private int like;
-	private int hate;
-	private String regDate;
+	private LocalDateTime regDate;
 	private int viewCnt;
 	
 	public Board() {
 		
 	}
 	
-	public Board(int boardType, String title, String content, String writer, String regDate) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		this.boardType = boardType;
+	public Board(int postBoardId, int category, String title, String content, String writer, LocalDateTime regDate) {
+		this.postBoardId = postBoardId;
+		this.category = category;
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
-		this.regDate = dateFormat.format(new Date());
+		this.regDate = LocalDateTime.now();
 	}
-
 
 	public int getId() {
 		return id;
@@ -39,12 +38,20 @@ public class Board {
 		this.id = id;
 	}
 
-	public int getBoardType() {
-		return boardType;
+	public int getPostBoardId() {
+		return postBoardId;
 	}
 
-	public void setBoardType(int boardType) {
-		this.boardType = boardType;
+	public void setPostBoardId(int postBoardId) {
+		this.postBoardId = postBoardId;
+	}
+
+	public int getCategory() {
+		return category;
+	}
+
+	public void setCategory(int category) {
+		this.category = category;
 	}
 
 	public String getTitle() {
@@ -79,19 +86,11 @@ public class Board {
 		this.like = like;
 	}
 
-	public int getHate() {
-		return hate;
-	}
-
-	public void setHate(int hate) {
-		this.hate = hate;
-	}
-
-	public String getRegDate() {
+	public LocalDateTime getRegDate() {
 		return regDate;
 	}
 
-	public void setRegDate(String regDate) {
+	public void setRegDate(LocalDateTime regDate) {
 		this.regDate = regDate;
 	}
 
@@ -102,13 +101,12 @@ public class Board {
 	public void setViewCnt(int viewCnt) {
 		this.viewCnt = viewCnt;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "Board [id=" + id + ", boardType=" + boardType + ", title=" + title + ", content=" + content + ", writer="
-				+ writer + ", like=" + like + ", hate=" + hate + ", RegDate=" + regDate + ", viewCnt=" + viewCnt + "]";
+		return "Board [id=" + id + ", postBoardId=" + postBoardId + ", category=" + category + ", title=" + title
+				+ ", content=" + content + ", writer=" + writer + ", like=" + like + ", regDate=" + regDate
+				+ ", viewCnt=" + viewCnt + "]";
 	}
-
 
 }

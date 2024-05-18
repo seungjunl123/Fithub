@@ -4,20 +4,20 @@ import java.time.LocalDateTime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "댓글 DTO")
-public class Reply {
+@Schema(description = "대댓글 DTO")
+public class Rereply {
 	private int id;
+	private int reply_id;
 	private int boardNo;
 	private String writer;
 	private String content;
-	private int like;
 	private LocalDateTime regDate;
 	
-	public Reply() {
+	public Rereply() {
 		
 	}
 	
-	public Reply(int boardNo,String writer, String content, LocalDateTime regDate) {
+	public Rereply(int boardNo,String writer, String content, LocalDateTime regDate) {
 		this.boardNo = boardNo;
 		this.writer = writer;
 		this.content = content;
@@ -30,6 +30,14 @@ public class Reply {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getReply_id() {
+		return reply_id;
+	}
+
+	public void setReply_id(int reply_id) {
+		this.reply_id = reply_id;
 	}
 
 	public int getBoardNo() {
@@ -56,14 +64,6 @@ public class Reply {
 		this.content = content;
 	}
 
-	public int getLike() {
-		return like;
-	}
-
-	public void setLike(int like) {
-		this.like = like;
-	}
-
 	public LocalDateTime getRegDate() {
 		return regDate;
 	}
@@ -74,10 +74,7 @@ public class Reply {
 
 	@Override
 	public String toString() {
-		return "Reply [id=" + id + ", boardNo=" + boardNo + ", writer=" + writer + ", content=" + content + ", like="
-				+ like + ", regDate=" + regDate + "]";
+		return "Rereply [id=" + id + ", reply_id=" + reply_id + ", boardNo=" + boardNo + ", writer=" + writer
+				+ ", content=" + content + ", regDate=" + regDate + "]";
 	}
-	
-	
-	
 }
