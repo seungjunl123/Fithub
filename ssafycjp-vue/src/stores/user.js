@@ -8,11 +8,13 @@ const REST_USER_API = `http://localhost:8080/user`
 export const useUserStore = defineStore('user', () => {
   const loginUserId = ref(null)
   const userLogin = function (id, password) {
+    console.log("로그인 들어왔어!")
     axios.post(`${REST_USER_API}/login`, {
       id: id,
       password: password
     })
       .then((res) => {
+        console.log(res.data)
         sessionStorage.setItem('access-token', res.data["access-token"])
 
         const token = res.data['access-token'].split('.')
