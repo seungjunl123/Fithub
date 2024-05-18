@@ -29,18 +29,26 @@ export const useUserStore = defineStore('user', () => {
 
   
   const userRegist = function(user) {
-    axios.post(`${REST_USER_API}/signup`,{
-      id:id,
-      pw:pw,
-      name:name,
-      age:age,
-      gender: gender,
-      goalweight:goalweight,
-      nowweight:nowweight,
-      profileimg:profileimg
+    console.log('들어와')
+    console.log(user)
+    axios({
+      url: `${REST_USER_API}/user`,
+      method:'POST',
+      data:user
     })
-    
+    .then(()=>{
+      router.push({name:'home'})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+
+
   }
 
-  return { userLogin , loginUserId, userRegist ,user}
+  const logout = function(){
+    console.log('로그아웃 테스트');
+  }
+
+  return { userLogin , loginUserId, userRegist, logout}
 })

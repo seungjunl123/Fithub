@@ -69,7 +69,8 @@ const inputFileUpload = (event) => {
 };
 
 const userRegist = function(){
-  store.userLogin(user.value)
+  console.log(user.value);
+  store.userRegist(user.value)
 }
   
 </script>

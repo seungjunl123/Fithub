@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import YoutubeView from '@/views/YoutubeView.vue'
 import BoardView from '@/views/BoardView.vue'
 import SignupView from '@/views/SignupView.vue'
+import MyPageView from '@/views/MyPageView.vue'
 
 import BoardCreate from '@/components/board/BoardCreate.vue'
 import BoardList from '@/components/board/BoardList.vue'
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/signup',
       name: 'signup',
       component: SignupView
+    },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: MyPageView
     },
     {
       path: '/youtube',
