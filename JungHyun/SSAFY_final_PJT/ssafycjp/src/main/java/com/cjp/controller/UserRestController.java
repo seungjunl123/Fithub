@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,13 +52,15 @@ public class UserRestController {
 			// 토큰 생성
 			String token = jwtUtil.createToken(checkUser.getId());
 			result.put("성공!", SUCCESS);
+//			HttpHeaders headers = new HttpHeaders();
+//			headers.add("access-token", token);
 			result.put("access-token", token);
 			status = HttpStatus.OK;
+			return new ResponseEntity<>(result, status);
 		} else {
 			result.put("실패!", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
-
 		return new ResponseEntity<>(result, status);
 	}
 
@@ -83,6 +86,7 @@ public class UserRestController {
 
 	}
 	
+	// 테스트용
 	@GetMapping("/getList")
 	public ResponseEntity<?> getList() {
 		List<User> list = userService.getUserList();
