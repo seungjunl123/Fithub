@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cjp.model.dao.UserDao;
 import com.cjp.model.dto.User;
@@ -29,11 +30,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public void signup(User user) {
 		// 비밀번호 해시화
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userDao.insertUser(user);
 	}
+	
 	
 	@Override
 	public User login(String id, String password) {
@@ -71,6 +74,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public void modifyUserInfo(User user) {
 		userDao.updateUserInfo(user);
 	}

@@ -20,9 +20,9 @@ public interface ReplyService {
 	public void modifyReply(Reply reply);
 	
 	// 추천수 증가
-	public void updateLikeUp(int id);
+	public void updateLikeUp(String userId,int replyId);
 
 	// 추천수 감소
-	public void updateLikeDown(int id);
+	public void updateLikeDown(String userId,int replyId);
 
 }

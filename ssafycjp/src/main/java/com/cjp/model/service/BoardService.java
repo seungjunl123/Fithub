@@ -22,16 +22,10 @@ public interface BoardService {
 	public void modifyBoard(Board board);
 	
 	// 추천수 증가
-	public void updateLikeUp(int id);
+	public void updateLikeUp(String userId, int id);
 
 	// 추천수 감소
-	public void updateLikeDown(int id);
-
-	// 비추천수 증가
-	public void updateHateUp(int id);
-
-	// 비추천수 증가
-	public void updateHateDown(int id);
+	public void updateLikeDown(String userId,int id);
 	
 	//게시글 검색
 	public List<Board> search(SearchCondition searchCondition);

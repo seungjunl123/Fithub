@@ -25,10 +25,10 @@ public interface BoardDao {
 	public void updateViewCnt(int id);
 
 	// 추천수 증가
-	public void upLike(int id);
+	public void upLike(String UserId,int boardId);
 
 	// 추천수 감소
-	public void downLike(int id);
+	public void downLike(String UserId,int boardId);
 
 	// 검색 기능
 	public List<Board> search(SearchCondition searchCondition);

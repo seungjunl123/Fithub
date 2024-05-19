@@ -29,17 +29,15 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Board readBoard(int id) {
 		System.out.println(id + "번 게시글을 읽어옵니다.");
-		boardDao.updateViewCnt(id);
+		boardDao.updateViewCnt(id); // 조회수 증가
 		return boardDao.selectOne(id);
 	}
 
 	@Transactional
 	@Override
 	public void writeBoard(Board board) {
-//		board.setId(1000);
 		System.out.println("게시글 작성합니다.");
 		boardDao.insertBoard(board);
-//		boardDao.insertBoard(board);
 	}
 
 	@Transactional
@@ -60,28 +58,17 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> search(SearchCondition searchCondition) {
 		return boardDao.search(searchCondition);
 	}
-
+	
+	@Transactional
 	@Override
-	public void updateLikeUp(int id) {
-		// TODO Auto-generated method stub
-		
+	public void updateLikeUp(String userId,int boardId) {
+		boardDao.upLike(userId,boardId);
 	}
-
+	
+	@Transactional
 	@Override
-	public void updateLikeDown(int id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateHateUp(int id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateHateDown(int id) {
-		// TODO Auto-generated method stub
+	public void updateLikeDown(String userId,int boardId) {
+		boardDao.downLike(userId,boardId);
 		
 	}
 

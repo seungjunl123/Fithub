@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "댓글 DTO")
 public class Reply {
 	private int id;
-	private int boardNo;
+	private int boardId;
 	private String writer;
 	private String content;
 	private int like;
@@ -17,8 +17,8 @@ public class Reply {
 		
 	}
 	
-	public Reply(int boardNo,String writer, String content, LocalDateTime regDate) {
-		this.boardNo = boardNo;
+	public Reply(int boardId,String writer, String content, LocalDateTime regDate) {
+		this.boardId = boardId;
 		this.writer = writer;
 		this.content = content;
 		this.regDate = LocalDateTime.now();
@@ -32,12 +32,12 @@ public class Reply {
 		this.id = id;
 	}
 
-	public int getBoardNo() {
-		return boardNo;
+	public int getBoardId() {
+		return boardId;
 	}
 
-	public void setBoardNo(int boardNo) {
-		this.boardNo = boardNo;
+	public void setBoardId(int boardId) {
+		this.boardId = boardId;
 	}
 
 	public String getWriter() {
@@ -74,7 +74,7 @@ public class Reply {
 
 	@Override
 	public String toString() {
-		return "Reply [id=" + id + ", boardNo=" + boardNo + ", writer=" + writer + ", content=" + content + ", like="
+		return "Reply [id=" + id + ", boardId=" + boardId + ", writer=" + writer + ", content=" + content + ", like="
 				+ like + ", regDate=" + regDate + "]";
 	}
 	
