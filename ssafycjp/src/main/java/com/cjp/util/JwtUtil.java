@@ -14,6 +14,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
+	// 32바이트 이상으로 설정해야 한다!
 	private static final String key = "SSAFYSSAFYSSAFYSSAFYSSAFYSSAFYSSAFYSSAFY";
 	private SecretKey secretkey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
 	// 만료 수명 1시간으로 설정 (1000*60*60)

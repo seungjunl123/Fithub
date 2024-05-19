@@ -8,6 +8,27 @@
 		SELECT * FROM board;
 	</select>
 	
+	<!-- 말머리도 가져오도록 했어! -->
+<!-- 	<select id="selectAll" resultType="Board">
+		SELECT
+			b.id,
+    		b.category,
+    		c.name AS categoryName,
+    		b.postboard_id,
+    		b.title,
+    		b.content,
+    		b.writer,
+    		b.like,
+    		b.regDate,
+    		b.viewCnt
+		FROM 
+    		board board
+		JOIN 
+   			category c ON b.category = c.category AND b.postboard_id = c.postboard_id
+		WHERE 
+    		b.id = #{id}
+	</select> -->
+	
 	<!-- 게시글 선택 -->
 	<select id="selectOne" parameterType="int" resultType="Board">
 		SELECT * FROM board WHERE id = #{id};

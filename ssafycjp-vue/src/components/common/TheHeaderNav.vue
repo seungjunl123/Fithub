@@ -2,7 +2,7 @@
     <div id="container">
         <header>
             <nav class="navb">
-                <RouterLink to="/">Home</RouterLink> |
+                <RouterLink to="/main">Main</RouterLink> |
                 <RouterLink to="/youtube">Youtube</RouterLink> |
                 <RouterLink :to="{ name: 'boardList' }">BoardList</RouterLink> |
                 <RouterLink :to="{ name: 'boardCreate' }">BoardCreate</RouterLink> |

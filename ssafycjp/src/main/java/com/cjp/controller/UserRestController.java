@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,14 +50,12 @@ public class UserRestController {
 		if (checkUser != null) {
 			// 토큰 생성
 			String token = jwtUtil.createToken(checkUser.getId());
-			result.put("성공!", SUCCESS);
-//			HttpHeaders headers = new HttpHeaders();
-//			headers.add("access-token", token);
+			result.put("success", SUCCESS);
 			result.put("access-token", token);
 			status = HttpStatus.OK;
 			return new ResponseEntity<>(result, status);
 		} else {
-			result.put("실패!", FAIL);
+			result.put("fail", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
 		return new ResponseEntity<>(result, status);
@@ -77,14 +74,22 @@ public class UserRestController {
 	}
 
 	// 유저 정보 조회
-	@GetMapping("/{id}")
-	public ResponseEntity<User> userInfo(@PathVariable("id") String id) {
-		System.out.println("들어왔어!");
-		User user = userService.search(id);
-		System.out.println(user);
-		return new ResponseEntity<User>(user, HttpStatus.OK);
-
-	}
+	@GetMapping("/info")
+    public ResponseEntity<User> getUserInfo(@RequestHeader("Authorization") String token) {
+        String id = jwtUtil.getIdFromToken(token);
+        User user = userService.search(id);
+        // 감춰야 할 정보는 여기서 제거 가능! (ex. 비밀번호 부분을 null 값으로 변경)
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+//	@GetMapping("/{id}")
+//	public ResponseEntity<User> userInfo(@PathVariable("id") String id) {
+//		System.out.println("들어왔어!");
+//		User user = userService.search(id);
+//		System.out.println(user);
+//		return new ResponseEntity<User>(user, HttpStatus.OK);
+//
+//	}
 	
 	// 테스트용
 	@GetMapping("/getList")
