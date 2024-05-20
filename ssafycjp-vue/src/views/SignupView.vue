@@ -10,7 +10,7 @@
         </div>
         <div class="input-group">
           <label for="password">비밀번호 <a style="color: red;">*</a></label>
-          <input type="password" id="password" placeholder="비밀번호를 입력해주세요" v-model.trim="user.pw" required>
+          <input type="password" id="password" placeholder="비밀번호를 입력해주세요" v-model.trim="user.password" required>
         </div>
         <div class="input-group">
           <label for="username">이름 <a style="color: red;">*</a></label>
@@ -27,9 +27,9 @@
         <div class="input-group">
           <label>성별을 선택해주세요</label>
           
-          <input type="radio" id="male" value="male" v-model="user.gender">
+          <input type="radio" id="male" value="male" v-model="user.sex">
           <label for="male">남성</label> 
-          <input type="radio" id="female" value="female" v-model="user.gender">
+          <input type="radio" id="female" value="female" v-model="user.sex">
           <label for="female">여성</label>
         </div>
         <div class="input-group">

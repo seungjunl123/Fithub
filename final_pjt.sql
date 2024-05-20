@@ -138,7 +138,7 @@ INSERT INTO `user` (name, id, email, password, age, sex) VALUES
 -- 암호화 전 비밀번호 : test
 ('테스트싸피', 'test', 'test@sfy.com', '$2a$10$AG3BLKDrxeZaN5RMiHtZpeWEgCISlvI1diNLEojDReuHx6M/f9vY.', 20, 'M');
 
--- delete from user where id = 'test2';
+-- delete from user where id = 'ssafy';
 
 INSERT INTO `postboard` (title) VALUES ('게시판1'), ('게시판2');
 

@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void signup(User user) {
 		// 비밀번호 해시화
+		System.out.println("들어온 비밀번호야!!"+user.getPassword());
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userDao.insertUser(user);
 	}

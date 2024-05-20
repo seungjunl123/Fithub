@@ -2,7 +2,7 @@
      <TheHeaderNav/>
     <div>
         <div class="text-center">
-            <h2 class="my-h2 my-underline">BoardView</h2>
+            <br><br><br>
         </div>
         <RouterView />
     </div>
@@ -15,10 +15,6 @@
 <style scoped>
 .my-h2 {
     display: inline-block
-}
-
-.my-underline {
-    background: linear-gradient(to top, #54ddff 20%, transparent 30%);
 }
 </style>
   
