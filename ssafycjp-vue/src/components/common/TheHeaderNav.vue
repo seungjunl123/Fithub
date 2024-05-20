@@ -3,7 +3,9 @@
     <header class="header">
       <nav class="nav-left">
         <RouterLink to="/main">
-          <img src="@/assets/logo5.png" alt="Main Image" class="main-image" >
+          <div class="imgContainer">
+            <img src="@/assets/logo5.png" alt="Main Image" class="main-image">
+          </div>
         </RouterLink>
       </nav>
 
@@ -14,13 +16,13 @@
 
       <nav class="info">
         <div class="info-item">
-          <h6 v-if="user">{{ user.name }} 님</h6>
+          <h6 class="infoContainer" v-if="user" style="font-style: italic;">{{ user.name }} 님</h6>
         </div>
         <div class="info-item">
-          <RouterLink :to="{ name: 'mypage' }"><h6>마이페이지</h6></RouterLink>
+          <RouterLink :to="{ name: 'mypage' }"><h6 class="infoContainer">마이페이지</h6></RouterLink>
         </div>
         <div class="info-item">
-          <button @click="logout" class="logout-button"><h6>로그아웃</h6></button>
+          <button @click="logout" class="logout-button"><h6 class="infoContainer">로그아웃</h6></button>
         </div>
       </nav>
     </header>
@@ -60,7 +62,6 @@ onMounted(async () => {
   align-items: center;
   padding: 0 20px; /* 좌우 패딩 추가 */
   background-color: #7fcdcd; /* 밝은 파스텔 색상 */
-  height: 200px;
 }
 
 .nav-left {
@@ -85,14 +86,14 @@ onMounted(async () => {
 }
 
 .navb a.router-link-exact-active, .nav-center a.router-link-exact-active {
-  color: #42b983;
+  color: black;
+  background: linear-gradient(to top, #ffffff 20%, transparent 30%);
 }
 
 .info {
   display: flex;
   align-items: center;
   gap: 20px;
-  color: white;
 }
 
 .info div {
@@ -102,6 +103,7 @@ onMounted(async () => {
 .info-item {
   display: flex;
   align-items: center;
+  color: white;
 }
 
 .info h6 {
@@ -114,11 +116,11 @@ a {
 }
 
 a:hover {
-  color: #42b983;
+  color: black;
 }
 
 .main-image {
-  max-height: 70px; /* 이미지 높이 증가 */
+  max-height: 100px; /* 이미지 높이 증가 */
   object-fit: contain;
 }
 
@@ -131,7 +133,14 @@ a:hover {
 }
 
 .logout-button:hover {
-  color: #42b983; /* 마우스를 올렸을 때 색상 변경 */
+  color: black;
+}
+
+.infoContainer {
+  color: black;
+  font-size: large;
+  font-weight: 1000;
+  background: linear-gradient(to top, #ffffff 20%, transparent 30%);
 }
 
 </style>

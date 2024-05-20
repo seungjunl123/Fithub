@@ -13,6 +13,7 @@
               location="left"
               permanent
               temporary
+              scrim="rgba(110, 0, 0, 0.5)"
               hide-overlay
               rounded="lg"
               border="0"
@@ -73,16 +74,16 @@
   
   .hover-area {
     position: absolute;
-    left: -80px;
+    left: -70px;
     width: 50px;
-    margin-top: 114px;
+    margin-top: 12px;
     height: 100%;
     z-index: 10;
     background-color: blue;
   }
   
   .content {
-    margin-top: 114px;
+    margin-top: 12px;
     flex: 1;
     padding: 20px;
     background-color: red;

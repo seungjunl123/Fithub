@@ -31,9 +31,15 @@
         <div class="input-group">
           <label>성별을 선택해주세요</label>
           
+<<<<<<< HEAD
+          <input type="radio" id="male" value="male" v-model="user.sex">
+          <label for="male">남성</label> 
+          <input type="radio" id="female" value="female" v-model="user.sex">
+=======
           <input type="radio" id="male" value="M" v-model="user.gender">
           <label for="male">남성</label> 
           <input type="radio" id="female" value="F" v-model="user.gender">
+>>>>>>> 1470a1ef3ae64cef5c720b7e5b547dba7d5ca8a0
           <label for="female">여성</label>
         </div>
         <div class="input-group">
