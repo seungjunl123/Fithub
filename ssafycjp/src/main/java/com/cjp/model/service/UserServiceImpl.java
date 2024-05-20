@@ -41,16 +41,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User login(String id, String password) {
-		System.out.println("입력받은 id야!: "+id);
-		System.out.println("입력받은 password야!: "+password);
-		
-		System.out.println(passwordEncoder.encode(password));
-		
 		// DB에서 입력받은 id 에 해당하는 유저 정보를 가져와 user 변수에 저장.
 		User user = userDao.selectOne(id);
 		
-		System.out.println("가져온 user 객체: " + user);
-	    System.out.println("DB에서 가져온 비밀번호: " + user.getPassword());
 		
 		// 입력받은 비밀번호와 user 의 비밀번호가 일치하는지 확인
 		if (user != null && passwordEncoder.matches(password, user.getPassword())) {

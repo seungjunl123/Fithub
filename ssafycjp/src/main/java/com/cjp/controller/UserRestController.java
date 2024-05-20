@@ -108,6 +108,7 @@ public class UserRestController {
         User user = userService.search(id);
         System.out.println(user.getId());
         // 감춰야 할 정보는 여기서 제거 가능! (ex. 비밀번호 부분을 null 값으로 변경)
+        user.setPassword(null);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 	

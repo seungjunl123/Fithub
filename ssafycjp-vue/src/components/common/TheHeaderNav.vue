@@ -26,6 +26,7 @@
         </div>
       </nav>
     </header>
+    <div class="blackContainer"></div>
   </div>
 </template>
 
@@ -51,7 +52,7 @@ onMounted(async () => {
 <style scoped>
 #container {
   width: 100%;
-  height: 70px; /* 네비게이션 바 높이 증가 */
+  height: 100px; /* 네비게이션 바 높이 증가 */
   background-color: #f8f9fa; /* 밝은 배경색 */
   font-size: 25px;
 }
@@ -72,6 +73,7 @@ onMounted(async () => {
   flex: 1;
   text-align: center;
   font-size: 20px; /* 텍스트 크기 증가 */
+  margin-top: -30px;
 }
 
 .nav-center a {
@@ -94,6 +96,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 20px;
+  margin-top: -30px;
 }
 
 .info div {
@@ -120,7 +123,7 @@ a:hover {
 }
 
 .main-image {
-  max-height: 100px; /* 이미지 높이 증가 */
+  max-height: 140px; /* 이미지 높이 증가 */
   object-fit: contain;
 }
 
@@ -141,6 +144,20 @@ a:hover {
   font-size: large;
   font-weight: 1000;
   background: linear-gradient(to top, #ffffff 20%, transparent 30%);
+}
+
+img {
+  position: relative;
+  z-index: 1;
+}
+
+.blackContainer {
+  position: absolute;
+  z-index: 0;
+  background-color: white;
+  width: 100%;
+  height: 50px;
+  top: 100px;
 }
 
 </style>

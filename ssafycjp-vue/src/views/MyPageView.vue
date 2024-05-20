@@ -14,12 +14,12 @@
             </v-list-item>
         </v-card-title>
 
-    
         <v-card-text>
             <div class="userInfo">
             <v-row>
               <v-col class="text-center">
                 <v-avatar size="300">
+                  <!-- 이미지 가져오기 -->
                   <img class="profileImg" src="@/assets/오승준_3x4.jpg" alt="Profile">
                 </v-avatar>
               </v-col>
@@ -181,54 +181,115 @@
   </template>
   
   <script>
+  import { ref, onMounted } from "vue";
+  import { useUserStore } from "@/stores/user";
+  import router from '@/router';
+  
   import TheHeaderNav from '@/components/common/TheHeaderNav.vue'
+
   export default {
-    data() {
-      return {
-        user: {
-          id: 'user123',
-          name: '홍길동',
-          email: 'hong@domain.com',
-          password: '********',
-          age: 30,
-          weight: '70kg',
-          goalWeight: '65kg',
-          bmi: '22',
-          streak: 31,
-        },
-        showModal: false,
-        currentField: '',
-        tempValue: '',
-        fieldLabels: {
-          id: 'ID',
-          name: '이름',
-          email: 'e-mail',
-          password: '비밀번호',
-          age: 'age',
-          weight: '현재 체중',
-          goalWeight: '목표 체중',
-          bmi: 'BMI',
-          streak: '연속 접속',
-        },
-        editableFields: ['name', 'email', 'password', 'age', 'weight', 'goalWeight', 'bmi', 'streak']
-      };
-    },
-    methods: {
-      editField(field) {
-        this.currentField = field;
-        this.tempValue = this.user[field];
-        this.showModal = true;
-      },
-      saveChanges() {
-        if (this.currentField) {
-          this.user[this.currentField] = this.tempValue;
-          this.currentField = '';
-          this.tempValue = '';
-          this.showModal = false;
-        }
+  components: {
+    TheHeaderNav
+  },
+  setup() {
+    const userStore = useUserStore();
+    const user = ref({
+      id: '',
+      name: '',
+      email: '',
+      password: '',
+      age: 0,
+      weight: '',
+      goalWeight: '',
+      bmi: '',
+      streak: 0
+    });
+    const showModal = ref(false);
+    const currentField = ref('');
+    const tempValue = ref('');
+
+    onMounted(async () => {
+      user.value = await userStore.getUserInfoFromToken();
+      console.log(user.value);
+    });
+
+    const editField = (field) => {
+      currentField.value = field;
+      tempValue.value = user.value[field];
+      showModal.value = true;
+    };
+
+    const saveChanges = () => {
+      if (currentField.value) {
+        user.value[currentField.value] = tempValue.value;
+        currentField.value = '';
+        tempValue.value = '';
+        showModal.value = false;
       }
-    }
-  };
+    };
+
+    return {
+      user,
+      showModal,
+      currentField,
+      tempValue,
+      editField,
+      saveChanges
+    };
+  }
+};
+
+
+
+
+
+  // export default {
+  //   data() {
+  //     return {
+  //       user: {
+  //         id: 'user123',
+  //         name: '홍길동',
+  //         email: 'hong@domain.com',
+  //         password: '********',
+  //         age: 30,
+  //         weight: '70kg',
+  //         goalWeight: '65kg',
+  //         bmi: '22',
+  //         streak: 31,
+  //       },
+  //       showModal: false,
+  //       currentField: '',
+  //       tempValue: '',
+  //       fieldLabels: {
+  //         id: 'ID',
+  //         name: '이름',
+  //         email: 'e-mail',
+  //         password: '비밀번호',
+  //         age: 'age',
+  //         weight: '현재 체중',
+  //         goalWeight: '목표 체중',
+  //         bmi: 'BMI',
+  //         streak: '연속 접속',
+  //       },
+  //       editableFields: ['name', 'email', 'password', 'age', 'weight', 'goalWeight', 'bmi', 'streak']
+  //     };
+  //   },
+  //   methods: {
+  //     editField(field) {
+  //       this.currentField = field;
+  //       this.tempValue = this.user[field];
+  //       this.showModal = true;
+  //     },
+  //     saveChanges() {
+  //       if (this.currentField) {
+  //         this.user[this.currentField] = this.tempValue;
+  //         this.currentField = '';
+  //         this.tempValue = '';
+  //         this.showModal = false;
+  //       }
+  //     }
+  //   }
+  // };
   </script>
   
   <style>
