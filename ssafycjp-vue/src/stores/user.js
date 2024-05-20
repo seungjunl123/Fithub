@@ -109,7 +109,9 @@ export const useUserStore = defineStore('user', () => {
   const getUserInfoFromToken = async () => {
     try {
       const token = sessionStorage.getItem('Authorization')
+      console.log(token)
       if (token) {
+        console.log("토큰이 있네!")
         const response = await axiosInstance.get(`${REST_USER_API}/info`, {
           headers: { Authorization: `Bearer ${token}` }
         })
@@ -121,5 +123,5 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { userLogin , loginUserId, userRegist, logout, getUserIdFromToken}
+  return { userLogin , loginUserId, userRegist, logout, getUserIdFromToken, getUserInfoFromToken}
 })

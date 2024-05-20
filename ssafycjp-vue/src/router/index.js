@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import YoutubeView from '@/views/YoutubeView.vue'
 import BoardView from '@/views/BoardView.vue'
 import SignupView from '@/views/SignupView.vue'
 import MyPageView from '@/views/MyPageView.vue'
@@ -10,12 +9,6 @@ import BoardCreate from '@/components/board/BoardCreate.vue'
 import BoardList from '@/components/board/BoardList.vue'
 import BoardUpdate from '@/components/board/BoardUpdate.vue'
 import BoardDetail from '@/components/board/BoardDetail.vue'
-
-import KakaoView from '@/views/KakaoView.vue'
-
-import TmdbView from '@/views/TmdbView.vue'
-import TmdbPopular from '@/components/tmdb/TmdbPopular.vue'
-import TmdbTopRated from '@/components/tmdb/TmdbTopRated.vue'
 
 import Error401 from '@/views/Error401.vue';
 
@@ -36,11 +29,6 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: MyPageView
-    },
-    {
-      path: '/youtube',
-      name: 'youtube',
-      component: YoutubeView
     },
     { 
       path: '/401', 
@@ -79,29 +67,6 @@ const router = createRouter({
         },
       ]
     },
-    {
-      path: "/kakao",
-      name: "kakao",
-      component: KakaoView
-    },
-    {
-      path: "/tmdb",
-      name: "tmdb",
-      component: TmdbView,
-      children: [
-        {
-          path: "popular",
-          name: "tmdbPopular",
-          component: TmdbPopular
-        },
-        {
-          path: "toprated",
-          name: "tmdbTopRated",
-          component: TmdbTopRated
-        }
-      ]
-    },
-
   ]
 })
 

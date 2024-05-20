@@ -33,12 +33,12 @@
           <label for="female">여성</label>
         </div>
         <div class="input-group">
-          <label for="nowweight">현재 체중</label>
-          <input type="text" id="nowweight" placeholder="현재 몸무게를 입력해주세요" v-model.trim="user.nowweight" >
+          <label for="nowWeight">현재 체중</label>
+          <input type="text" id="nowWeight" placeholder="현재 몸무게를 입력해주세요" v-model.trim="user.nowWeight" >
         </div>
         <div class="input-group">
-          <label for="goalweight">목표 체중</label>
-          <input type="number" id="goalweight" placeholder="목표 몸무게를 입력해주세요" v-model.trim="user.goalweight" >
+          <label for="goalWeight">목표 체중</label>
+          <input type="number" id="goalWeight" placeholder="목표 몸무게를 입력해주세요" v-model.trim="user.goalWeight" >
         </div>
         <button type="submit" class="signup-button">회원 가입</button>
       </form>
@@ -54,13 +54,13 @@ const store = useUserStore();
 
 const user = ref({
   id:"",
-  pw:"",
+  password:"",
   name:"",
   age:"",
-  gender: "",
-  goalweight:"",
-  nowweight:"",
-  profileimg:""
+  sex: "",
+  goalWeight:"",
+  nowWeight:"",
+  img:""
 })
 
 const inputFileUpload = (event) => {

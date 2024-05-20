@@ -10,9 +10,13 @@
             ></div>
             <v-navigation-drawer
               v-model="drawer"
+              location="left"
+              permanent
               temporary
-              left
               hide-overlay
+              rounded="lg"
+              border="0"
+              class="custom-drawer"
             >
               <v-list>
                 <v-list-item
@@ -61,24 +65,32 @@
   <style scoped>
   .main-layout {
     display: flex;
-    height: 1000px;
+     /* 전체 화면 높이 */
+    height: 100vh;
     width: 100px;
     position: relative;
-    background-color: red;
   }
   
   .hover-area {
     position: absolute;
     left: -80px;
     width: 50px;
+    margin-top: 114px;
     height: 100%;
     z-index: 10;
     background-color: blue;
   }
   
   .content {
+    margin-top: 114px;
     flex: 1;
     padding: 20px;
+    background-color: red;
   }
+
+  .custom-drawer{
+    background-color: rgb(227, 227, 227);
+  }
+  
   </style>
   
