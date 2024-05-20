@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
-	private final String HEADER_AUTH ="access-token";
+	private final String HEADER_AUTH ="Authorization";
 	
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -35,13 +35,17 @@ public class JwtInterceptor implements HandlerInterceptor {
                 return true;
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("유효하지 않은 토큰입니다.");
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{\"message\":\"유효하지 않은 토큰입니다.\"}");
                 return false;
             }
         }
 
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("토큰이 없습니다.");
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	    response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().write("{\"message\":\"토큰이 없습니다.\"}");
         return false;
 	}
 	

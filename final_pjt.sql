@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS `category`(
 -- 게시글
 CREATE TABLE IF NOT EXISTS `board`(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    -- 게시글 종류 (말머리) 기본값 0 (일반 게시글)
-    category TINYINT DEFAULT 0 NOT NULL,
+    -- 게시글 종류 (말머리) 기본값 1 (일반 게시글)
+    category TINYINT DEFAULT 1 NOT NULL,
     postboard_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     content MEDIUMTEXT NOT NULL,
@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `board`(
     FOREIGN KEY (writer) REFERENCES `user`(id),
     FOREIGN KEY (postboard_id) REFERENCES `postboard`(id)
 );
+
 
 -- 댓글
 CREATE TABLE IF NOT EXISTS `reply`(
@@ -143,6 +144,9 @@ INSERT INTO `postboard` (title) VALUES ('게시판1'), ('게시판2');
 
 INSERT INTO `category` (postboard_id, name) VALUES
 (1, '일반'), (1, '공지'), (1, '질문'), (2, '일반'), (2, '공지');
+
+INSERT INTO `board` (category, postboard_id, title, content, writer) VALUES
+( 2, 1, "게시판1 공지사항입니다.", "ㅎㅇㅎㅇ~", "test");
 
 SELECT * FROM `user`;
 SELECT * FROM `postboard`;

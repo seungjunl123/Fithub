@@ -4,6 +4,7 @@ import YoutubeView from '@/views/YoutubeView.vue'
 import BoardView from '@/views/BoardView.vue'
 import SignupView from '@/views/SignupView.vue'
 import MyPageView from '@/views/MyPageView.vue'
+import MainView from '@/views/MainView.vue'
 
 import BoardCreate from '@/components/board/BoardCreate.vue'
 import BoardList from '@/components/board/BoardList.vue'
@@ -15,6 +16,8 @@ import KakaoView from '@/views/KakaoView.vue'
 import TmdbView from '@/views/TmdbView.vue'
 import TmdbPopular from '@/components/tmdb/TmdbPopular.vue'
 import TmdbTopRated from '@/components/tmdb/TmdbTopRated.vue'
+
+import Error401 from '@/views/Error401.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +41,16 @@ const router = createRouter({
       path: '/youtube',
       name: 'youtube',
       component: YoutubeView
+    },
+    { 
+      path: '/401', 
+      name: 'Error401', 
+      component: Error401 
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: MainView
     },
     {
       path: '/board',
