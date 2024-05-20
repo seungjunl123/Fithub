@@ -28,10 +28,15 @@ public class JwtInterceptor implements HandlerInterceptor {
 			return true;
 		}
 		
-		String token = request.getHeader(HEADER_AUTH);
+		String token = null;
+		if(request.getHeader(HEADER_AUTH) != null) {
+			String[] input = request.getHeader(HEADER_AUTH).split(" ");			
+			token = input[1];
+		}
 		if (token != null) {
             try {
                 jwtUtil.validate(token);
+                System.out.println("토큰 검증 결과: "+jwtUtil.validate(token));
                 return true;
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

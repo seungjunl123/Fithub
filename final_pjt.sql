@@ -136,9 +136,9 @@ DELIMITER ;
 -- 테스트용 데이터 입력
 INSERT INTO `user` (name, id, email, password, age, sex) VALUES 
 -- 암호화 전 비밀번호 : test
-('테스트싸피', 'test', 'test@sfy.com', '$10$aaBS7ZjR0uHIqqqxPDRmj.NDgYmNho884mIIF.ZYCCE0hmt1pVRMC', 20, 'M');
+('테스트싸피', 'test', 'test@sfy.com', '$2a$10$AG3BLKDrxeZaN5RMiHtZpeWEgCISlvI1diNLEojDReuHx6M/f9vY.', 20, 'M');
 
--- delete from user where id = 'ssafy1';
+-- delete from user where id = 'test2';
 
 INSERT INTO `postboard` (title) VALUES ('게시판1'), ('게시판2');
 

@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService {
 		System.out.println("입력받은 id야!: "+id);
 		System.out.println("입력받은 password야!: "+id);
 		
+		System.out.println(passwordEncoder.encode(password));
+		
 		// DB에서 입력받은 id 에 해당하는 유저 정보를 가져와 user 변수에 저장.
 		User user = userDao.selectOne(id);
 		

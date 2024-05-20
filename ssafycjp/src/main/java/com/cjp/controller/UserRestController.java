@@ -41,7 +41,7 @@ public class UserRestController {
 		System.out.println("로그인 시도: " + user.getId());
 		HttpStatus status = null;
 		Map<String, Object> result = new HashMap<>();
-
+		
 		// 사용자 인증
 		User checkUser = userService.login(user.getId(), user.getPassword());
 
@@ -64,7 +64,10 @@ public class UserRestController {
 	// 회원가입
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody User user) {
+		System.out.println("signup");
+		user.setEmail("sfy@sfy");
 		User tmp = userService.search(user.getId());
+		System.out.println(tmp);
 		if (tmp == null) {
 			userService.signup(user);
 			return new ResponseEntity<>("Signup successful", HttpStatus.OK);
@@ -77,7 +80,9 @@ public class UserRestController {
 	@GetMapping("/info")
     public ResponseEntity<User> getUserInfo(@RequestHeader("Authorization") String token) {
         String id = jwtUtil.getIdFromToken(token);
+        System.out.println(id);
         User user = userService.search(id);
+        System.out.println(user.getId());
         // 감춰야 할 정보는 여기서 제거 가능! (ex. 비밀번호 부분을 null 값으로 변경)
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
