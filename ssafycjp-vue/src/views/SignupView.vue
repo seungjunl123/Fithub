@@ -10,11 +10,15 @@
         </div>
         <div class="input-group">
           <label for="password">비밀번호 <a style="color: red;">*</a></label>
-          <input type="password" id="password" placeholder="비밀번호를 입력해주세요" v-model.trim="user.pw" required>
+          <input type="password" id="password" placeholder="비밀번호를 입력해주세요" v-model.trim="user.password" required>
         </div>
         <div class="input-group">
           <label for="username">이름 <a style="color: red;">*</a></label>
           <input type="text" id="username" placeholder="이름을 입력해주세요" v-model.trim="user.name" required>
+        </div>
+        <div class="input-group">
+          <label for="useremail">이메일 <a style="color: red;">*</a></label>
+          <input type="text" id="useremail" placeholder="이메일을 입력해주세요" v-model.trim="user.email" required>
         </div>
         <div class="input-group">
           <label for="userage">나이</label>
@@ -27,9 +31,9 @@
         <div class="input-group">
           <label>성별을 선택해주세요</label>
           
-          <input type="radio" id="male" value="male" v-model="user.gender">
+          <input type="radio" id="male" value="M" v-model="user.gender">
           <label for="male">남성</label> 
-          <input type="radio" id="female" value="female" v-model="user.gender">
+          <input type="radio" id="female" value="F" v-model="user.gender">
           <label for="female">여성</label>
         </div>
         <div class="input-group">
@@ -60,17 +64,21 @@ const user = ref({
   sex: "",
   goalWeight:"",
   nowWeight:"",
-  img:""
 })
 
+const img = ref()
+
 const inputFileUpload = (event) => {
-  const file = event.target.files[0];
-  user.value.profileimg = file;
+  img.value = event.target.files[0];
 };
 
 const userRegist = function(){
-  console.log(user.value);
+
   store.userRegist(user.value)
+  console.log(user.value.id)
+  if(img.value !== undefined){
+    store.userImgRegist(img.value, user.value.id)
+  }
 }
   
 </script>
