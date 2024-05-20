@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -127,6 +128,28 @@ public class UserRestController {
 		List<User> list = userService.getUserList();
 		System.out.println(list);
 		return new ResponseEntity<>(list, HttpStatus.OK);
+
+	}
+	
+	// 회원 정보 수정
+	@PutMapping("/changeInfo")
+	public ResponseEntity<?> changeInfo(@RequestBody Map<String, String> params) {
+	    String id = params.get("userId");
+	    String field = params.get("field");
+	    String changeValue = params.get("changeValue");
+		
+
+		if(field.equals("age")) {
+			int changedAge = Integer.parseInt(changeValue);
+			userService.changeUserAge(id,field,changedAge);
+		} else if(field.equals("goalWeight")||field.equals("nowWeight")) {
+			double changedWeight = Double.parseDouble(changeValue);
+			userService.changeUserWeight(id,field,changedWeight);
+		} else {
+			userService.changeUserInfo(id,field,changeValue);
+		}
+		
+		 return new ResponseEntity<>(HttpStatus.OK);
 
 	}
 

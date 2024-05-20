@@ -21,7 +21,7 @@
               <v-col class="text-center">
                 <v-avatar size="300">
                   <!-- 이미지 가져오기 -->
-                  <img class="profileImg" src="@/assets/오승준_3x4.jpg" alt="Profile">
+                  <img class="profileImg" :src="file://C:/Dev/source/SSAFY1CJP/seungjun/ssafycjp/src/main/resources/static/upload/`${user.value.id}`.jpg" alt="Profile">
                 </v-avatar>
               </v-col>
             </v-row>
@@ -98,6 +98,19 @@
                 </v-col>
               <v-col cols="6" class="text-right">
                 <v-btn @click="editField('nowWeight')" color="primary">수정</v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="6">
+                    <v-list-item>
+                      <v-list-item-content>
+                            <v-list-item-title v-if="user.height">현재 키: {{ user.height }}</v-list-item-title>
+                            <v-list-item-title v-else>현재 키: {{ user.height }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-col>
+              <v-col cols="6" class="text-right">
+                <v-btn @click="editField('height')" color="primary">수정</v-btn>
               </v-col>
             </v-row>
 
@@ -177,7 +190,6 @@
   </div>
   </template>
   
-<<<<<<< HEAD:seungjun/ssafycjp-vue/src/views/MyPageView.vue
   <script setup>
   import TheHeaderNav from '@/components/common/TheHeaderNav.vue'
   import { ref, onMounted,computed } from 'vue';
@@ -196,140 +208,33 @@
   })
 
   const saveChanges = ref(() =>{
-    if (currentField.value) {
+    if (currentField.value) { 
+      store.saveInfoChanges(user.value.id,currentField.value,tempValue.value)
       user.value[currentField.value] = tempValue.value;
       currentField.value = '';
       tempValue.value = '';
       showModal.value = false;
     }
   })
+
+
   const bmi = computed(() => {
   if (user.value && user.value.nowWeight) {
-    return (user.value.nowWeight / (1.71 * 1.71)).toFixed(2);
+    console.log(user.value.height/100)
+    return (user.value.nowWeight / (user.value.height/100 *user.value.height/100 )).toFixed(2);
   }
   return 'N/A';
 });
 
 
-  onMounted(async () => {
+  onMounted(async () => {  
     user.value = await store.getUserInfoFromToken();
     console.log(user.value)
   
 
   });
     
-=======
-  <script>
-  import { ref, onMounted } from "vue";
-  import { useUserStore } from "@/stores/user";
-  import router from '@/router';
   
-  import TheHeaderNav from '@/components/common/TheHeaderNav.vue'
-
-  export default {
-  components: {
-    TheHeaderNav
-  },
-  setup() {
-    const userStore = useUserStore();
-    const user = ref({
-      id: '',
-      name: '',
-      email: '',
-      password: '',
-      age: 0,
-      weight: '',
-      goalWeight: '',
-      bmi: '',
-      streak: 0
-    });
-    const showModal = ref(false);
-    const currentField = ref('');
-    const tempValue = ref('');
-
-    onMounted(async () => {
-      user.value = await userStore.getUserInfoFromToken();
-      console.log(user.value);
-    });
-
-    const editField = (field) => {
-      currentField.value = field;
-      tempValue.value = user.value[field];
-      showModal.value = true;
-    };
-
-    const saveChanges = () => {
-      if (currentField.value) {
-        user.value[currentField.value] = tempValue.value;
-        currentField.value = '';
-        tempValue.value = '';
-        showModal.value = false;
-      }
-    };
-
-    return {
-      user,
-      showModal,
-      currentField,
-      tempValue,
-      editField,
-      saveChanges
-    };
-  }
-};
-
-
-
-
-
-  // export default {
-  //   data() {
-  //     return {
-  //       user: {
-  //         id: 'user123',
-  //         name: '홍길동',
-  //         email: 'hong@domain.com',
-  //         password: '********',
-  //         age: 30,
-  //         weight: '70kg',
-  //         goalWeight: '65kg',
-  //         bmi: '22',
-  //         streak: 31,
-  //       },
-  //       showModal: false,
-  //       currentField: '',
-  //       tempValue: '',
-  //       fieldLabels: {
-  //         id: 'ID',
-  //         name: '이름',
-  //         email: 'e-mail',
-  //         password: '비밀번호',
-  //         age: 'age',
-  //         weight: '현재 체중',
-  //         goalWeight: '목표 체중',
-  //         bmi: 'BMI',
-  //         streak: '연속 접속',
-  //       },
-  //       editableFields: ['name', 'email', 'password', 'age', 'weight', 'goalWeight', 'bmi', 'streak']
-  //     };
-  //   },
-  //   methods: {
-  //     editField(field) {
-  //       this.currentField = field;
-  //       this.tempValue = this.user[field];
-  //       this.showModal = true;
-  //     },
-  //     saveChanges() {
-  //       if (this.currentField) {
-  //         this.user[this.currentField] = this.tempValue;
-  //         this.currentField = '';
-  //         this.tempValue = '';
-  //         this.showModal = false;
-  //       }
-  //     }
-  //   }
-  // };
->>>>>>> 2daa8618cc58e994794f960ad92a4b693ef2de28:ssafycjp-vue/src/views/MyPageView.vue
   </script>
   
   <style>

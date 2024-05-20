@@ -69,11 +69,33 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectOne(id);
 	}
 
+//	@Override
+//	@Transactional
+//	public void modifyUserInfo(User user) {
+//		userDao.updateUserInfo(user);
+//	}
+
 	@Override
 	@Transactional
-	public void modifyUserInfo(User user) {
-		userDao.updateUserInfo(user);
+	public void changeUserAge(String id, String field, int changedAge) {
+		userDao.updateUserAge(id,field,changedAge);
+		
 	}
+
+	@Override
+	@Transactional
+	public void changeUserWeight(String id, String field, double changedWeight) {
+		userDao.updateUserWeight(id,field,changedWeight);
+		
+	}
+
+	@Override
+	@Transactional
+	public void changeUserInfo(String id, String field, String changeValue) {
+		userDao.updateUserInfo(id,field,changeValue);
+		
+	}
+
 
 
 }

@@ -17,7 +17,10 @@ public interface UserDao {
 	// 회원 탈퇴 -> 불가능
 //	public void deleteUser(String id);
 	
-	// 회원 정보 수정
-	public void updateUserInfo(User user);
+//	// 회원 정보 수정
+//	public void updateUserInfo(User user);
 	
+	public void updateUserWeight(String id, String field, double changedWeight);
+	public void updateUserInfo(String id, String field, String changeValue);
+	public void updateUserAge(String id, String field, int changedAge);
 }

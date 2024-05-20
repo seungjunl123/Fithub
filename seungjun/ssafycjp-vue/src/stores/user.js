@@ -57,6 +57,7 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+
   const userImgRegist = async (img, userId) => {
     try {
       const formData = new FormData();
@@ -92,6 +93,31 @@ export const useUserStore = defineStore('user', () => {
 
 
   // }
+  const saveInfoChanges = async (userId,field,changeValue) => {
+    try{
+      const token = sessionStorage.getItem('Authorization')
+      if (token) {
+        const data = {
+          userId: userId,
+          field: field,
+          changeValue: changeValue
+        };
+        const response = await axiosInstance({
+          url: `${REST_USER_API}/changeInfo`,
+          method: 'PUT',
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify(data)
+        });
+  } else {
+    throw new Error('토큰이 없습니다.')
+  }
+    } catch(err){
+      console.log(err)
+    }
+  };
 
   const logout = function(){
     console.log('로그아웃 테스트')
@@ -140,5 +166,5 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { userLogin , userImgRegist, loginUserId, userRegist, logout, getUserIdFromToken, getUserInfoFromToken}
+  return { userLogin , userImgRegist, saveInfoChanges,loginUserId, userRegist, logout, getUserIdFromToken, getUserInfoFromToken}
 })

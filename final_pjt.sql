@@ -1,5 +1,5 @@
 -- 초기화용
--- DROP DATABASE IF EXISTS `final_pjt`;
+DROP DATABASE IF EXISTS `final_pjt`;
 
 CREATE DATABASE IF NOT EXISTS `final_pjt` CHAR SET utf8mb4;
 USE `final_pjt`;
@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `user`(
     -- 최대 5글자, 소수점 아래 2자리까지 (프론트에서 제한 걸어야 함. 오류 방지)
     goalWeight DOUBLE(5, 2),
     nowWeight DOUBLE(5, 2),
+    height DOUBLE(5,2),
     isadmin BOOLEAN DEFAULT FALSE NOT NULL
 );
 
