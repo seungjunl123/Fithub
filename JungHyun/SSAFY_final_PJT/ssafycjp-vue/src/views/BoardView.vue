@@ -1,13 +1,23 @@
 <template>
     <div>
-        <div class="text-center">
-            <h2 class="my-h2 my-underline">BoardView</h2>
+        <TheHeaderNav/>
+        <div class="boardViewContainer">
+            <div>
+                <NavigationDrawer />
+            </div>
+            <div class="text-center">
+            </div>
+            <div class="innerContainer">
+                <br><br><br>
+                <RouterView />
+            </div>
         </div>
-        <RouterView />
     </div>
 </template>
   
 <script setup>
+  import TheHeaderNav from '@/components/common/TheHeaderNav.vue';
+  import NavigationDrawer from '@/components/common/NavigationDrawer.vue';
 </script>
   
 <style scoped>
@@ -15,8 +25,16 @@
     display: inline-block
 }
 
-.my-underline {
-    background: linear-gradient(to top, #54ddff 20%, transparent 30%);
+.boardViewContainer {
+    display: flex;
+    flex-direction: row;
 }
+
+.innerContainer {
+    position: relative;
+    left: -260px;
+    width: 100%;
+}
+
 </style>
   

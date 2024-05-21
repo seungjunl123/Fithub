@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cjp.model.dao.UserDao;
 import com.cjp.model.dto.User;
@@ -29,22 +30,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public void signup(User user) {
 		// 비밀번호 해시화
+		System.out.println("들어온 비밀번호야!!"+user.getPassword());
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userDao.insertUser(user);
 	}
 	
+	
 	@Override
 	public User login(String id, String password) {
-		System.out.println("입력받은 id야!: "+id);
-		System.out.println("입력받은 password야!: "+id);
-		
 		// DB에서 입력받은 id 에 해당하는 유저 정보를 가져와 user 변수에 저장.
 		User user = userDao.selectOne(id);
 		
-		System.out.println("가져온 user 객체: " + user);
-	    System.out.println("DB에서 가져온 비밀번호: " + user.getPassword());
 		
 		// 입력받은 비밀번호와 user 의 비밀번호가 일치하는지 확인
 		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
@@ -70,10 +69,33 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectOne(id);
 	}
 
+//	@Override
+//	@Transactional
+//	public void modifyUserInfo(User user) {
+//		userDao.updateUserInfo(user);
+//	}
+
 	@Override
-	public void modifyUserInfo(User user) {
-		userDao.updateUserInfo(user);
+	@Transactional
+	public void changeUserAge(String id, String field, int changedAge) {
+		userDao.updateUserAge(id,field,changedAge);
+		
 	}
+
+	@Override
+	@Transactional
+	public void changeUserWeight(String id, String field, double changedWeight) {
+		userDao.updateUserWeight(id,field,changedWeight);
+		
+	}
+
+	@Override
+	@Transactional
+	public void changeUserInfo(String id, String field, String changeValue) {
+		userDao.updateUserInfo(id,field,changeValue);
+		
+	}
+
 
 
 }

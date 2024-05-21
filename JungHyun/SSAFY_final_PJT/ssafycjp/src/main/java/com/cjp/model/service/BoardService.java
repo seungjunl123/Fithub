@@ -9,6 +9,9 @@ public interface BoardService {
 	//게시글 전체 조회
 	public List<Board> getBoardList();
 	
+	// 특정 게시판 게시글 조회
+	public List<Board> getBoardListByPostBoardId(int postBoardId);
+	
 	//게시글 상세조회
 	public Board readBoard(int id); //Dao -> 뷰카운트 +1 / 게시글 조회 
 	
@@ -22,17 +25,14 @@ public interface BoardService {
 	public void modifyBoard(Board board);
 	
 	// 추천수 증가
-	public void updateLikeUp(int id);
+	public void updateLikeUp(String userId, int id);
 
 	// 추천수 감소
-	public void updateLikeDown(int id);
-
-	// 비추천수 증가
-	public void updateHateUp(int id);
-
-	// 비추천수 증가
-	public void updateHateDown(int id);
+	public void updateLikeDown(String userId,int id);
 	
 	//게시글 검색
 	public List<Board> search(SearchCondition searchCondition);
+	
+	// 전체 게시판 이름 조회
+	public List<String> getNames();
 }

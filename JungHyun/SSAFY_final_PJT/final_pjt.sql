@@ -1,5 +1,5 @@
 -- 초기화용
--- DROP DATABASE IF EXISTS `final_pjt`;
+DROP DATABASE IF EXISTS `final_pjt`;
 
 CREATE DATABASE IF NOT EXISTS `final_pjt` CHAR SET utf8mb4;
 USE `final_pjt`;
@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `user`(
     -- 최대 5글자, 소수점 아래 2자리까지 (프론트에서 제한 걸어야 함. 오류 방지)
     goalWeight DOUBLE(5, 2),
     nowWeight DOUBLE(5, 2),
+    height DOUBLE(5,2),
     isadmin BOOLEAN DEFAULT FALSE NOT NULL
 );
 
@@ -46,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `category`(
 -- 게시글
 CREATE TABLE IF NOT EXISTS `board`(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    -- 게시글 종류 (말머리) 기본값 0 (일반 게시글)
-    category TINYINT DEFAULT 0 NOT NULL,
+    -- 게시글 종류 (말머리) 기본값 1 (일반 게시글)
+    category TINYINT DEFAULT 1 NOT NULL,
     postboard_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     content MEDIUMTEXT NOT NULL,
@@ -58,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `board`(
     FOREIGN KEY (writer) REFERENCES `user`(id),
     FOREIGN KEY (postboard_id) REFERENCES `postboard`(id)
 );
+
 
 -- 댓글
 CREATE TABLE IF NOT EXISTS `reply`(
@@ -135,14 +137,32 @@ DELIMITER ;
 -- 테스트용 데이터 입력
 INSERT INTO `user` (name, id, email, password, age, sex) VALUES 
 -- 암호화 전 비밀번호 : test
-('테스트싸피', 'test', 'test@sfy.com', '$10$aaBS7ZjR0uHIqqqxPDRmj.NDgYmNho884mIIF.ZYCCE0hmt1pVRMC', 20, 'M');
+('테스트싸피', 'test', 'test@sfy.com', '$2a$10$AG3BLKDrxeZaN5RMiHtZpeWEgCISlvI1diNLEojDReuHx6M/f9vY.', 20, 'M');
 
--- delete from user where id = 'ssafy1';
+-- delete from user where id = 'ssafy';
 
 INSERT INTO `postboard` (title) VALUES ('게시판1'), ('게시판2');
 
 INSERT INTO `category` (postboard_id, name) VALUES
 (1, '일반'), (1, '공지'), (1, '질문'), (2, '일반'), (2, '공지');
+
+INSERT INTO `board` (category, postboard_id, title, content, writer) VALUES
+( 2, 1, "게시판1 공지사항입니다.", "ㅎㅇㅎㅇ~", "test"),
+( 1, 1, "안녕하세요~~", "ㅎㅇㅎㅇ~", "test"),
+( 1, 1, "ㅎㅇㅎㅇ", "하이하이", "test"),
+( 1, 1, "점심메뉴추천좀", "ㅎㅇㅎㅇ~", "test"),
+( 1, 1, "123456789", "ㅎㅇㅎㅇ~", "test"),
+( 1, 1, "일반게시판입니다!", "ㅎㅇㅎㅇ~", "test"),
+( 1, 1, "ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹ", "ㅎㅇㅎㅇ~", "test"),
+( 3, 1, "질문있어요!!", "ㅎㅇㅎㅇ~", "test"),
+( 2, 2, "게시판2 공지사항입니다.", "ㅎㅇㅎㅇ~", "test"),
+( 1, 2, "안녕하세요~", "ㅎㅇㅎㅇ~", "test"),
+( 1, 2, "ㅎㅇㅎㅇㅎㅇㅎㅇㅎㅇ", "ㅎㅇㅎㅇ~", "test"),
+( 1, 2, "일반 게시판입니다!", "ㅎㅇㅎㅇ~", "test"),
+( 1, 2, "안 녕 하 세 요", "ㅎㅇㅎㅇ~", "test"),
+( 1, 2, "123456789", "ㅎㅇㅎㅇ~", "test");
+
+-- delete from `board` where id = 1;
 
 SELECT * FROM `user`;
 SELECT * FROM `postboard`;
