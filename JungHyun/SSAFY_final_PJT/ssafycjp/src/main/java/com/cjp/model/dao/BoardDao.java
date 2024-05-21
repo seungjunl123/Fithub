@@ -8,6 +8,9 @@ import com.cjp.model.dto.SearchCondition;
 public interface BoardDao {
 	// 전체 게시글을 조회
 	public List<Board> selectAll();
+	
+	// 특정 게시판 게시글 조회
+	public List<Board> selectByPostBoardId(int postBoardId);
 
 	// ID에 해당하는 게시글 하나 가져오기
 	public Board selectOne(int id);
@@ -25,12 +28,15 @@ public interface BoardDao {
 	public void updateViewCnt(int id);
 
 	// 추천수 증가
-	public void upLike(int id);
+	public void upLike(String UserId,int boardId);
 
 	// 추천수 감소
-	public void downLike(int id);
+	public void downLike(String UserId,int boardId);
 
 	// 검색 기능
 	public List<Board> search(SearchCondition searchCondition);
+	
+	// 모든 게시판의 이름 목록 가져오기
+	public List<String> getPostboardNames();
 
 }

@@ -1,20 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import YoutubeView from '@/views/YoutubeView.vue'
-import BoardView from '@/views/BoardView.vue'
+import HomeView from '@/views/HomeView.vue'
+import SignupView from '@/views/SignupView.vue'
+import MyPageView from '@/views/MyPageView.vue'
+import MainView from '@/views/MainView.vue'
 
 import BoardCreate from '@/components/board/BoardCreate.vue'
 import BoardList from '@/components/board/BoardList.vue'
 import BoardUpdate from '@/components/board/BoardUpdate.vue'
 import BoardDetail from '@/components/board/BoardDetail.vue'
 
-import KakaoView from '@/views/KakaoView.vue'
-
-import TmdbView from '@/views/TmdbView.vue'
-import TmdbPopular from '@/components/tmdb/TmdbPopular.vue'
-import TmdbTopRated from '@/components/tmdb/TmdbTopRated.vue'
-import UserLogin from '@/components/user/UserLogin.vue'
-
+import Error401 from '@/views/Error401.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,65 +20,91 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/youtube',
-      name: 'youtube',
-      component: YoutubeView
+      path: '/signup',
+      name: 'signup',
+      component: SignupView
     },
     {
-      path: '/board',
-      name: 'board',
-      component: BoardView,
+      path: '/mypage',
+      name: 'mypage',
+      component: MyPageView
+    },
+    {
+      path: '/401',
+      name: 'Error401',
+      component: Error401
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: MainView,
       children: [
-        {
-          path: '',
-          name: 'boardList',
-          component: BoardList
+        { 
+          path: '', 
+          name: 'allBoardList', 
+          component: BoardList,
         },
-        {
-          path: 'create',
-          name: 'boardCreate',
-          component: BoardCreate
+        { 
+          path: 'board/:postboardId', 
+          name: 'boardList', 
+          component: BoardList,
         },
-        {
-          path: 'update',
-          name: 'boardUpdate',
-          component: BoardUpdate
+        { 
+          path: 'create', 
+          name: 'boardCreate', 
+          component: BoardCreate 
         },
-        {
-          path: ':id',
-          name: 'boardDetail',
-          component: BoardDetail
+        { 
+          path: 'update/:id', 
+          name: 'boardUpdate', 
+          component: BoardUpdate 
         },
-      ]
+        { 
+          path: 'detail/:id', 
+          name: 'boardDetail', 
+          component: BoardDetail 
+        },
+      ],
     },
-    {
-      path: "/kakao",
-      name: "kakao",
-      component: KakaoView
-    },
-    {
-      path: "/tmdb",
-      name: "tmdb",
-      component: TmdbView,
-      children: [
-        {
-          path: "popular",
-          name: "tmdbPopular",
-          component: TmdbPopular
-        },
-        {
-          path: "toprated",
-          name: "tmdbTopRated",
-          component: TmdbTopRated
-        }
-      ]
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: UserLogin
-    }
+    // {
+    //   path: '/board',
+    //   name: 'board',
+    //   component: BoardView,
+    //   children: [
+    //     {
+    //       path: '',
+    //       name: 'boardList',
+    //       component: BoardList
+    //     },
+    //     {
+    //       path: 'create',
+    //       name: 'boardCreate',
+    //       component: BoardCreate
+    //     },
+    //     {
+    //       path: 'update',
+    //       name: 'boardUpdate',
+    //       component: BoardUpdate
+    //     },
+    //     {
+    //       path: ':id',
+    //       name: 'boardDetail',
+    //       component: BoardDetail
+    //     },
+    //   ]
+    // },
   ]
 })
+
+// 라우터 가드
+// 유효 토큰 검증해서 로그인 되어 있는 상태면 로그인 페이지로 가지 못하게끔 한다.
+router.beforeEach((to, from, next) => {
+  const token = sessionStorage.getItem('Authorization');
+  if (to.name === 'home' && token) {
+    next({ name: 'main' });
+  } else {
+    next();
+  }
+});
 
 export default router

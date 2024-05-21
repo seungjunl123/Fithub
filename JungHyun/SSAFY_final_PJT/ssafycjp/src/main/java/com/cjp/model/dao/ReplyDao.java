@@ -14,8 +14,8 @@ public interface ReplyDao {
 	// 댓글 삭제
 	public void deleteReply(int id);
 	// 댓글 추천수 증가
-	public void likeUp(int id);
+	public void likeUp(String userId,int replyId);
 	// 댓글 추천수 감소
-	public void LikeDown(int id);
+	public void LikeDown(String userId,int replyId);
 	// 끝
 }

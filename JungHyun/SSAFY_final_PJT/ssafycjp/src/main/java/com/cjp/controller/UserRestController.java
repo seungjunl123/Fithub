@@ -1,19 +1,26 @@
 package com.cjp.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cjp.model.dto.User;
 import com.cjp.model.service.UserService;
@@ -24,16 +31,18 @@ import com.cjp.util.JwtUtil;
 public class UserRestController {
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
-
+	private final ResourceLoader resourceLoader;
 	@Autowired
 	private JwtUtil jwtUtil;
+	
 	
 	@Autowired
 	private UserService userService;
 
 	
-	public UserRestController(UserService userService) {
+	public UserRestController(UserService userService, ResourceLoader resourceLoader) {
 		this.userService = userService;
+		this.resourceLoader = resourceLoader;
 	}
 
 	// 로그인
@@ -42,7 +51,7 @@ public class UserRestController {
 		System.out.println("로그인 시도: " + user.getId());
 		HttpStatus status = null;
 		Map<String, Object> result = new HashMap<>();
-
+		
 		// 사용자 인증
 		User checkUser = userService.login(user.getId(), user.getPassword());
 
@@ -51,14 +60,12 @@ public class UserRestController {
 		if (checkUser != null) {
 			// 토큰 생성
 			String token = jwtUtil.createToken(checkUser.getId());
-			result.put("성공!", SUCCESS);
-//			HttpHeaders headers = new HttpHeaders();
-//			headers.add("access-token", token);
+			result.put("success", SUCCESS);
 			result.put("access-token", token);
 			status = HttpStatus.OK;
 			return new ResponseEntity<>(result, status);
 		} else {
-			result.put("실패!", FAIL);
+			result.put("fail", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
 		return new ResponseEntity<>(result, status);
@@ -75,16 +82,45 @@ public class UserRestController {
 			return new ResponseEntity<>("이미 있는 아이디입니다", HttpStatus.CONFLICT);
 		}
 	}
+	// 회원 가입할 때 이미지 들고오기
+	@PostMapping("/userImg")
+	public ResponseEntity<?> userImgUpload(@RequestParam("userId") String id,@RequestParam("file") MultipartFile file, Model model) throws IllegalStateException, IOException {
+		if (file != null && file.getSize() > 0) {
+//			String fileName = file.getOriginalFilename();
+			String fileName = id+".jpg";
+			 String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/upload";  // 애플리케이션 루트 디렉토리를 기준으로 설정
+	        File uploadPath = new File(uploadDir);
+	
+			 if (!uploadPath.exists()) {
+		            uploadPath.mkdirs();  // 디렉토리가 존재하지 않으면 생성
+		        }
+			File destinationFile = new File(uploadPath, fileName);
+			file.transferTo(destinationFile);
+			model.addAttribute("fileName", fileName);
+		}
+		return new ResponseEntity<>("Signup successful", HttpStatus.OK);
+	}
 
 	// 유저 정보 조회
-	@GetMapping("/{id}")
-	public ResponseEntity<User> userInfo(@PathVariable("id") String id) {
-		System.out.println("들어왔어!");
-		User user = userService.search(id);
-		System.out.println(user);
-		return new ResponseEntity<User>(user, HttpStatus.OK);
-
-	}
+	@GetMapping("/info")
+    public ResponseEntity<User> getUserInfo(@RequestHeader("Authorization") String token) {
+        String id = jwtUtil.getIdFromToken(token);
+        System.out.println(id);
+        User user = userService.search(id);
+        System.out.println(user.getId());
+        // 감춰야 할 정보는 여기서 제거 가능! (ex. 비밀번호 부분을 null 값으로 변경)
+        user.setPassword(null);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+	
+//	@GetMapping("/{id}")
+//	public ResponseEntity<User> userInfo(@PathVariable("id") String id) {
+//		System.out.println("들어왔어!");
+//		User user = userService.search(id);
+//		System.out.println(user);
+//		return new ResponseEntity<User>(user, HttpStatus.OK);
+//
+//	}
 	
 	// 테스트용
 	@GetMapping("/getList")
@@ -92,6 +128,28 @@ public class UserRestController {
 		List<User> list = userService.getUserList();
 		System.out.println(list);
 		return new ResponseEntity<>(list, HttpStatus.OK);
+
+	}
+	
+	// 회원 정보 수정
+	@PutMapping("/changeInfo")
+	public ResponseEntity<?> changeInfo(@RequestBody Map<String, String> params) {
+	    String id = params.get("userId");
+	    String field = params.get("field");
+	    String changeValue = params.get("changeValue");
+		
+
+		if(field.equals("age")) {
+			int changedAge = Integer.parseInt(changeValue);
+			userService.changeUserAge(id,field,changedAge);
+		} else if(field.equals("goalWeight")||field.equals("nowWeight")) {
+			double changedWeight = Double.parseDouble(changeValue);
+			userService.changeUserWeight(id,field,changedWeight);
+		} else {
+			userService.changeUserInfo(id,field,changeValue);
+		}
+		
+		 return new ResponseEntity<>(HttpStatus.OK);
 
 	}
 

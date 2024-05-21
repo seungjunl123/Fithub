@@ -8,6 +8,37 @@
 		SELECT * FROM board;
 	</select>
 	
+	<!-- 특정 게시판 게시글 조회 -->
+	<select id="selectByPostBoardId" resultType="Board">
+		SELECT * FROM board WHERE postboard_id = #{postBoardId};
+	</select>
+	
+	<!-- 전체 게시판 이름 리스트 조회 -->
+	<select id="getPostboardNames">
+		SELECT title FROM postboard;
+	</select>
+	
+	<!-- 말머리도 가져오도록 했어! -->
+<!-- 	<select id="selectAll" resultType="Board">
+		SELECT
+			b.id,
+    		b.category,
+    		c.name AS categoryName,
+    		b.postboard_id,
+    		b.title,
+    		b.content,
+    		b.writer,
+    		b.like,
+    		b.regDate,
+    		b.viewCnt
+		FROM 
+    		board board
+		JOIN 
+   			category c ON b.category = c.category AND b.postboard_id = c.postboard_id
+		WHERE 
+    		b.id = #{id}
+	</select> -->
+	
 	<!-- 게시글 선택 -->
 	<select id="selectOne" parameterType="int" resultType="Board">
 		SELECT * FROM board WHERE id = #{id};
@@ -15,8 +46,8 @@
 	
 	<!-- 게시글 등록 -->
 	<insert id="insertBoard" parameterType="Board">
-		INSERT INTO board (boardType,title,content,writer,regDate)
-		VALUES (#{boardType},#{title},#{content},#{writer},#{regDate});
+		INSERT INTO board (postboard_id,category,title,content,writer,regDate)
+		VALUES (#{postBoardId},#{category},#{title},#{content},#{writer},#{regDate});
 	</insert>
 	
 	<!-- 게시글 삭제 -->
@@ -26,10 +57,11 @@
 	
 	<!-- 게시글 수정 -->
 	<update id="updateBoard" parameterType="Board">
-		UPDATE board SET 
+		UPDATE board SET
+		postboard_id = #{postBoardId},
+		category = #{category},
 		title = #{title},
 		content = #{content},
-		regDate = #{regDate}
 		WHERE id=#{id}
 	</update>
 	
@@ -41,17 +73,30 @@
 	</update>
 	
 	<!-- 추천수 증가 -->
-	<update id="upLike" parameterType="int">
-		UPDATE board SET 
-		like = like+1
-		WHERE id=#{id}
+	<update id="upLike">
+		INSERT IGNORE INTO board_likes (board_id, user_id)
+        VALUES (#{boardId}, #{userId});
+        
+        UPDATE board
+        SET like = (
+            SELECT COUNT(*)
+            FROM board_likes
+            WHERE board_id = #{boardId}
+        )
+        WHERE id = #{boardId};
 	</update>
 	
 	<!-- 추천수 감소 -->
 	<update id="downLike" parameterType="int">
-		UPDATE board SET 
-		SET like = like-1
-		WHERE id=#{id}
+		DELETE FROM board_likes WHERE board_id = #{boardId} AND user_id = #{userId};
+		
+		UPDATE board
+        SET like = (
+            SELECT COUNT(*)
+            FROM board_likes
+            WHERE board_id = #{boardId}
+        )
+        WHERE id = #{boardId};
 	</update>
 	
 	<!-- 게시글 검색 -->

@@ -1,6 +1,7 @@
 package com.cjp.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -16,6 +17,7 @@ public class Board {
 	private int like;
 	private LocalDateTime regDate;
 	private int viewCnt;
+
 	
 	public Board() {
 		

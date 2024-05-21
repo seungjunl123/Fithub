@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h4>게시글 목록</h4>
+    <h4>{{ postboardId }}게시글 목록</h4>
     <hr />
     <BoardSearchInput />
     <table class="table table-hover text-center">
@@ -14,7 +14,7 @@
       <tr v-for="board in currentPageBoardList" :key="board.id">
         <td>{{ board.id }}</td>
         <td>
-          <RouterLink :to="`/board/${board.id}`">{{ board.title }}</RouterLink>
+          <RouterLink :to="`/main/board/${board.id}`">{{ board.title }}</RouterLink>
         </td>
         <td>{{ board.writer }}</td>
         <td>{{ board.viewCnt }}</td>
@@ -58,13 +58,40 @@
 
 <script setup>
 import { useBoardStore } from '@/stores/board';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import BoardSearchInput from './BoardSearchInput.vue';
 
-const store = useBoardStore();
+const props = defineProps({
+  postboardId: {
+    type : Number,
+    default : null,
+  }
+})
+
+const store = useBoardStore()
+
+const fetchBoards = (boardId) => {
+  if (boardId !== null) {
+    console.log("postboardId: " + boardId)
+    store.getBoardList(boardId)
+  } else {
+    store.getBoardList() // 모든 게시글 가져오기
+  }
+}
+
 onMounted(() => {
-  store.getBoardList();
-});
+  console.log("Boardlist 들어왔어!!"+props.postboardId)
+  fetchBoards(props.postboardId)
+})
+
+watch(
+  () => props.postboardId,
+  (newValue) => {
+    console.log("newValue: " + newValue);
+    fetchBoards(newValue);
+  },
+  { immediate: true }
+);
 
 const perPage = 5;
 const currentPage = ref(1);

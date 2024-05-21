@@ -11,6 +11,7 @@ public class User {
 	private int age;
 	private String img;
 	private String sex;
+	private double height;
 	private double goalWeight;
 	private double nowWeight;
 	
@@ -24,7 +25,7 @@ public class User {
 	}
 	
 	public User(String name, String id,String email, String password, int age, String img, String sex, double goalWeight,
-			double nowWeight) {
+			double nowWeight,double height) {
 		this.name = name;
 		this.id = id;
 		this.email = email;
@@ -34,6 +35,15 @@ public class User {
 		this.sex = sex;
 		this.goalWeight = goalWeight;
 		this.nowWeight = nowWeight;
+		this.height = height;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
 	}
 
 	public String getName() {
@@ -110,11 +120,10 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", id=" + id + ", password=" + password + ", age=" + age + ", img=" + img
-				+ ", sex=" + sex + ", goalWeight=" + goalWeight + ", nowWeight=" + nowWeight + "]";
+		return "User [name=" + name + ", id=" + id + ", email=" + email + ", password=" + password + ", age=" + age
+				+ ", img=" + img + ", sex=" + sex + ", height=" + height + ", goalWeight=" + goalWeight + ", nowWeight="
+				+ nowWeight + "]";
 	}
 
-	
-	
 	
 }
