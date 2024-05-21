@@ -1,5 +1,5 @@
 -- 초기화용
-DROP DATABASE IF EXISTS `final_pjt`;
+-- DROP DATABASE IF EXISTS `final_pjt`;
 
 CREATE DATABASE IF NOT EXISTS `final_pjt` CHAR SET utf8mb4;
 USE `final_pjt`;
@@ -173,3 +173,19 @@ SELECT * FROM `rereply`;
 SELECT * FROM `board_likes`;
 SELECT * FROM `reply_likes`;
 SELECT * FROM `exercise`;
+
+SELECT
+			b.id,
+    		b.category,
+    		c.name AS categoryName,
+    		b.postboard_id,
+    		b.title,
+    		b.content,
+    		b.writer,
+    		b.like,
+    		b.regDate,
+    		b.viewCnt
+		FROM 
+    		board b
+		JOIN 
+   			category c ON b.category = c.category AND b.postboard_id = c.postboard_id;

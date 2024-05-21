@@ -2,12 +2,10 @@
   <v-app>
     <TheHeaderNav @go-main="goMain" />
     <div class="main-layout">
-      <NavigationDrawer :postboardNames="postboardNames" @select-board="selectBoard" />
-      <h1 v-if="currentBoardId">{{ currentBoardId }} 번 게시판이야!!</h1>
-      <h1 v-if="currentBoardId === null">{{ currentBoardId }} 메인 게시판이야!!</h1>
+      <NavigationDrawer :postboardNames="postboardNames" @select-board="selectBoard" /> 
       <div class="content">
-        <RouterView :postboardId="currentBoardId" :key="routerKey" />
-        <h1>BoardList 가져왔어!</h1>
+        <BoardList v-if="initialLoad" :postboardId="currentBoardId" :postboardNames="postboardNames" />
+        <RouterView v-else :postboardId="currentBoardId" :postboardNames="postboardNames" :key="routerKey" />
       </div>
     </div>
 
@@ -28,14 +26,17 @@ const currentBoardId = ref(null)
 const routerKey = ref('main')
 const route = useRoute()
 const router = useRouter()
+const initialLoad = ref(true)
 
 const selectBoard = (boardId) => {
+  initialLoad.value = false
   currentBoardId.value = boardId
   routerKey.value = `board-${boardId}`
   router.push({ name: 'boardList', params: { postboardId: boardId } })
 }
 
 const goMain = () => {
+  initialLoad.value = false
   currentBoardId.value = null
   routerKey.value = 'main'
   router.push({ name: 'main' })
@@ -45,21 +46,22 @@ onMounted(async () => {
   await store.fetchPostboardNames()
   postboardNames.value = store.postboardNames
   if (route.name === 'main' && !route.params.postboardId) {
-    // 처음 로드 시에 모든 게시글 가져오기
     currentBoardId.value = null
     routerKey.value = 'main'
-    store.getBoardList() // 모든 게시글 가져오기
+    store.getBoardList()
     nextTick(() => {
-      showInitialMessage.value = true
+      initialLoad.value = false
     })
+  } else {
+    initialLoad.value = false
   }
 })
 
 watch(
   () => route.params.postboardId,
   (newPostboardId) => {
-    currentBoardId.value = newPostboardId;
-    routerKey.value = `board-${newPostboardId}`;
+    currentBoardId.value = newPostboardId
+    routerKey.value = `board-${newPostboardId}`
   },
   { immediate: true }
 )

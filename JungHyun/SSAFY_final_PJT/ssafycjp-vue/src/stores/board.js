@@ -75,12 +75,16 @@ export const useBoardStore = defineStore('board', () => {
     })
   }
 
-  const updateBoard = function () {
-    axiosInstance.put(REST_BOARD_API, board.value)
-      .then(() => {
-      router.push({name: 'boardList'})
-    })
-  }
+  // 게시글 수정
+  const updateBoard = async function () {
+    try {
+        console.log('Updating board with data:', board.value); // 디버깅용 로그 추가
+        await axiosInstance.put(`${REST_BOARD_API}/${board.value.id}`, board.value);
+        router.back();
+    } catch (error) {
+        console.error('게시글을 수정하는 데 실패했습니다:', error);
+    }
+}
 
   const searchBoardList = function (searchCondition) {
     axiosInstance.get(REST_BOARD_API, {
@@ -91,68 +95,26 @@ export const useBoardStore = defineStore('board', () => {
     })
   }
 
-  // 인터셉터 사용으로 토큰 검증이 필요한 요청들 쉽게 설정 가능!
-  // const createBoard = function (board) {
-  //   axios({
-  //     url: REST_BOARD_API,
-  //     method: 'POST',
-  //     // 아래 작업하지 않아도 그냥 JSON 형태로 Content-type을 결정해서 보내버림
-  //     // headers: {
-  //     //   "Content-Type": "applcation/json"
-  //     // },
-  //     data: board
-  //   })
-  //     .then(() => {
-  //       router.push({name: 'boardList'})
-  //     })
-  //     .catch((err) => {
-  //     console.log(err)
-  //   })
-  // }
+  // 게시글 삭제
+  const deleteBoard = function (id) {
+    return axiosInstance.delete(`${REST_BOARD_API}/${id}`)
+  }
 
-  // const boardList = ref([])
-  // const getBoardList = function () {
-  //   axios.get(REST_BOARD_API, {
-  //     headers: {
-  //       // 토큰 있는지 확인
-  //       'access-token': sessionStorage.getItem('access-token')
-  //     }
-  //   })
-  //     .then((response) => {
-  //     boardList.value = response.data
-  //   })
-  // }
+  // 댓글 가져오기
+  const getReplies = async (boardId) => {
+    const response = await axiosInstance.get(`${REST_BOARD_API}/${boardId}/reply`)
+    return response.data
+  }
 
-  // const board = ref({})
+  // 댓글 작성
+  const addReply = async (boardId, content) => {
+    await axiosInstance.post(`${REST_BOARD_API}/${boardId}/reply`, { content })
+  }
 
-  // const getBoard = function (id) {
-  //   axios.get(`${REST_BOARD_API}/${id}`)
-  //     .then((response) => {
-  //     board.value = response.data
-  //   })
-  // }
+  // 댓글 삭제
+  const deleteReply = async (replyId) => {
+    await axiosInstance.delete(`${REST_BOARD_API}/reply/${replyId}`)
+  }
 
-  // const updateBoard = function () {
-  //   axios.put(REST_BOARD_API, board.value)
-  //     .then(() => {
-  //     router.push({name: 'boardList'})
-  //   })
-  // }
-
-  // const searchBoardList = function (searchCondition) {
-  //   axios.get(REST_BOARD_API, {
-  //     params: searchCondition
-  //   })
-  //     .then((res) => {
-  //     boardList.value = res.data
-  //   })
-  // }
-
-
-
-
-
-
-
-  return { createBoard, boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, }
+  return { createBoard, boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, }
 })

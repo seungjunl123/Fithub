@@ -68,7 +68,7 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: 0 20px; /* 좌우 패딩 추가 */
-  background-color: #7fcdcd; /* 밝은 파스텔 색상 */
+  background-color: #9fe4e4;
 }
 
 .nav-left {

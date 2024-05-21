@@ -48,7 +48,6 @@ public class BoardRestController {
 	// 게시글 전체 조회
 	@GetMapping("/board")
 	public ResponseEntity<?> list() {
-		System.out.println("전체 게시글 조회 !!!!!!!!!!!!");
 		List<Board> list = boardService.getBoardList(); // 전체조회
 		return new ResponseEntity<List<Board>>(list, HttpStatus.OK);
 	}
@@ -104,16 +103,15 @@ public class BoardRestController {
 	@PutMapping("/board/{id}")
 	public ResponseEntity<Void> update(@PathVariable("id") int id, @RequestBody Board board) {
 		board.setId(id);
+		System.out.println("컨트롤러 게시글 수정 들어옴!");
+		System.out.println(board);
 		boardService.modifyBoard(board); // id를 따로 보내왔다면 바구니(DTO)에 넣어놓고 보내자
 		return new ResponseEntity<Void>(HttpStatus.OK); // 조금 더 세밀하게 컨트롤 할 수도 있다.
 	}
 
 	// 게시글 삭제
-	@Hidden
 	@DeleteMapping("/board/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") int id) {
-		// 반환값에 따라서 실제로 지워졌는지 or 내가 없는 글을 지우려고 하지는 않는지... 등의 상황에따라
-		// 응답코드가 바뀌면 프론트에서 처리하기가 더욱 수월해 지겠다.!
 		boardService.removeBoard(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

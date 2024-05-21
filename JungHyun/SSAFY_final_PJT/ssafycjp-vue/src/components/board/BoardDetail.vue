@@ -1,57 +1,119 @@
 <template>
-    <div class="container">
-        <h4>게시글 상세</h4>
-        <hr />
-        <div class="d-flex justify-content-center">
-            <div class="card" style="width: 30rem">
-                <div class="card-body">
-                    <div class="mb-3 d-flex justify-content-between align-items-center">
-                        <h4 class="card-title">{{ store.board.title }} <span class="badge bg-danger">{{ store.board.viewCnt
-                        }}</span></h4>
-                        <div class="d-flex justify-content-end">
-                            <h6 class="card-subtitle mx-3 text-body-secondary">{{ store.board.writer }}</h6>
-                            <h6 class="card-subtitle text-body-secondary">{{ store.board.regDate }}</h6>
-                        </div>
-                    </div>
-                    <p class="card-text ">
-                        {{ store.board.content }}
-                    </p>
-                    <div class="d-flex justify-content-center">
-                        <button class="mx-3 btn btn-outline-success" @click="moveUpdate">수정</button>
-                        <button class="mx-3 btn btn-outline-danger" @click="deleteBoard">삭제</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="container my-5">
+    <div class="post-details">
+      <h2 class="post-title">{{ board.title }}</h2>
+      <div class="post-meta">
+        <span class="post-writer">작성자 : {{ board.writer }}</span>
+        <span class="post-info">
+          <span class="post-date">{{ formatDate(board.regDate) }}</span>
+          <span class="post-views">조회수: {{ board.viewCnt }}</span>
+        </span>
+      </div>
+      <hr />
+      <div class="post-content">
+        <p>{{ board.content }}</p>
+      </div>
+      <hr />
+      <div class="post-actions">
+        <button class="btn btn-outline-secondary" @click="moveUpdate">수정</button>
+        <button class="btn btn-outline-danger" @click="deleteBoard">삭제</button>
+      </div>
+      <hr/>
+      <ReplyList :boardId="board.id" />
     </div>
+  </div>
 </template>
-  
+
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
-import { useBoardStore } from "@/stores/board";
-import axios from "axios";
-const route = useRoute();
-const router = useRouter();
-const store = useBoardStore();
+import { useRoute, useRouter } from 'vue-router'
+import { computed, onMounted } from 'vue'
+import { useBoardStore } from '@/stores/board'
+import ReplyList from '@/components/Reply/ReplyList.vue'
+
+const route = useRoute()
+const router = useRouter()
+const store = useBoardStore()
+
+const board = computed(() => store.board)
+
+const fetchBoardDetails = async () => {
+  try {
+    await store.getBoard(route.params.id)
+    console.log("Fetched board data:", store.board) // 디버깅용 로그
+  } catch (error) {
+    console.error('게시글 정보를 가져오는 데 실패했습니다:', error)
+  }
+}
+
+const moveUpdate = () => {
+  router.push({ name: 'boardUpdate', params: { id: route.params.id } })
+}
+
+const deleteBoard = async () => {
+  try {
+    await store.deleteBoard(route.params.id)
+    router.go(-1)
+  } catch (error) {
+    console.error('게시글 삭제에 실패했습니다:', error)
+  }
+}
+
+const formatDate = (dateArray) => {
+  if (!dateArray || !Array.isArray(dateArray)) return ''
+  const [year, month, day, hour, minute, second] = dateArray
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`
+}
 
 onMounted(() => {
-    store.getBoard(route.params.id);
-});
-
-const moveUpdate = function () {
-    router.push({ name: "boardUpdate" });
-};
-
-const deleteBoard = function () {
-    axios
-        .delete(`http://localhost:8080/api/board/${route.params.id}`)
-        .then(() => {
-            router.push({ name: "boardList" });
-        })
-        .catch(() => { });
-};
+  fetchBoardDetails()
+})
 </script>
-  
-<style scoped></style>
-  
+
+<style scoped>
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.post-details {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.post-meta .post-info {
+  display: flex;
+  gap: 10px;
+}
+
+.post-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.post-actions .btn {
+  font-size: 0.9rem;
+}
+</style>
