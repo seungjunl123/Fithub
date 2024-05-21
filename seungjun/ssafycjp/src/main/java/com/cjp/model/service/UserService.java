@@ -21,5 +21,12 @@ public interface UserService {
 	public User search(String id);
 	
 	// 회원 정보 수정
-	public void modifyUserInfo(User user);
+//	public void modifyUserInfo(User user);
+
+	// 이게 진짜 회원 정보 수정
+	public void changeUserAge(String id, String field, int changedAge);
+
+	public void changeUserWeight(String id, String field, double changedWeight);
+
+	public void changeUserInfo(String id, String field, String changeValue);
 }

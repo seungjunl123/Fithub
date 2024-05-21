@@ -10,7 +10,6 @@ export const useUserStore = defineStore('user', () => {
   const loginUserId = ref(null)
   
   const userLogin = async (id, password) => {
-    console.log("로그인 들어왔어!")
     try {
       const response = await axios.post(`${REST_USER_API}/login`, {
         id: id,
@@ -126,9 +125,7 @@ export const useUserStore = defineStore('user', () => {
   const getUserInfoFromToken = async () => {
     try {
       const token = sessionStorage.getItem('Authorization')
-      console.log(token)
       if (token) {
-        console.log("토큰이 있네!")
         const response = await axiosInstance.get(`${REST_USER_API}/info`, {
           headers: { Authorization: `Bearer ${token}` }
         })

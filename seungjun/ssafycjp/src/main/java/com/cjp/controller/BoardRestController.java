@@ -74,8 +74,10 @@ public class BoardRestController {
 
 	// 게시글 등록 (Form 형식으로 넘어왔을 때)
 	@PostMapping("/board")
-	public ResponseEntity<?> write(@RequestBody Board board) {
+	public ResponseEntity<?> write(@RequestBody Board board,/*이거 뭐야!!!*/String token) {
 		// 등록한 게시글을 보냈는데
+		String userId = jwtUtil.getIdFromToken(token);
+		board.setWriter(userId);
 		boardService.writeBoard(board);
 		// 등록이 되어있는지 눈으로 Talend API 보려고 이렇게 보낸거지
 		// 실제로 프론트에게 보낼때는 크게 의미는 없다! ID만 보내서 디테일 쏘던지 바로 목록으로가면 필요없다!
@@ -84,7 +86,6 @@ public class BoardRestController {
 	}
 
 	// 게시글 수정 (JSON형태로 보낸다)
-//	@PutMapping("/board")
 	@PutMapping("/board/{id}")
 	public ResponseEntity<Void> update(@PathVariable("id") int id, @RequestBody Board board) {
 		board.setId(id);
