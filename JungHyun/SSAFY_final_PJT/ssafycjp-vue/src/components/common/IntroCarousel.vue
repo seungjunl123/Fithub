@@ -1,7 +1,7 @@
 <template>
-  <v-carousel :show-arrows="false">
+  <v-carousel :show-arrows="false" height="600">
     <v-carousel-item
-      v-for="(item,i) in items"
+      v-for="(item, i) in items"
       :key="i"
       :src="item.src"
       cover
@@ -10,28 +10,28 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        items: [
-          {
-            src: '@/assets/carousel1.png',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-          },
-        ],
-      }
-    },
-  }
+import Main1 from '@/assets/Main1.jpg';
+import Main2 from '@/assets/Main2.jpg';
+import Main3 from '@/assets/Main3.jpg';
+
+export default {
+  data () {
+    return {
+      items: [
+        {
+          src: Main1,
+        },
+        {
+          src: Main2,
+        },
+        {
+          src: Main3,
+        },
+      ],
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-
 </style>

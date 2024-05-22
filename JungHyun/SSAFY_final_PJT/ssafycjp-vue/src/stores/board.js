@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axiosInstance from '@/utils/interceptor'
 import router from '@/router'
-
+                                                            
 const REST_BOARD_API = `http://localhost:8080/api-board/board`
 
 export const useBoardStore = defineStore('board', () => {
