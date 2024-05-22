@@ -144,6 +144,18 @@ export const useBoardStore = defineStore('board', () => {
     }
   }
 
+  // 사용자의 게시글 좋아요 여부 확인
+  const checkIfUserLikedBoard = async (boardId) => {
+    try {
+        const token = sessionStorage.getItem('Authorization');
+        const response = await axiosInstance.get(`${REST_BOARD_API}/${boardId}/liked`, { headers: { Authorization: token } });
+        return response.data;
+    } catch (error) {
+        console.error('좋아요 상태를 확인하는 데 실패했습니다:', error);
+        return false;
+    }
+  }
+
   return {
     createBoard,
     boardList,
@@ -161,6 +173,7 @@ export const useBoardStore = defineStore('board', () => {
     likeBoard,
     dislikeBoard,
     fetchCategoriesByPostBoardId,
+    checkIfUserLikedBoard,
     categories,
   }
 })
