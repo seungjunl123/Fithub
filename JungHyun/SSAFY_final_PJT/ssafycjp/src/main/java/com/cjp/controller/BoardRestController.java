@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,6 @@ import com.cjp.model.service.ReplyService;
 import com.cjp.model.service.RereplyService;
 import com.cjp.util.JwtUtil;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +35,8 @@ public class BoardRestController {
 	private final BoardService boardService;
 	private final ReplyService replyService;
 	private final RereplyService rereplyService;
-	
+
+	@Autowired
 	public JwtUtil jwtUtil;
 
 	@Autowired
@@ -51,27 +52,33 @@ public class BoardRestController {
 		List<Board> list = boardService.getBoardList(); // 전체조회
 		return new ResponseEntity<List<Board>>(list, HttpStatus.OK);
 	}
-	
+
 	// 게시판 id에 해당하는 게시글 조회
 	@GetMapping("/board/{postBoardId}")
 	public ResponseEntity<?> getBoardsByPostBoardId(@PathVariable("postBoardId") int postBoardId) {
-		System.out.println(postBoardId + "번 게시판 게시글 조회!!!!!!!!!!!");
 		List<Board> list = boardService.getBoardListByPostBoardId(postBoardId);
 		return new ResponseEntity<List<Board>>(list, HttpStatus.OK);
 	}
-	
+
 	// 게시판 이름 목록 조회
 	@GetMapping("/board/postboardnames")
-    public ResponseEntity<List<String>> getPostboardNames() {
-        List<String> postboardNames = boardService.getNames();
-        return new ResponseEntity<>(postboardNames, HttpStatus.OK);
-    }
+	public ResponseEntity<List<String>> getPostboardNames() {
+		List<String> postboardNames = boardService.getNames();
+		return new ResponseEntity<>(postboardNames, HttpStatus.OK);
+	}
 	
+	// 해당 게시판의 게시글 말머리 리스트 가져오기
+	@GetMapping("/board/categories/{postBoardId}")
+	public ResponseEntity<List<Category>> getCategoriesByPostBoardId(@PathVariable("postBoardId") int postBoardId) {
+	    List<Category> categories = boardService.getCategoriesByPostBoardId(postBoardId);
+	    return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
+	}
+
 	// 게시글 (검색) 조회
 	@GetMapping("/board/search")
 	@Operation(summary = "게시글 조회", description = "게시글 조건에 따른 조회 가넝")
 	public ResponseEntity<?> list(@Parameter(description = "검색 조건") @RequestBody SearchCondition condition) {
-		List<Board> list = boardService.search(condition); 
+		List<Board> list = boardService.search(condition);
 
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
@@ -88,7 +95,7 @@ public class BoardRestController {
 
 	// 게시글 등록 (Form 형식으로 넘어왔을 때)
 	@PostMapping("/board")
-	public ResponseEntity<?> write(@RequestBody Board board,/*이거 뭐야!!!*/String token) {
+	public ResponseEntity<?> write(@RequestBody Board board, @RequestHeader("Authorization") String token) {
 		// 등록한 게시글을 보냈는데
 		String userId = jwtUtil.getIdFromToken(token);
 		board.setWriter(userId);
@@ -103,8 +110,6 @@ public class BoardRestController {
 	@PutMapping("/board/{id}")
 	public ResponseEntity<Void> update(@PathVariable("id") int id, @RequestBody Board board) {
 		board.setId(id);
-		System.out.println("컨트롤러 게시글 수정 들어옴!");
-		System.out.println(board);
 		boardService.modifyBoard(board); // id를 따로 보내왔다면 바구니(DTO)에 넣어놓고 보내자
 		return new ResponseEntity<Void>(HttpStatus.OK); // 조금 더 세밀하게 컨트롤 할 수도 있다.
 	}
@@ -159,7 +164,7 @@ public class BoardRestController {
 	@PostMapping("/board/rereply")
 	public ResponseEntity<?> writeRereply(@RequestBody Rereply rereply) {
 		rereplyService.writeRereply(rereply);
-		return new ResponseEntity<Rereply>(rereply,HttpStatus.OK);
+		return new ResponseEntity<Rereply>(rereply, HttpStatus.OK);
 	}
 
 	// 대댓글 수정
@@ -169,39 +174,61 @@ public class BoardRestController {
 		rereplyService.modifyRereply(rereply);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+
 	// 대댓글 삭제
 	@DeleteMapping("/board/rereply/{id}")
 	public ResponseEntity<?> deleteRereply(@PathVariable("id") int rereplyid) {
 		rereplyService.removeRereply(rereplyid);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+
 	// 게시글 좋아요
 	@PutMapping("board/{id}/like")
-	public ResponseEntity<?> boardLikeUp(@PathVariable("id") int boardId, /*이거 뭐야!!!*/String token) {
+	public ResponseEntity<?> boardLikeUp(@PathVariable("id") int boardId,
+			@RequestHeader("Authorization") String token) {
 		String UserId = jwtUtil.getIdFromToken(token);
-		boardService.updateLikeUp(UserId,boardId);
-		
+		boardService.updateLikeUp(UserId, boardId);
+
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+
+	// 게시글 좋아요 눌렀는지 확인 (boolean)
+	@GetMapping("board/{id}/liked")
+	public ResponseEntity<?> checkIfUserLikedBoard(@PathVariable("id") int boardId,
+			@RequestHeader("Authorization") String token) {
+		String UserId = jwtUtil.getIdFromToken(token);
+		boolean result = boardService.checkBoardLiked(UserId, boardId);
+
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+	}
+
+	// 게시글 좋아요 취소
+	@PutMapping("board/{id}/dislike")
+	public ResponseEntity<?> boardLikeDown(@PathVariable("id") int boardId,
+			@RequestHeader("Authorization") String token) {
+		String UserId = jwtUtil.getIdFromToken(token);
+		boardService.updateLikeDown(UserId, boardId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
 	// 댓글 좋아요
+<<<<<<< HEAD
+	@PutMapping("/board/{boardId}/reply/{replyId}/like")
+	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId,
+			@RequestHeader("Authorization") String token) {
+=======
 	@PutMapping("/board/reply/{replyId}/like")
 	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId, String token){
+>>>>>>> d01736e69050816e69cbe849e9353af55728217d
 		String UserId = jwtUtil.getIdFromToken(token);
 		replyService.updateLikeUp(UserId, replyId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	// 게시글 좋아요 취소
-	@PutMapping("board/{id}/dislike")
-	public ResponseEntity<?> boardLikeDown(@PathVariable("id") int boardId,/*이거 뭐야!!!*/String token) {
-		String UserId = jwtUtil.getIdFromToken(token);
-		boardService.updateLikeDown(UserId,boardId);
-		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
 	// 댓글 좋아요 취소
 	@PutMapping("/board/{boardId}/reply/{replyId}/dislike")
-	public ResponseEntity<?> replyLikeDown(@PathVariable("replyId") int replyId, String token){
+	public ResponseEntity<?> replyLikeDown(@PathVariable("replyId") int replyId,
+			@RequestHeader("Authorization") String token) {
 		String UserId = jwtUtil.getIdFromToken(token);
 		replyService.updateLikeDown(UserId, replyId);
 		return new ResponseEntity<Void>(HttpStatus.OK);

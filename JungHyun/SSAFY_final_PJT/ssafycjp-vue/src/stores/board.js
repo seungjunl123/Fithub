@@ -9,8 +9,8 @@ const REST_BOARD_API = `http://localhost:8080/api-board/board`
 export const useBoardStore = defineStore('board', () => {
   const postboardNames = ref([]);
 
+  // 게시글 작성
   const createBoard = function (board) {
-
     axiosInstance({
       url: REST_BOARD_API,
       method: 'POST',
@@ -34,7 +34,18 @@ export const useBoardStore = defineStore('board', () => {
     } catch (error) {
       console.error('게시판 이름을 가져오는 데 실패했습니다:', error);
     }
-  };
+  }
+
+   // 특정 게시판의 카테고리 목록 가져오기
+   const fetchCategoriesByPostBoardId = async (postBoardId) => {
+    try {
+      const response = await axios.get(`${REST_BOARD_API}/categories/${postBoardId}`);
+      categories.value = response.data;
+      console.log("DB에서 카테고리 목록 가져왔어!", categories.value)
+    } catch (error) {
+      console.error('카테고리를 가져오는 데 실패했습니다:', error);
+    }
+  }
   
   // 게시글 가져오기
   const boardList = ref([])
@@ -73,7 +84,7 @@ export const useBoardStore = defineStore('board', () => {
     } catch (error) {
         console.error('게시글을 수정하는 데 실패했습니다:', error);
     }
-}
+  }
 
   // 게시글 검색
   const searchBoardList = function (searchCondition) {
@@ -114,8 +125,33 @@ export const useBoardStore = defineStore('board', () => {
     } catch (error) {
         console.error('게시글에 좋아요를 누르는 데 실패했습니다:', error);
     }
-}
+  }
 
+<<<<<<< HEAD
+  // 좋아요 취소
+  const dislikeBoard = async (boardId) => {
+    try {
+        const token = sessionStorage.getItem('Authorization'); 
+        await axiosInstance.put(`${REST_BOARD_API}/${boardId}/dislike`, { token });
+    } catch (error) {
+        console.error('게시글에 좋아요를 취소하는 데 실패했습니다:', error);
+    }
+  }
+
+  // 사용자의 게시글 좋아요 여부 확인
+  const checkIfUserLikedBoard = async (boardId) => {
+    try {
+        const token = sessionStorage.getItem('Authorization');
+        const response = await axiosInstance.get(`${REST_BOARD_API}/${boardId}/liked`, { headers: { Authorization: token } });
+        return response.data;
+    } catch (error) {
+        console.error('좋아요 상태를 확인하는 데 실패했습니다:', error);
+        return false;
+    }
+  }
+
+  return { createBoard, boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, dislikeBoard, checkIfUserLikedBoard, fetchCategoriesByPostBoardId, }
+=======
 // 대댓글 가져오기
 const getRereplies = async (replyId) => {
   const response = await axiosInstance.get(`${REST_BOARD_API}/rereply/${replyId}`)
@@ -130,4 +166,5 @@ const deleteRereply = async (rereplyId) => {
   await axiosInstance.delete(`${REST_BOARD_API}/rereply/${rereplyId}`)
 }
   return { createBoard,deleteRereply, addRereply,getRereplies,boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, }
+>>>>>>> d01736e69050816e69cbe849e9353af55728217d
 })

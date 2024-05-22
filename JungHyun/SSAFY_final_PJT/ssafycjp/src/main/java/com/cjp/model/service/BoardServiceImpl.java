@@ -66,16 +66,20 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.search(searchCondition);
 	}
 	
+	// 좋아요 증가
 	@Transactional
 	@Override
 	public void updateLikeUp(String userId,int boardId) {
-		boardDao.upLike(userId,boardId);
+		boardDao.insertBoardLike(userId, boardId);
+		boardDao.updateBoardLike(boardId);
 	}
 	
+	// 좋아요 감소
 	@Transactional
 	@Override
 	public void updateLikeDown(String userId,int boardId) {
-		boardDao.downLike(userId,boardId);
+		boardDao.deleteBoardLike(userId, boardId);
+		boardDao.updateBoardDislike(boardId);
 	}
 	
 	// 전체 게시판 이름 조회
@@ -83,5 +87,16 @@ public class BoardServiceImpl implements BoardService {
 	public List<String> getNames() {
         return boardDao.getPostboardNames();
     }
-
+	
+	// 해당 아이디 좋아요 여부 확인
+	@Override
+	public boolean checkBoardLiked(String userId, int boardId) {
+		return boardDao.hasUserLikedBoard(userId, boardId);	
+	}
+	
+	// 해당 게시판의 게시글 말머리 목록 조회
+	@Override
+    public List<Map<String, Object>> getCategoriesByPostBoardId(int postBoardId) {
+        return boardDao.selectCategoriesByPostBoardId(postBoardId);
+    }
 }

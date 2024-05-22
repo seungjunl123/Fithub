@@ -146,6 +146,9 @@ INSERT INTO `postboard` (title) VALUES ('게시판1'), ('게시판2');
 INSERT INTO `category` (postboard_id, name) VALUES
 (1, '일반'), (1, '공지'), (1, '질문'), (2, '일반'), (2, '공지');
 
+-- INSERT INTO `board` (category, postboard_id, title, content, writer, `like`) VALUES
+-- (1, 1, "좋아요 테스트3", "좋아요 눌러주세요!!", "test", 150);
+
 INSERT INTO `board` (category, postboard_id, title, content, writer) VALUES
 ( 2, 1, "게시판1 공지사항입니다.", "ㅎㅇㅎㅇ~", "test"),
 ( 1, 1, "안녕하세요~~", "ㅎㅇㅎㅇ~", "test"),
@@ -173,19 +176,3 @@ SELECT * FROM `rereply`;
 SELECT * FROM `board_likes`;
 SELECT * FROM `reply_likes`;
 SELECT * FROM `exercise`;
-
-SELECT
-			b.id,
-    		b.category,
-    		c.name AS categoryName,
-    		b.postboard_id,
-    		b.title,
-    		b.content,
-    		b.writer,
-    		b.like,
-    		b.regDate,
-    		b.viewCnt
-		FROM 
-    		board b
-		JOIN 
-   			category c ON b.category = c.category AND b.postboard_id = c.postboard_id;
