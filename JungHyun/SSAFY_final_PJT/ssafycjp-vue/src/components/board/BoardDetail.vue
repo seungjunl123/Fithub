@@ -15,13 +15,18 @@
       </div>
       <hr />
       <div class="post-actions">
-        <button class="btn btn-outline-success mx-auto" @click="likeBoard">좋아요</button>
+        <div class="like-section">
+          <button class="btn btn-like" :class="{'liked': hasLiked}" @click="toggleLike">
+            좋아요
+          </button>
+          <span class="like-count">{{ board.like }}</span>
+        </div>
         <div class="action-buttons">
           <button class="btn btn-outline-secondary" @click="moveUpdate">수정</button>
           <button class="btn btn-outline-danger" @click="deleteBoard">삭제</button>
         </div>
       </div>
-      <hr/>
+      <hr />
       <ReplyList :boardId="board.id" />
     </div>
   </div>
@@ -29,7 +34,7 @@
 
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useBoardStore } from '@/stores/board'
 import ReplyList from '@/components/Reply/ReplyList.vue'
 
@@ -38,11 +43,12 @@ const router = useRouter()
 const store = useBoardStore()
 
 const board = computed(() => store.board)
+const hasLiked = ref(false)
 
 const fetchBoardDetails = async () => {
   try {
     await store.getBoard(route.params.id)
-    console.log("Fetched board data:", store.board) // 디버깅용 로그
+    hasLiked.value = await store.checkIfUserLikedBoard(route.params.id)
   } catch (error) {
     console.error('게시글 정보를 가져오는 데 실패했습니다:', error)
   }
@@ -61,12 +67,17 @@ const deleteBoard = async () => {
   }
 }
 
-const likeBoard = async () => {
+const toggleLike = async () => {
   try {
-    await store.likeBoard(route.params.id)
+    if (hasLiked.value) {
+      await store.dislikeBoard(route.params.id)
+    } else {
+      await store.likeBoard(route.params.id)
+    }
+    hasLiked.value = !hasLiked.value
     fetchBoardDetails() // 추천 후 게시글 정보를 다시 가져와서 업데이트
   } catch (error) {
-    console.error('게시글 추천에 실패했습니다:', error)
+    console.error('좋아요 상태 변경에 실패했습니다:', error)
   }
 }
 
@@ -125,8 +136,29 @@ onMounted(() => {
   align-items: center;
 }
 
-.post-actions .btn {
+.like-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.btn-like {
   font-size: 0.9rem;
+  background-color: #fff;
+  border: 1px solid #28a745;
+  color: #28a745;
+}
+
+.btn-like.liked {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.like-count {
+  margin-left: 10px;
+  font-size: 1rem;
+  color: #28a745;
 }
 
 .action-buttons {

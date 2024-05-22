@@ -24,10 +24,10 @@ public interface BoardService {
 	//게시글 수정
 	public void modifyBoard(Board board);
 	
-	// 추천수 증가
+	// 좋아요 수 증가
 	public void updateLikeUp(String userId, int id);
 
-	// 추천수 감소
+	// 좋아요 수 감소
 	public void updateLikeDown(String userId,int id);
 	
 	//게시글 검색
@@ -35,4 +35,7 @@ public interface BoardService {
 	
 	// 전체 게시판 이름 조회
 	public List<String> getNames();
+	
+	// 해당 아이디 좋아요 여부 확인
+	public boolean checkBoardLiked(String userId, int boardId);
 }
