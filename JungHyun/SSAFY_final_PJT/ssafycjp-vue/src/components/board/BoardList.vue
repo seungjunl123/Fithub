@@ -8,29 +8,33 @@
       <div class="search-input-wrapper">
         <BoardSearchInput />
       </div>
-      <button class="btn btn-pastel" @click="goToCreateBoard">글쓰기</button>
+      <button class="btn btn-pastel" @click="goToCreateBoard" v-if="!isMainBoard">글쓰기</button>
     </div>
     <div class="board-list">
       <table class="table table-hover text-center">
         <thead>
           <tr>
             <th>번호</th>
-            <th>말머리</th> <!-- 새로운 열 추가 -->
+            <th>말머리</th>
             <th>제목</th>
             <th>작성자</th>
             <th>조회수</th>
+            <th>좋아요</th>
             <th>등록일</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="board in currentPageBoardList" :key="board.id">
             <td>{{ board.id }}</td>
-            <td :class="{'notice-category': board.categoryName === '공지'}">{{ board.categoryName }}</td> <!-- 말머리 데이터 표시 -->
+            <td :class="{'notice-category': board.categoryName === '공지'}">{{ board.categoryName }}</td>
             <td>
-              <RouterLink :to="`/main/detail/${board.id}`" class="custom-link">{{ board.title }}</RouterLink>
+              <RouterLink :to="`/main/detail/${board.id}`" class="custom-link">
+                {{ board.title }}
+              </RouterLink>
             </td>
             <td>{{ board.writer }}</td>
             <td>{{ board.viewCnt }}</td>
+            <td>{{ board.like }} <span v-if="board.like >= 100">🔥</span></td>
             <td>{{ formatDate(board.regDate) }}</td>
           </tr>
         </tbody>
@@ -79,21 +83,20 @@ import BoardSearchInput from './BoardSearchInput.vue';
 
 const props = defineProps({
   postboardId: {
-    type : Number,
-    default : null,
+    type: Number,
+    default: null,
   },
   postboardNames: {
     type: Array,
     required: true,
   },
-})
+});
 
 const store = useBoardStore();
 const router = useRouter();
 
 const fetchBoards = (boardId) => {
   if (boardId !== null) {
-    console.log("postboardId: " + boardId);
     store.getBoardList(boardId);
   } else {
     store.getBoardList(); // 모든 게시글 가져오기
@@ -101,14 +104,12 @@ const fetchBoards = (boardId) => {
 };
 
 onMounted(() => {
-  console.log("Boardlist 들어왔어!!" + props.postboardId);
   fetchBoards(props.postboardId);
 });
 
 watch(
   () => props.postboardId,
   (newValue) => {
-    console.log("newValue: " + newValue);
     fetchBoards(newValue);
   },
   { immediate: true }
@@ -136,8 +137,10 @@ const boardName = computed(() => {
   if (props.postboardId !== null && props.postboardNames.length > 0) {
     return props.postboardNames[props.postboardId - 1];
   }
-  return "메인";
+  return '메인';
 });
+
+const isMainBoard = computed(() => props.postboardId === null);
 
 const formatDate = (dateArray) => {
   if (!dateArray || !Array.isArray(dateArray)) return '';

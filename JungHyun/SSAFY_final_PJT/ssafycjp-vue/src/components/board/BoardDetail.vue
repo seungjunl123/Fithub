@@ -15,8 +15,11 @@
       </div>
       <hr />
       <div class="post-actions">
-        <button class="btn btn-outline-secondary" @click="moveUpdate">수정</button>
-        <button class="btn btn-outline-danger" @click="deleteBoard">삭제</button>
+        <button class="btn btn-outline-success mx-auto" @click="likeBoard">좋아요</button>
+        <div class="action-buttons">
+          <button class="btn btn-outline-secondary" @click="moveUpdate">수정</button>
+          <button class="btn btn-outline-danger" @click="deleteBoard">삭제</button>
+        </div>
       </div>
       <hr/>
       <ReplyList :boardId="board.id" />
@@ -55,6 +58,15 @@ const deleteBoard = async () => {
     router.go(-1)
   } catch (error) {
     console.error('게시글 삭제에 실패했습니다:', error)
+  }
+}
+
+const likeBoard = async () => {
+  try {
+    await store.likeBoard(route.params.id)
+    fetchBoardDetails() // 추천 후 게시글 정보를 다시 가져와서 업데이트
+  } catch (error) {
+    console.error('게시글 추천에 실패했습니다:', error)
   }
 }
 
@@ -109,11 +121,16 @@ onMounted(() => {
 
 .post-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .post-actions .btn {
   font-size: 0.9rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
 }
 </style>

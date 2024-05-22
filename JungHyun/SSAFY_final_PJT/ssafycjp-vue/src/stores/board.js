@@ -14,10 +14,6 @@ export const useBoardStore = defineStore('board', () => {
     axiosInstance({
       url: REST_BOARD_API,
       method: 'POST',
-      // 아래 작업하지 않아도 그냥 JSON 형태로 Content-type을 결정해서 보내버림
-      // headers: {
-      //   "Content-Type": "applcation/json"
-      // },
       data: board
     })
       .then(() => {
@@ -44,22 +40,16 @@ export const useBoardStore = defineStore('board', () => {
   const boardList = ref([])
   const getBoardList = function (postboardId = null) {
     let url = REST_BOARD_API
-    console.log("getBoardList 들어왔고, 현재  postboardId: "+postboardId)
     if(postboardId === null){
       // 전체 게시글 조회
       url = REST_BOARD_API
-      console.log("전체 게시글 가져올거야.")
     }
     if (postboardId) {
       // 특정 게시판 게시글 조회
       url += `/${postboardId}`
-      console.log("게시글 가져올거야. postboardId: " + postboardId)
     }
-    console.log("url: " + url)
     axiosInstance.get(url)
       .then((response) => {
-        console.log("가져온 게시글 리스트: ")
-        console.log(response.data)
         boardList.value = response.data
       })
   }
@@ -78,7 +68,6 @@ export const useBoardStore = defineStore('board', () => {
   // 게시글 수정
   const updateBoard = async function () {
     try {
-        console.log('Updating board with data:', board.value); // 디버깅용 로그 추가
         await axiosInstance.put(`${REST_BOARD_API}/${board.value.id}`, board.value);
         router.back();
     } catch (error) {
@@ -86,6 +75,7 @@ export const useBoardStore = defineStore('board', () => {
     }
 }
 
+  // 게시글 검색
   const searchBoardList = function (searchCondition) {
     axiosInstance.get(REST_BOARD_API, {
       params: searchCondition
@@ -116,5 +106,15 @@ export const useBoardStore = defineStore('board', () => {
     await axiosInstance.delete(`${REST_BOARD_API}/reply/${replyId}`)
   }
 
-  return { createBoard, boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, }
+  // 좋아요 증가
+  const likeBoard = async (boardId) => {
+    try {
+        const token = sessionStorage.getItem('Authorization'); 
+        await axiosInstance.put(`${REST_BOARD_API}/${boardId}/like`, { token });
+    } catch (error) {
+        console.error('게시글에 좋아요를 누르는 데 실패했습니다:', error);
+    }
+}
+
+  return { createBoard, boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, }
 })
