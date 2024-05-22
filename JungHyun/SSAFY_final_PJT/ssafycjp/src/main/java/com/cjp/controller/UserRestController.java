@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -96,7 +97,6 @@ public class UserRestController {
 		        }
 			File destinationFile = new File(uploadPath, fileName);
 			file.transferTo(destinationFile);
-			model.addAttribute("fileName", fileName);
 		}
 		return new ResponseEntity<>("Signup successful", HttpStatus.OK);
 	}
@@ -105,9 +105,7 @@ public class UserRestController {
 	@GetMapping("/info")
     public ResponseEntity<User> getUserInfo(@RequestHeader("Authorization") String token) {
         String id = jwtUtil.getIdFromToken(token);
-        System.out.println(id);
         User user = userService.search(id);
-        System.out.println(user.getId());
         // 감춰야 할 정보는 여기서 제거 가능! (ex. 비밀번호 부분을 null 값으로 변경)
         user.setPassword(null);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -128,7 +126,6 @@ public class UserRestController {
 		List<User> list = userService.getUserList();
 		System.out.println(list);
 		return new ResponseEntity<>(list, HttpStatus.OK);
-
 	}
 	
 	// 회원 정보 수정
@@ -151,6 +148,29 @@ public class UserRestController {
 		
 		 return new ResponseEntity<>(HttpStatus.OK);
 
+	}
+
+	// 출석
+	@PostMapping("/attendance")
+	public ResponseEntity<?> createAttendance(@RequestBody Attendance attendance) {
+		attendanceService.createAttendance(attendance);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	// 츌석 가져오기
+	@GetMapping("/attendance")
+	public ResponseEntity<?> getAllAttendances() {
+		List<Attendance> list = attendanceService.getAllAttendances();
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	// 유저 출석 가져오기
+	@GetMapping("/attendance/{userId}")
+	public ResponseEntity<?> getAttendancesByUserId(@PathVariable("userId") String userId) {
+		System.out.println("??");
+		List<Attendance> list = attendanceService.getAttendancesByUserId(userId);
+		System.out.println(list);
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 	// 성공적으로 회원가입이 되었어!

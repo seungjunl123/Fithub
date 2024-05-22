@@ -156,24 +156,51 @@ export const useBoardStore = defineStore('board', () => {
     }
   }
 
-  return {
-    createBoard,
-    boardList,
-    getBoardList,
-    board,
-    getBoard,
-    updateBoard,
-    searchBoardList,
-    postboardNames,
-    fetchPostboardNames,
-    deleteBoard,
-    getReplies,
-    addReply,
-    deleteReply,
-    likeBoard,
-    dislikeBoard,
-    fetchCategoriesByPostBoardId,
-    checkIfUserLikedBoard,
-    categories,
+ // 좋아요 증가
+ const likeReply = async (replyId) => {
+  try {
+      const token = sessionStorage.getItem('Authorization'); 
+      await axiosInstance.put(`${REST_BOARD_API}/reply/${replyId}/like`, { token });
+  } catch (error) {
+      console.error('게시글에 좋아요를 누르는 데 실패했습니다:', error);
   }
+}
+// 좋아요 취소
+const dislikeReply = async (replyId) => {
+  try {
+    const token = sessionStorage.getItem('Authorization')
+    await axiosInstance.put(`${REST_BOARD_API}/reply/${replyId}/dislike`, { token })
+  } catch (error) {
+    console.error('게시글에 좋아요를 취소하는 데 실패했습니다:', error)
+  }
+}
+
+// 사용자의 게시글 좋아요 여부 확인
+const checkIfUserLikedReply = async (replyId) => {
+  try {
+      const token = sessionStorage.getItem('Authorization');
+      const response = await axiosInstance.get(`${REST_BOARD_API}/reply/${replyId}/liked`, {token } );
+      return response.data;
+  } catch (error) {
+      console.error('좋아요 상태를 확인하는 데 실패했습니다:', error);
+      return false;
+  }
+}
+
+
+// 대댓글 가져오기
+const getRereplies = async (replyId) => {
+const response = await axiosInstance.get(`${REST_BOARD_API}/rereply/${replyId}`)
+return response.data
+}
+// 대댓글 작성
+const addRereply = async (content) => {
+await axiosInstance.post(`${REST_BOARD_API}/rereply`, { content })
+}
+// 대댓글 삭제
+const deleteRereply = async (rereplyId) => {
+await axiosInstance.delete(`${REST_BOARD_API}/rereply/${rereplyId}`)
+}
+return { createBoard, checkIfUserLikedReply,likeReply,dislikeReply,dislikeBoard, deleteRereply, checkIfUserLikedBoard, addRereply,getRereplies,boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, }
+
 })

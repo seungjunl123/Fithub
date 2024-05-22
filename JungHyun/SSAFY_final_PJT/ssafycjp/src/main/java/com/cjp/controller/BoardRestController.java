@@ -100,7 +100,6 @@ public class BoardRestController {
 		String userId = jwtUtil.getIdFromToken(token);
 		board.setWriter(userId);
 		board.setPostBoardId(board.getPostBoardId()+1);
-		System.out.println("작성한 board: " + board);
 		boardService.writeBoard(board);
 		return new ResponseEntity<Board>(board, HttpStatus.CREATED);
 	}
@@ -124,7 +123,6 @@ public class BoardRestController {
 	@GetMapping("/board/{boardId}/reply")
 	public ResponseEntity<List<Reply>> replyList(@PathVariable("boardId") int boardId) {
 		List<Reply> list = replyService.getReplyList(boardId);
-		System.out.println(list);
 		return new ResponseEntity<List<Reply>>(list, HttpStatus.OK);
 	}
 
@@ -154,7 +152,6 @@ public class BoardRestController {
 	@GetMapping("/board/rereply/{replyId}")
 	public ResponseEntity<List<Rereply>> rereplyList(@PathVariable("replyId") String replyId) {
 		int rId = Integer.parseInt(replyId);
-		System.out.println(rId+"대댓글 리스팅 ");
 		List<Rereply> list = rereplyService.getRereplyList(rId);
 		return new ResponseEntity<List<Rereply>>(list, HttpStatus.OK);
 	}
@@ -212,18 +209,29 @@ public class BoardRestController {
 
 	// 댓글 좋아요
 	@PutMapping("/board/reply/{replyId}/like")
-	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId, String token){
+	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId, @RequestHeader("Authorization") String token){
 		String UserId = jwtUtil.getIdFromToken(token);
 		replyService.updateLikeUp(UserId, replyId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	// 댓글 좋아요 취소
-	@PutMapping("/board/{boardId}/reply/{replyId}/dislike")
+	@PutMapping("/board/reply/{replyId}/dislike")
 	public ResponseEntity<?> replyLikeDown(@PathVariable("replyId") int replyId,
 			@RequestHeader("Authorization") String token) {
 		String UserId = jwtUtil.getIdFromToken(token);
 		replyService.updateLikeDown(UserId, replyId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	// 댓글 좋아요 눌렀는지 확인 (boolean)
+	@GetMapping("/board/reply/{replyId}/liked")
+	public ResponseEntity<?> checkIfUserLikedReply(@PathVariable("replyId") int replyId,
+			@RequestHeader("Authorization") String token) {
+		System.out.println("dkalsdlq,w;ld,l;qw,dl;q,wldqljdl;qwjdjwieojdsklajdioqawjdl;asjdkl;asjd");
+		String UserId = jwtUtil.getIdFromToken(token);
+		boolean result = replyService.checkReplyLiked(UserId, replyId);
+
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}
 }
