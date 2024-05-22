@@ -10,6 +10,9 @@
           <p>{{ reply.content }}</p>
         </div>
         <div class="reply-actions">
+          <button class="btn btn-like" :class="{'liked': hasLiked}" @click="toggleLike(reply.id)">
+            좋아요 {{ reply.like }}
+          </button>
           <button class="btn btn-outline-secondary btn-sm" @click="editReply(reply.id)">수정</button>
           <button class="btn btn-outline-danger btn-sm" @click="deleteReply(reply.id)">삭제</button>
         </div>
@@ -30,6 +33,8 @@
   import { ref, onMounted } from 'vue';
   import { useBoardStore } from '@/stores/board';
   import RereplyList from '@/components/Reply/RereplyList.vue'
+
+  
   const props = defineProps({
     boardId: {
       type: Number,
@@ -41,6 +46,7 @@
   const store = useBoardStore();
   const replies = ref([]);
   const newReply = ref("");
+  const hasLiked = ref(false) 
   
   const fetchReplies = async () => {
     try {
@@ -73,6 +79,21 @@
       console.error('댓글 삭제에 실패했습니다:', error);
     }
   };
+
+  const toggleLike = async (replyId) => {
+  try {
+     console.log(replyId)
+    if (hasLiked.value) {
+      await store.dislikeReply(replyId)
+    } else {
+      await store.likeReply(replyId)
+    }
+    hasLiked.value = !hasLiked.value
+    fetchReplies() // 추천 후 게시글 정보를 다시 가져와서 업데이트
+  } catch (error) {
+    console.error('좋아요 상태 변경에 실패했습니다:', error)
+  }
+}
   
   const formatDate = (dateArray) => {
     if (!dateArray || !Array.isArray(dateArray)) return '';
@@ -126,5 +147,35 @@
     border-color: #c3fcfc;
     color: #000;
   }
+
+  .like-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.btn-like {
+  font-size: 0.9rem;
+  background-color: #fff;
+  border: 1px solid #28a745;
+  color: #28a745;
+}
+
+.btn-like.liked {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.like-count {
+  margin-left: 10px;
+  font-size: 1rem;
+  color: #28a745;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
   </style>
   

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -74,7 +75,7 @@ public class BoardRestController {
 
 	// 게시글 등록 (Form 형식으로 넘어왔을 때)
 	@PostMapping("/board")
-	public ResponseEntity<?> write(@RequestBody Board board,/*이거 뭐야!!!*/String token) {
+	public ResponseEntity<?> write(@RequestBody Board board,@RequestHeader("Authorization") String token) {
 		// 등록한 게시글을 보냈는데
 		String userId = jwtUtil.getIdFromToken(token);
 		board.setWriter(userId);
@@ -160,9 +161,10 @@ public class BoardRestController {
 		rereplyService.removeRereply(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	
 	// 게시글 좋아요
 	@PutMapping("board/{id}/like")
-	public ResponseEntity<?> boardLikeUp(@PathVariable("id") int boardId, /*이거 뭐야!!!*/String token) {
+	public ResponseEntity<?> boardLikeUp(@PathVariable("id") int boardId, @RequestHeader("Authorization") String token) {
 		String UserId = jwtUtil.getIdFromToken(token);
 		boardService.updateLikeUp(UserId,boardId);
 		
@@ -178,7 +180,7 @@ public class BoardRestController {
 
 	// 게시글 좋아요 취소
 	@PutMapping("board/{id}/dislike")
-	public ResponseEntity<?> boardLikeDown(@PathVariable("id") int boardId,/*이거 뭐야!!!*/String token) {
+	public ResponseEntity<?> boardLikeDown(@PathVariable("id") int boardId,@RequestHeader("Authorization") String token) {
 		String UserId = jwtUtil.getIdFromToken(token);
 		boardService.updateLikeDown(UserId,boardId);
 		return new ResponseEntity<Void>(HttpStatus.OK);

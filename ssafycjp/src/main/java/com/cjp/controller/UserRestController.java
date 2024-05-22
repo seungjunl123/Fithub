@@ -92,7 +92,7 @@ public class UserRestController {
 			Model model) throws IllegalStateException, IOException {
 		if (file != null && file.getSize() > 0) {
 //			String fileName = file.getOriginalFilename();
-			String fileName = id + ".jpg";
+			String fileName = id + "_profile.jpg";
 			String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/upload"; // 애플리케이션 루트 디렉토리를
 																										// 기준으로 설정
 			File uploadPath = new File(uploadDir);
@@ -155,6 +155,44 @@ public class UserRestController {
 		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	// 프로필 사진 가져오기
+	@GetMapping("/profileImage/{userId}")
+	public ResponseEntity<String> getProfileImageUrl(@PathVariable String userId) {
+	    String fileName = userId + "_profile.jpg";
+	    String filePath = "/upload/" + fileName;
+	    File imgFile = new File(System.getProperty("user.dir") + "/src/main/resources/static" + filePath);
+	    if (imgFile.exists()) {
+	    	String fullUrl = "http://localhost:8080" + filePath; // 서버 주소와 파일 경로를 결합
+	        return new ResponseEntity<>(fullUrl, HttpStatus.OK);
+	    }
+	    return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
+	}
+	
+	// 회원 프로필 사진 수정
+	@PutMapping("/updateProfileImage")
+	public ResponseEntity<?> updateProfileImage(@RequestParam("userId") String id, @RequestParam("file") MultipartFile file) {
+	    try {
+	        if (file.isEmpty()) {
+	            return new ResponseEntity<>("No file uploaded", HttpStatus.BAD_REQUEST);
+	        }
+
+	        String fileName = id + "_profile.jpg";  // 이 규칙을 통일
+	        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/upload";
+	        File uploadPath = new File(uploadDir);
+
+	        if (!uploadPath.exists()) {
+	            uploadPath.mkdirs();
+	        }
+
+	        File destinationFile = new File(uploadPath, fileName);
+	        file.transferTo(destinationFile);
+
+	        return new ResponseEntity<>("Profile image updated successfully", HttpStatus.OK);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 
 	@PostMapping("/attendance")

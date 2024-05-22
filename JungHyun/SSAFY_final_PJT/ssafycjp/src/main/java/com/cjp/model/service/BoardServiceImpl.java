@@ -94,9 +94,5 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.hasUserLikedBoard(userId, boardId);	
 	}
 	
-	// 해당 게시판의 게시글 말머리 목록 조회
-	@Override
-    public List<Map<String, Object>> getCategoriesByPostBoardId(int postBoardId) {
-        return boardDao.selectCategoriesByPostBoardId(postBoardId);
-    }
+
 }

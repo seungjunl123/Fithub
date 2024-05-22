@@ -67,13 +67,6 @@ public class BoardRestController {
 		return new ResponseEntity<>(postboardNames, HttpStatus.OK);
 	}
 	
-	// 해당 게시판의 게시글 말머리 리스트 가져오기
-	@GetMapping("/board/categories/{postBoardId}")
-	public ResponseEntity<List<Category>> getCategoriesByPostBoardId(@PathVariable("postBoardId") int postBoardId) {
-	    List<Category> categories = boardService.getCategoriesByPostBoardId(postBoardId);
-	    return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
-	}
-
 	// 게시글 (검색) 조회
 	@GetMapping("/board/search")
 	@Operation(summary = "게시글 조회", description = "게시글 조건에 따른 조회 가넝")
@@ -212,25 +205,30 @@ public class BoardRestController {
 	}
 
 	// 댓글 좋아요
-<<<<<<< HEAD
-	@PutMapping("/board/{boardId}/reply/{replyId}/like")
-	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId,
-			@RequestHeader("Authorization") String token) {
-=======
 	@PutMapping("/board/reply/{replyId}/like")
-	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId, String token){
->>>>>>> d01736e69050816e69cbe849e9353af55728217d
+	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId, @RequestHeader("Authorization") String token){
 		String UserId = jwtUtil.getIdFromToken(token);
 		replyService.updateLikeUp(UserId, replyId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	// 댓글 좋아요 취소
-	@PutMapping("/board/{boardId}/reply/{replyId}/dislike")
+	@PutMapping("/board/reply/{replyId}/dislike")
 	public ResponseEntity<?> replyLikeDown(@PathVariable("replyId") int replyId,
 			@RequestHeader("Authorization") String token) {
 		String UserId = jwtUtil.getIdFromToken(token);
 		replyService.updateLikeDown(UserId, replyId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	// 댓글 좋아요 눌렀는지 확인 (boolean)
+	@GetMapping("/board/reply/{replyId}/liked")
+	public ResponseEntity<?> checkIfUserLikedReply(@PathVariable("replyId") int replyId,
+			@RequestHeader("Authorization") String token) {
+		System.out.println("dkalsdlq,w;ld,l;qw,dl;q,wldqljdl;qwjdjwieojdsklajdioqawjdl;asjdkl;asjd");
+		String UserId = jwtUtil.getIdFromToken(token);
+		boolean result = replyService.checkReplyLiked(UserId, replyId);
+
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}
 }

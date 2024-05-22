@@ -50,7 +50,6 @@ const loadAttendanceData = async () => {
   }, []);
   
   
-  console.log(formattedData)
     // 캘린더 히트맵 렌더링
     const cal = new CalHeatmap();
     cal.paint({
@@ -110,7 +109,6 @@ const recordAttendance = async () => {
 
 onMounted(async () => {
   user.value = await userStore.getUserInfoFromToken();
-  console.log(user.value.id);
   await loadAttendanceData();
 });
 </script>

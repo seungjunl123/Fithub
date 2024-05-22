@@ -25,4 +25,7 @@ public interface ReplyService {
 	// 추천수 감소
 	public void updateLikeDown(String userId,int replyId);
 
+	
+	// 해당 아이디 좋아요 여부 확인
+	public boolean checkReplyLiked(String userId, int replyId);
 }

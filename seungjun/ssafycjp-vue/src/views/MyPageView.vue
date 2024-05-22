@@ -1,3 +1,5 @@
+<!-- Mypage.vue -->
+
 <template>
   <TheHeaderNav />
   <div v-if="user">
@@ -13,17 +15,18 @@
               <v-row>
                 <v-col class="text-center">
                   <v-list-item-title>ID: {{ user.id }}</v-list-item-title>
-                  
+
                   <v-avatar size="300">
                     <!-- 이미지 가져오기 -->
-                    <div class="preview" v-if="previewFlag">
-                      <img :src="previewImage">
+                    <div class="preview" v-if="previewFlag" alt="Profile">
+                      <img :src="previewImageUrl">
                     </div>
-                    <img v-else class="profileImg" src="@/assets/오승준_3x4.jpg" alt="Profile">
+                    <img v-else class="profileImg" :src="profileImageUrl" alt="Profile">
                   </v-avatar>
-                  <hr>
-                  <input type="file" accept="image/*" @change="changePreviewImage"/>
-                  <input type="file" id="profileimg" @change="inputFileUpload" accept="image/*">
+                  <div class="button-container">
+                    <v-file-input label="File input" prepend-icon="mdi-camera" variant="underlined" @change="changePreviewImage"></v-file-input>
+                    <v-btn @click="inputFileUpload(previewImage)" color="primary">수정</v-btn>
+                  </div>
                 </v-col>
               </v-row>
               <v-card class="mx-auto mt-5" max-width="400">
@@ -79,7 +82,8 @@
                   <v-col cols="6">
                     <v-list-item>
                       <v-list-item-content>
-                        <v-list-item-title v-if="user.goalWeight" class="info-item">목표 체중: {{ user.goalWeight }}</v-list-item-title>
+                        <v-list-item-title v-if="user.goalWeight" class="info-item">목표 체중: {{ user.goalWeight
+                          }}</v-list-item-title>
                         <v-list-item-title v-else class="info-item">목표 체중: {{ user.goalWeight }}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -92,7 +96,8 @@
                   <v-col cols="6">
                     <v-list-item>
                       <v-list-item-content>
-                        <v-list-item-title v-if="user.nowWeight" class="info-item">현재 체중: {{ user.nowWeight }}</v-list-item-title>
+                        <v-list-item-title v-if="user.nowWeight" class="info-item">현재 체중: {{ user.nowWeight
+                          }}</v-list-item-title>
                         <v-list-item-title v-else class="info-item">현재 체중: {{ user.nowWeight }}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -105,7 +110,8 @@
                   <v-col cols="6">
                     <v-list-item>
                       <v-list-item-content>
-                        <v-list-item-title v-if="user.height" class="info-item">현재 키: {{ user.height }}</v-list-item-title>
+                        <v-list-item-title v-if="user.height" class="info-item">현재 키: {{ user.height
+                          }}</v-list-item-title>
                         <v-list-item-title v-else class="info-item">현재 키: {{ user.height }}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -201,6 +207,9 @@ const showModal = ref(false);
 const currentField = ref('');
 const tempValue = ref('');
 const previewFlag = ref(false)
+const previewImage = ref('');
+const previewImageUrl = ref(''); // 미리보기 URL을 별도로 저장
+const profileImageUrl = ref('');
 
 const editField = ref((field) => {
   currentField.value = field;
@@ -208,15 +217,15 @@ const editField = ref((field) => {
   showModal.value = true;
 })
 
-const previewImage = ref('');
-const changePreviewImage = (e) =>{
+const changePreviewImage = (e) => {
   const files = event.target?.files
-  if(files.length>0){
+  if (files.length > 0) {
     const file = files[0]
-    const reader = new FileReader()
+    previewImage.value = file;
 
-    reader.onload = (e) =>{
-      previewImage.value = e.target.result
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      previewImageUrl.value = e.target.result;
     }
 
     reader.readAsDataURL(file)
@@ -234,6 +243,16 @@ const saveChanges = ref(() => {
   }
 })
 
+const inputFileUpload = async (event) => {
+  const file = previewImage.value
+  if (file) {
+    await store.updateUserProfileImage(user.value.id, file);
+    // Reload or refresh the user's info if needed
+    user.value = await store.getUserInfoFromToken();
+    profileImageUrl.value = await store.fetchProfileImageUrl(user.value.id);
+  }
+};
+
 const bmi = computed(() => {
   if (user.value && user.value.nowWeight) {
     return (user.value.nowWeight / (user.value.height / 100 * user.value.height / 100)).toFixed(2);
@@ -243,7 +262,8 @@ const bmi = computed(() => {
 
 onMounted(async () => {
   user.value = await store.getUserInfoFromToken();
-  console.log(user.value)
+  profileImageUrl.value = await store.fetchProfileImageUrl(user.value.id);
+  console.log(profileImageUrl.value)
 });
 </script>
 
@@ -260,6 +280,11 @@ onMounted(async () => {
   align-items: center;
 }
 
-
-
+.button-container {
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 10px; /* 버튼 사이의 간격 */
+  padding: 0 30px; /* 좌우로 20px의 padding을 추가 */
+}
 </style>

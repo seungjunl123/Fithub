@@ -1,3 +1,4 @@
+// user.js
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import router from '@/router'
@@ -6,9 +7,12 @@ import axiosInstance from '@/utils/interceptor'
 
 const REST_USER_API = `http://localhost:8080/user`
 
+
 export const useUserStore = defineStore('user', () => {
+  
   const loginUserId = ref(null)
   
+  // 로그인 기능
   const userLogin = async (id, password) => {
    
     try {
@@ -48,6 +52,7 @@ export const useUserStore = defineStore('user', () => {
 //     })
 //   }
 
+  // 회원 가입
   const userRegist = async (user) => {
     try {
       await axios.post(`${REST_USER_API}/signup`, user)
@@ -58,6 +63,8 @@ export const useUserStore = defineStore('user', () => {
   }
 
 
+
+  // 회원 가입 시 이미지 처음 저장
   const userImgRegist = async (img, userId) => {
     try {
       const formData = new FormData();
@@ -76,6 +83,9 @@ export const useUserStore = defineStore('user', () => {
       console.error('이미지 저장 실패:', error);
     }
   };
+
+
+
   // const userRegist = function(user) {
   //   console.log('들어와')
   //   console.log(user)
@@ -93,6 +103,8 @@ export const useUserStore = defineStore('user', () => {
 
 
   // }
+
+  // 회원 정보 수정
   const saveInfoChanges = async (userId,field,changeValue) => {
     try{
       const token = sessionStorage.getItem('Authorization')
@@ -111,6 +123,7 @@ export const useUserStore = defineStore('user', () => {
           },
           data: JSON.stringify(data)
         });
+        alert('정보가 수정되버렸지 모야');
   } else {
     throw new Error('토큰이 없습니다.')
   }
@@ -119,6 +132,45 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
+  // 회원 프로필 사진 수정
+  const updateUserProfileImage = async (userId, imageFile) => {
+    try {
+        const formData = new FormData();
+        formData.append('userId', userId);
+        formData.append('file', imageFile);
+
+        await axiosInstance({
+            url: `${REST_USER_API}/updateProfileImage`,
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            data: formData
+        });
+        alert('Profile image updated successfully');
+    } catch (error) {
+        console.error('Failed to update profile image:', error);
+    }
+};
+
+// UserId를 통해 프로필 이미지 가져오기
+const fetchProfileImageUrl = async (userId) => {
+  try {
+      const response = await axiosInstance.get(`${REST_USER_API}/profileImage/${userId}`);
+      if (response.status === 200) {
+        console.log(response.data)
+          return response.data;  // 이미지 파일의 경로를 반환
+          
+      } else {
+          throw new Error('Image not found');
+      }
+  } catch (error) {
+      console.error('Error fetching profile image:', error);
+      return '/path/to/default/image.jpg';  // 기본 이미지 경로
+  }
+};
+
+  // 로그 아웃 
   const logout = function(){
     console.log('로그아웃 테스트')
     console.log('로그아웃 시도한 아이디: ' + getUserIdFromToken())
@@ -166,5 +218,5 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { userLogin , userImgRegist, saveInfoChanges,loginUserId, userRegist, logout, getUserIdFromToken, getUserInfoFromToken}
+  return { userLogin , userImgRegist,fetchProfileImageUrl, updateUserProfileImage, saveInfoChanges,loginUserId, userRegist, logout, getUserIdFromToken, getUserInfoFromToken}
 })

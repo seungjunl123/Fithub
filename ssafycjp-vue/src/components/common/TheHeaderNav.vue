@@ -45,7 +45,6 @@ const logout = function() {
 
 onMounted(async () => {
   user.value = await Ustore.getUserInfoFromToken();
-  console.log(user.value);
 });
 </script>
 
