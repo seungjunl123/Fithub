@@ -26,8 +26,12 @@
           <button class="btn btn-outline-danger" @click="deleteBoard">삭제</button>
         </div>
       </div>
+<<<<<<< HEAD
       <hr />
+=======
+>>>>>>> d01736e69050816e69cbe849e9353af55728217d
       <ReplyList :boardId="board.id" />
+      <hr/>
     </div>
   </div>
 </template>

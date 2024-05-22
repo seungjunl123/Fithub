@@ -105,6 +105,7 @@
 	</update>
 
 	<!-- 추천수 증가 -->
+<<<<<<< HEAD
 	<insert id="insertBoardLike">
 		INSERT IGNORE INTO board_likes (board_id, user_id)
 		VALUES (#{boardId}, #{userId})
@@ -118,6 +119,27 @@
 		WHERE board_id = #{boardId}
 		)
 		WHERE id = #{boardId}
+=======
+	<update id="InsertUpLike">
+		INSERT IGNORE INTO board_likes (board_id, user_id)
+        VALUES (#{boardId}, #{userId});
+        
+	</update>
+	
+	<update id="UpdateLike">
+	        UPDATE board
+        SET like = (
+            SELECT COUNT(*)
+            FROM board_likes
+            WHERE board_id = #{boardId}
+        )
+        WHERE id = #{boardId}
+	</update>
+	
+	<!-- 추천수 감소 -->
+	<update id="downLike" parameterType="int">
+		DELETE FROM board_likes WHERE board_id = #{boardId} AND user_id = #{userId};
+>>>>>>> d01736e69050816e69cbe849e9353af55728217d
 	</update>
 
 	<!-- 추천수 감소 -->
