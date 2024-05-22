@@ -50,8 +50,6 @@ const goMain = function() {
 
 onMounted(async () => {
   user.value = await Ustore.getUserInfoFromToken();
-  console.log("TheHeaderNav에 가져온 user 정보야! 여기서 이름만 가져다 쓸거야!")
-  console.log(user.value);
 });
 </script>
 

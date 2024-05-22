@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cjp.model.dto.Attendance;
 import com.cjp.model.dto.User;
+import com.cjp.model.service.AttendanceService;
 import com.cjp.model.service.UserService;
 import com.cjp.util.JwtUtil;
 
@@ -39,11 +40,13 @@ public class UserRestController {
 	
 	@Autowired
 	private UserService userService;
-
+	@Autowired
+	private AttendanceService attendanceService;
 	
-	public UserRestController(UserService userService, ResourceLoader resourceLoader) {
+	public UserRestController(UserService userService, ResourceLoader resourceLoader,AttendanceService attendanceService) {
 		this.userService = userService;
 		this.resourceLoader = resourceLoader;
+		this.attendanceService = attendanceService;
 	}
 
 	// 로그인
@@ -88,7 +91,7 @@ public class UserRestController {
 	public ResponseEntity<?> userImgUpload(@RequestParam("userId") String id,@RequestParam("file") MultipartFile file, Model model) throws IllegalStateException, IOException {
 		if (file != null && file.getSize() > 0) {
 //			String fileName = file.getOriginalFilename();
-			String fileName = id+".jpg";
+			String fileName = id + "_profile.jpg";
 			 String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/upload";  // 애플리케이션 루트 디렉토리를 기준으로 설정
 	        File uploadPath = new File(uploadDir);
 	
@@ -149,6 +152,43 @@ public class UserRestController {
 		 return new ResponseEntity<>(HttpStatus.OK);
 
 	}
+	// 프로필 사진 가져오기
+		@GetMapping("/profileImage/{userId}")
+		public ResponseEntity<String> getProfileImageUrl(@PathVariable String userId) {
+		    String fileName = userId + "_profile.jpg";
+		    String filePath = "/upload/" + fileName;
+		    File imgFile = new File(System.getProperty("user.dir") + "/src/main/resources/static" + filePath);
+		    if (imgFile.exists()) {
+		    	String fullUrl = "http://localhost:8080" + filePath; // 서버 주소와 파일 경로를 결합
+		        return new ResponseEntity<>(fullUrl, HttpStatus.OK);
+		    }
+		    return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
+		}
+
+		// 회원 프로필 사진 수정
+		@PutMapping("/updateProfileImage")
+		public ResponseEntity<?> updateProfileImage(@RequestParam("userId") String id, @RequestParam("file") MultipartFile file) {
+		    try {
+		        if (file.isEmpty()) {
+		            return new ResponseEntity<>("No file uploaded", HttpStatus.BAD_REQUEST);
+		        }
+
+		        String fileName = id + "_profile.jpg";  // 이 규칙을 통일
+		        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/upload";
+		        File uploadPath = new File(uploadDir);
+
+		        if (!uploadPath.exists()) {
+		            uploadPath.mkdirs();
+		        }
+
+		        File destinationFile = new File(uploadPath, fileName);
+		        file.transferTo(destinationFile);
+
+		        return new ResponseEntity<>("Profile image updated successfully", HttpStatus.OK);
+		    } catch (Exception e) {
+		        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+		}
 
 	// 출석
 	@PostMapping("/attendance")

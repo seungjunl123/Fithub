@@ -43,6 +43,10 @@
           <label for="goalWeight">목표 체중</label>
           <input type="number" id="goalWeight" placeholder="목표 몸무게를 입력해주세요" v-model.trim="user.goalWeight" >
         </div>
+        <div class="input-group">
+          <label for="userHeight">현재 키</label>
+          <input type="number" id="userHeight" placeholder="키를 입력해주세요" v-model.trim="user.height" >
+        </div>
         <button type="submit" class="signup-button">회원 가입</button>
       </form>
     </div>
@@ -63,6 +67,7 @@ const user = ref({
   sex: "",
   goalWeight:"",
   nowWeight:"",
+  height:""
 })
 
 const img = ref()
