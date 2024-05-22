@@ -58,4 +58,6 @@ public interface BoardDao {
 	// 해당 아이디 좋아요 여부 확인
 	public boolean hasUserLikedBoard(String userId, int boardId);
 
+	public List<Map<String, Object>> selectCategoriesByPostBoardId(int postBoardId);
+
 }

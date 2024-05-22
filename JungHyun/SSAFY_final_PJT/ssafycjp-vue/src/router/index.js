@@ -10,6 +10,7 @@ import BoardUpdate from '@/components/board/BoardUpdate.vue'
 import BoardDetail from '@/components/board/BoardDetail.vue'
 
 import Error401 from '@/views/Error401.vue';
+import FailedWithLogin from '@/views/FailedWithLogin.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,11 @@ const router = createRouter({
       component: Error401
     },
     {
+      path: '/FailedWithLogin',
+      name: 'FailedWithLogin',
+      component: FailedWithLogin
+    },
+    {
       path: '/main',
       name: 'main',
       component: MainView,
@@ -50,7 +56,7 @@ const router = createRouter({
           component: BoardList,
         },
         { 
-          path: 'create', 
+          path: ':postboardId/create',
           name: 'boardCreate', 
           component: BoardCreate 
         },
