@@ -116,5 +116,18 @@ export const useBoardStore = defineStore('board', () => {
     }
 }
 
-  return { createBoard, boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, }
+// 대댓글 가져오기
+const getRereplies = async (replyId) => {
+  const response = await axiosInstance.get(`${REST_BOARD_API}/rereply/${replyId}`)
+  return response.data
+}
+// 대댓글 작성
+const addRereply = async (content) => {
+  await axiosInstance.post(`${REST_BOARD_API}/rereply`, { content })
+}
+// 대댓글 삭제
+const deleteRereply = async (rereplyId) => {
+  await axiosInstance.delete(`${REST_BOARD_API}/rereply/${rereplyId}`)
+}
+  return { createBoard,deleteRereply, addRereply,getRereplies,boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, }
 })

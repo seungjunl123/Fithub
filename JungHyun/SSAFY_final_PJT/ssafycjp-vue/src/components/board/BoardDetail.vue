@@ -21,8 +21,8 @@
           <button class="btn btn-outline-danger" @click="deleteBoard">삭제</button>
         </div>
       </div>
-      <hr/>
       <ReplyList :boardId="board.id" />
+      <hr/>
     </div>
   </div>
 </template>

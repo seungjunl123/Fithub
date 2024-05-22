@@ -120,6 +120,7 @@ public class BoardRestController {
 	@GetMapping("/board/{boardId}/reply")
 	public ResponseEntity<List<Reply>> replyList(@PathVariable("boardId") int boardId) {
 		List<Reply> list = replyService.getReplyList(boardId);
+		System.out.println(list);
 		return new ResponseEntity<List<Reply>>(list, HttpStatus.OK);
 	}
 
@@ -146,31 +147,33 @@ public class BoardRestController {
 	}
 
 	// 대댓글 가져오기
-	@GetMapping("/board/{boardId}/reply/{replyId}/rereply")
-	public ResponseEntity<List<Rereply>> rereplyList(@PathVariable("replyId") int replyId) {
-		List<Rereply> list = rereplyService.getRereplyList(replyId);
+	@GetMapping("/board/rereply/{replyId}")
+	public ResponseEntity<List<Rereply>> rereplyList(@PathVariable("replyId") String replyId) {
+		int rId = Integer.parseInt(replyId);
+		System.out.println(rId+"대댓글 리스팅 ");
+		List<Rereply> list = rereplyService.getRereplyList(rId);
 		return new ResponseEntity<List<Rereply>>(list, HttpStatus.OK);
 	}
 
 	// 대댓글 작성
-	@PostMapping("/board/{boardId}/reply/{replyId}/rereply")
+	@PostMapping("/board/rereply")
 	public ResponseEntity<?> writeRereply(@RequestBody Rereply rereply) {
 		rereplyService.writeRereply(rereply);
 		return new ResponseEntity<Rereply>(rereply,HttpStatus.OK);
 	}
 
 	// 대댓글 수정
-	@PutMapping("/board/{boardId}/reply/{replyId}/rereply/{id}")
-	public ResponseEntity<?> updateRereply(@PathVariable("id") int id, @RequestBody Rereply rereply) {
-		rereply.setId(id);
+	@PutMapping("/board/rereply/{id}")
+	public ResponseEntity<?> updateRereply(@PathVariable("id") int rereplyid, @RequestBody Rereply rereply) {
+		rereply.setId(rereplyid);
 		rereplyService.modifyRereply(rereply);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	// 대댓글 삭제
-	@DeleteMapping("/board/{boardId}/reply/{replyId}/rereply/{id}")
-	public ResponseEntity<?> deleteRereply(@PathVariable("id") int id) {
-		rereplyService.removeRereply(id);
+	@DeleteMapping("/board/rereply/{id}")
+	public ResponseEntity<?> deleteRereply(@PathVariable("id") int rereplyid) {
+		rereplyService.removeRereply(rereplyid);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	// 게시글 좋아요
@@ -182,7 +185,7 @@ public class BoardRestController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	// 댓글 좋아요
-	@PutMapping("/board/{boardId}/reply/{replyId}/like")
+	@PutMapping("/board/reply/{replyId}/like")
 	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId, String token){
 		String UserId = jwtUtil.getIdFromToken(token);
 		replyService.updateLikeUp(UserId, replyId);
