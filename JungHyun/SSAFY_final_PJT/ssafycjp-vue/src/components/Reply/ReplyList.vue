@@ -25,7 +25,6 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-outline-primary" @click="addReply">등록</button>
     </div>
-
   </div>
 </template>
 
@@ -49,12 +48,12 @@ const newReply = ref("");
 const hasLiked = ref(false) 
 
 const fetchReplies = async () => {
-  try {
-    replies.value = await store.getReplies(props.boardId);
-  } catch (error) {
-    console.error('댓글을 가져오는 데 실패했습니다:', error);
-  }
-};
+    try {
+      replies.value = await store.getReplies(props.boardId);
+    } catch (error) {
+      console.error('댓글을 가져오는 데 실패했습니다:', error);
+    }
+  };
 
 const addReply = async () => {
   try {

@@ -110,6 +110,7 @@ export const useBoardStore = defineStore('board', () => {
 
   // 댓글 가져오기
   const getReplies = async (boardId) => {
+    console.log(boardId)
     const response = await axiosInstance.get(`${REST_BOARD_API}/${boardId}/reply`)
     return response.data
   }
@@ -201,6 +202,6 @@ await axiosInstance.post(`${REST_BOARD_API}/rereply`, { content })
 const deleteRereply = async (rereplyId) => {
 await axiosInstance.delete(`${REST_BOARD_API}/rereply/${rereplyId}`)
 }
-return { createBoard, checkIfUserLikedReply,likeReply,dislikeReply,dislikeBoard, deleteRereply, checkIfUserLikedBoard, addRereply,getRereplies,boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, }
+return { createBoard,fetchCategoriesByPostBoardId, checkIfUserLikedReply,likeReply,dislikeReply,dislikeBoard, deleteRereply, checkIfUserLikedBoard, addRereply,getRereplies,boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, }
 
 })
