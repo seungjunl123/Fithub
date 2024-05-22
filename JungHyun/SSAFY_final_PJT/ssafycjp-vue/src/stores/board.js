@@ -14,10 +14,6 @@ export const useBoardStore = defineStore('board', () => {
     axiosInstance({
       url: REST_BOARD_API,
       method: 'POST',
-      // 아래 작업하지 않아도 그냥 JSON 형태로 Content-type을 결정해서 보내버림
-      // headers: {
-      //   "Content-Type": "applcation/json"
-      // },
       data: board
     })
       .then(() => {
@@ -44,22 +40,16 @@ export const useBoardStore = defineStore('board', () => {
   const boardList = ref([])
   const getBoardList = function (postboardId = null) {
     let url = REST_BOARD_API
-    console.log("getBoardList 들어왔고, 현재  postboardId: "+postboardId)
     if(postboardId === null){
       // 전체 게시글 조회
       url = REST_BOARD_API
-      console.log("전체 게시글 가져올거야.")
     }
     if (postboardId) {
       // 특정 게시판 게시글 조회
       url += `/${postboardId}`
-      console.log("게시글 가져올거야. postboardId: " + postboardId)
     }
-    console.log("url: " + url)
     axiosInstance.get(url)
       .then((response) => {
-        console.log("가져온 게시글 리스트: ")
-        console.log(response.data)
         boardList.value = response.data
       })
   }
@@ -75,13 +65,17 @@ export const useBoardStore = defineStore('board', () => {
     })
   }
 
-  const updateBoard = function () {
-    axiosInstance.put(REST_BOARD_API, board.value)
-      .then(() => {
-      router.push({name: 'boardList'})
-    })
-  }
+  // 게시글 수정
+  const updateBoard = async function () {
+    try {
+        await axiosInstance.put(`${REST_BOARD_API}/${board.value.id}`, board.value);
+        router.back();
+    } catch (error) {
+        console.error('게시글을 수정하는 데 실패했습니다:', error);
+    }
+}
 
+  // 게시글 검색
   const searchBoardList = function (searchCondition) {
     axiosInstance.get(REST_BOARD_API, {
       params: searchCondition
@@ -91,68 +85,36 @@ export const useBoardStore = defineStore('board', () => {
     })
   }
 
-  // 인터셉터 사용으로 토큰 검증이 필요한 요청들 쉽게 설정 가능!
-  // const createBoard = function (board) {
-  //   axios({
-  //     url: REST_BOARD_API,
-  //     method: 'POST',
-  //     // 아래 작업하지 않아도 그냥 JSON 형태로 Content-type을 결정해서 보내버림
-  //     // headers: {
-  //     //   "Content-Type": "applcation/json"
-  //     // },
-  //     data: board
-  //   })
-  //     .then(() => {
-  //       router.push({name: 'boardList'})
-  //     })
-  //     .catch((err) => {
-  //     console.log(err)
-  //   })
-  // }
+  // 게시글 삭제
+  const deleteBoard = function (id) {
+    return axiosInstance.delete(`${REST_BOARD_API}/${id}`)
+  }
 
-  // const boardList = ref([])
-  // const getBoardList = function () {
-  //   axios.get(REST_BOARD_API, {
-  //     headers: {
-  //       // 토큰 있는지 확인
-  //       'access-token': sessionStorage.getItem('access-token')
-  //     }
-  //   })
-  //     .then((response) => {
-  //     boardList.value = response.data
-  //   })
-  // }
+  // 댓글 가져오기
+  const getReplies = async (boardId) => {
+    const response = await axiosInstance.get(`${REST_BOARD_API}/${boardId}/reply`)
+    return response.data
+  }
 
-  // const board = ref({})
+  // 댓글 작성
+  const addReply = async (boardId, content) => {
+    await axiosInstance.post(`${REST_BOARD_API}/${boardId}/reply`, { content })
+  }
 
-  // const getBoard = function (id) {
-  //   axios.get(`${REST_BOARD_API}/${id}`)
-  //     .then((response) => {
-  //     board.value = response.data
-  //   })
-  // }
+  // 댓글 삭제
+  const deleteReply = async (replyId) => {
+    await axiosInstance.delete(`${REST_BOARD_API}/reply/${replyId}`)
+  }
 
-  // const updateBoard = function () {
-  //   axios.put(REST_BOARD_API, board.value)
-  //     .then(() => {
-  //     router.push({name: 'boardList'})
-  //   })
-  // }
+  // 좋아요 증가
+  const likeBoard = async (boardId) => {
+    try {
+        const token = sessionStorage.getItem('Authorization'); 
+        await axiosInstance.put(`${REST_BOARD_API}/${boardId}/like`, { token });
+    } catch (error) {
+        console.error('게시글에 좋아요를 누르는 데 실패했습니다:', error);
+    }
+}
 
-  // const searchBoardList = function (searchCondition) {
-  //   axios.get(REST_BOARD_API, {
-  //     params: searchCondition
-  //   })
-  //     .then((res) => {
-  //     boardList.value = res.data
-  //   })
-  // }
-
-
-
-
-
-
-
-  return { createBoard, boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, }
+  return { createBoard, boardList, getBoardList, board, getBoard, updateBoard, searchBoardList, postboardNames, fetchPostboardNames, deleteBoard, getReplies, addReply, deleteReply, likeBoard, }
 })

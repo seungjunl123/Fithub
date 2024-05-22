@@ -45,7 +45,7 @@ const router = createRouter({
           component: BoardList,
         },
         { 
-          path: 'board/:postboardId', 
+          path: ':postboardId', 
           name: 'boardList', 
           component: BoardList,
         },

@@ -10,7 +10,6 @@ export const useUserStore = defineStore('user', () => {
   const loginUserId = ref(null)
   
   const userLogin = async (id, password) => {
-    console.log("로그인 들어왔어!")
     try {
       const response = await axios.post(`${REST_USER_API}/login`, {
         id: id,
@@ -22,31 +21,6 @@ export const useUserStore = defineStore('user', () => {
       console.error('로그인 실패:', error)
     }
   }
-
-
-// const userLogin = function (id, password) {
-//     console.log("로그인 들어왔어!")
-//     axios.post(`${REST_USER_API}/login`, {
-//       id: id,
-//       password: password
-//     })
-//       .then((res) => {
-//         console.log(res.data)
-//         const token = res.data["access-token"]
-//         sessionStorage.setItem('Authorization', token)
-
-//         const tokenParts = token.split('.')
-//         let id = JSON.parse(atob(tokenParts[1]))['sub']
-        
-//         loginUserId.value = id
-
-//         router.push({name: 'boardList'})
-
-//       })
-//       .catch(() => {
-//         console.log('로그인 실패')
-//     })
-//   }
 
   const userRegist = async (user) => {
     try {
@@ -94,7 +68,6 @@ export const useUserStore = defineStore('user', () => {
   // }
 
   const logout = function(){
-    console.log('로그아웃 테스트')
     console.log('로그아웃 시도한 아이디: ' + getUserIdFromToken())
     // 로그아웃 했으니 세션스토리지에 저장된 토큰 제거!
     sessionStorage.removeItem('Authorization')
@@ -126,9 +99,7 @@ export const useUserStore = defineStore('user', () => {
   const getUserInfoFromToken = async () => {
     try {
       const token = sessionStorage.getItem('Authorization')
-      console.log("이 토큰 값으로 유저 정보를 가져올거야!\n"+token)
       if (token) {
-        console.log("토큰이 있네!")
         const response = await axiosInstance.get(`${REST_USER_API}/info`, {
           headers: { Authorization: `Bearer ${token}` }
         })
