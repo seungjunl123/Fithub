@@ -8,7 +8,8 @@ const REST_USER_API = `http://localhost:8080/user`
 
 export const useUserStore = defineStore('user', () => {
   const loginUserId = ref(null)
-  
+
+  // 로그인 
   const userLogin = async (id, password) => {
     try {
       const response = await axios.post(`${REST_USER_API}/login`, {
@@ -19,6 +20,7 @@ export const useUserStore = defineStore('user', () => {
       router.push({ name: 'main' })
     } catch (error) {
       console.error('로그인 실패:', error)
+      router.push({ name: 'FailedWithLogin' })
     }
   }
 

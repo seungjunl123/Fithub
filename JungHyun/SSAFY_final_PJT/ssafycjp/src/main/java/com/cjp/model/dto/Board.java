@@ -21,7 +21,7 @@ public class Board {
 
 	
 	public Board() {
-		
+		regDate = LocalDateTime.now();
 	}
 	
 //	public Board(int postBoardId, int category, String title, String content, String writer, LocalDateTime regDate) {

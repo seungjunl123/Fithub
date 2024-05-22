@@ -1,6 +1,7 @@
 package com.cjp.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,9 +70,9 @@ public class BoardRestController {
 	
 	// 해당 게시판의 게시글 말머리 리스트 가져오기
 	@GetMapping("/board/categories/{postBoardId}")
-	public ResponseEntity<List<Category>> getCategoriesByPostBoardId(@PathVariable("postBoardId") int postBoardId) {
-	    List<Category> categories = boardService.getCategoriesByPostBoardId(postBoardId);
-	    return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
+	public ResponseEntity<List<Map<String, Object>>> getCategoriesByPostBoardId(@PathVariable("postBoardId") int postBoardId) {
+	    List<Map<String, Object>> categories = boardService.getCategoriesByPostBoardId(postBoardId);
+	    return new ResponseEntity<>(categories, HttpStatus.OK);
 	}
 
 	// 게시글 (검색) 조회
@@ -92,17 +93,15 @@ public class BoardRestController {
 		Board board = boardService.readBoard(id);
 		return new ResponseEntity<Board>(board, HttpStatus.OK);
 	}
-
-	// 게시글 등록 (Form 형식으로 넘어왔을 때)
+	
+	// 게시글 작성
 	@PostMapping("/board")
 	public ResponseEntity<?> write(@RequestBody Board board, @RequestHeader("Authorization") String token) {
-		// 등록한 게시글을 보냈는데
 		String userId = jwtUtil.getIdFromToken(token);
 		board.setWriter(userId);
+		board.setPostBoardId(board.getPostBoardId()+1);
+		System.out.println("작성한 board: " + board);
 		boardService.writeBoard(board);
-		// 등록이 되어있는지 눈으로 Talend API 보려고 이렇게 보낸거지
-		// 실제로 프론트에게 보낼때는 크게 의미는 없다! ID만 보내서 디테일 쏘던지 바로 목록으로가면 필요없다!
-		// insert, update, delete -> 반환값이 int 형의 값이 넘어온다. (바뀐 행의 개수가 반환됨)
 		return new ResponseEntity<Board>(board, HttpStatus.CREATED);
 	}
 
@@ -212,14 +211,8 @@ public class BoardRestController {
 	}
 
 	// 댓글 좋아요
-<<<<<<< HEAD
-	@PutMapping("/board/{boardId}/reply/{replyId}/like")
-	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId,
-			@RequestHeader("Authorization") String token) {
-=======
 	@PutMapping("/board/reply/{replyId}/like")
 	public ResponseEntity<?> replyLikeUp(@PathVariable("replyId") int replyId, String token){
->>>>>>> d01736e69050816e69cbe849e9353af55728217d
 		String UserId = jwtUtil.getIdFromToken(token);
 		replyService.updateLikeUp(UserId, replyId);
 		return new ResponseEntity<Void>(HttpStatus.OK);

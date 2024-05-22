@@ -1,6 +1,7 @@
 package com.cjp.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cjp.model.dto.Board;
 import com.cjp.model.dto.SearchCondition;
@@ -38,4 +39,6 @@ public interface BoardService {
 	
 	// 해당 아이디 좋아요 여부 확인
 	public boolean checkBoardLiked(String userId, int boardId);
+
+	List<Map<String, Object>> getCategoriesByPostBoardId(int postBoardId);
 }
