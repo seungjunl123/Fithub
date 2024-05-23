@@ -1,30 +1,33 @@
 <template>
   <div class="replies-section">
     <h4>댓글</h4>
-    <div v-for="reply in replies" :key="reply.id" class="reply">
-      <div class="reply-meta">
-        <span class="reply-writer">{{ reply.writer }}</span>
-        <span class="reply-date">{{ formatDate(reply.regDate) }}</span>
+    <div >
+      <div v-for="reply in replies" :key="reply.id" class="reply">
+        <div class="reply-meta">
+          <span class="reply-writer">{{ reply.writer }}</span>
+          <span class="reply-date">{{ formatDate(reply.regDate) }}</span>
+        </div>
+        <div class="reply-content">
+          <p>{{ reply.content }}</p>
+        </div>
+        <div class="reply-actions">
+          <button class="btn btn-outline-secondary" @click="toggleWriteRereply(reply.id)">답글 작성</button>
+          <button class="btn btn-like" :class="{ 'liked': reply.hasLiked }" @click="toggleLike(reply.id)">
+            좋아요 {{ reply.like }}
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" @click="editReply(reply.id)">수정</button>
+          <button class="btn btn-outline-danger btn-sm" @click="deleteReply(reply.id)">삭제</button>
+        </div>
+        <RereplyList :replyId="reply.id" :writeRereply="reply.writeRereply" />
       </div>
-      <div class="reply-content">
-        <p>{{ reply.content }}</p>
+      <div class="form-floating mb-3">
+        <textarea class="form-control" id="newReply" placeholder="댓글을 입력하세요" style="height: 100px"
+          v-model="newReply"></textarea>
+        <label for="newReply">댓글</label>
       </div>
-      <div class="reply-actions">
-        <button class="btn btn-outline-secondary" @click="toggleWriteRereply(reply.id)">답글 작성</button>
-        <button class="btn btn-like" :class="{'liked': reply.hasLiked}" @click="toggleLike(reply.id)">
-          좋아요 {{ reply.like }}
-        </button>
-        <button class="btn btn-outline-secondary btn-sm" @click="editReply(reply.id)">수정</button>
-        <button class="btn btn-outline-danger btn-sm" @click="deleteReply(reply.id)">삭제</button>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-outline-primary" @click="addReply">등록</button>
       </div>
-      <RereplyList :replyId="reply.id" :writeRereply="reply.writeRereply" />
-    </div>
-    <div class="form-floating mb-3">
-      <textarea class="form-control" id="newReply" placeholder="댓글을 입력하세요" style="height: 100px" v-model="newReply"></textarea>
-      <label for="newReply">댓글</label>
-    </div>
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-outline-primary" @click="addReply">등록</button>
     </div>
   </div>
 </template>
